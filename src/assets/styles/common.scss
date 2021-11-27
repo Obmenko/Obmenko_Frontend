@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box;
+  color: $color-black;
+  font-family: "Lato", sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+@include media-mobile-xl {
+  body::-webkit-scrollbar {
+    // width: 52px;
+    display: none;
+  }
+}
+
+p {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0em;
+}
+
+p, span, a, h1, h2, h3, h4, h5, h6 {
+  font-family: "Lato";
+  color: $color-black;
+}
+
+a {
+  text-decoration: none;
+}
+
+.onlyMobile {
+  display: none !important;
+  &::after {
+    display: none !important;
+  }
+  &::before {
+    display: none !important;
+  }
+  @media (max-width: $mobile-width) {
+    display: flex !important;
+  }
+}
+
+.noMobile {
+  @media (max-width: $mobile-width) {
+    display: none !important;
+    &::after {
+      display: none !important;
+    }
+    &::before {
+      display: none !important;
+    }
+  }
+}
