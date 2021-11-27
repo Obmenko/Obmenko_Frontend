@@ -1,0 +1,39 @@
+.root {
+  border: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid $color-blue;
+  width: 100%;
+  padding-bottom: 10px;
+
+  min-height: 41px;
+  &-wrapper {
+    width: 100%;
+  }
+}
+
+.dropdown {
+  border: none;
+  padding-left: 10px;
+  &.isOpened {
+    & > img {
+      transition: rotate(180deg);
+    }
+  }
+}
+
+.option {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  & > img {
+    margin-right: 10px;
+  }
+  & > span {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+}

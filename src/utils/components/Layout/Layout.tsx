@@ -9,6 +9,10 @@ import classes from './Layout.module.scss';
 import ModalContext, { ModalType, ModalTypeEnum, ModalTypeOptions } from '@/context/modal';
 import MODAL_CONFIG from '@/const/modal_config';
 import { ModalDataUnion } from '@/types/modal';
+import Footer from './components/Footer';
+import AsideMenu from './components/AsideMenu';
+import Header from './components/Header';
+import Warning from './components/Warning';
 
 type PropsType = {
   children: React.ReactNode
@@ -16,6 +20,8 @@ type PropsType = {
 
 const Layout: FC<PropsType> = ({ children }) => {
   const [modalList, setModalList] = useState<ModalType[]>([]);
+  const [isAsideMenuOpen, setAsideMenuOpenState] = useState(false);
+  const [isWarningOpen, setWarningOpenState] = useState(true);
 
   const handleOpenModal = useCallback(openModal, [modalList]);
   const handleCloseModal = useCallback(closeModal, [modalList]);
@@ -30,9 +36,23 @@ const Layout: FC<PropsType> = ({ children }) => {
     }}
     >
       <div className={classes.root}>
+        {
+          isWarningOpen && (
+            <Warning isWarningOpen={isWarningOpen} setWarningOpenState={setWarningOpenState} />
+          )
+        }
+        <Header isAsideMenuOpen={isAsideMenuOpen} setAsideMenuOpenState={setAsideMenuOpenState} />
         <div className={classes.content}>
           {children}
         </div>
+        <Footer />
+        {
+          isAsideMenuOpen && (
+            <AsideMenu
+              onClose={() => setAsideMenuOpenState(false)}
+            />
+          )
+        }
       </div>
       {
         modalList.map(({

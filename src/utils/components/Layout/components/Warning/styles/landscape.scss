@@ -1,0 +1,23 @@
+.root {
+
+}
+
+.navWrapper {
+  display: none;
+}
+
+.button {
+  display: none;
+}
+
+.burger {
+  height: 100%;
+  display: block;
+  max-height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  & > img {
+    height: 100%;
+  }
+}

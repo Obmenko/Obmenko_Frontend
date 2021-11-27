@@ -6,7 +6,7 @@ import {
   Route,
   RouteProps,
 } from 'react-router-dom';
-import ROUTES from '../../../const/routes';
+import { ROUTES } from '../../../const/routes';
 
 const ProtectedRoute: FC<RouteProps> = ({ ...rest }) => {
   // const [auth] = useContext(AuthContext);

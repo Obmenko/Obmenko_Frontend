@@ -8,7 +8,7 @@ import {
 import '@/assets/styles/index.scss';
 import { Ripple } from 'react-spinners-css';
 import Layout from '@/utils/components/Layout';
-import ROUTES from '@/const/routes';
+import { ROUTES } from '@/const/routes';
 
 const HomePage = lazy(() => import('@/pages/Home'));
 

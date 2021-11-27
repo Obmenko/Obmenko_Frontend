@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import { useHistory } from 'react-router';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
-import LogoImg from '@/assets/img/logo_black.svg';
+import AccountImg from '@/assets/img/account.png';
 // import BurgerImg from '@/assets/img/burger.svg';
 import { goWithScroll } from '@/utils/functions/dom';
 
@@ -35,7 +35,20 @@ const Header: FC<IProps> = ({
         className={classes.root}
         wrapperClassName={classes['root-wrapper']}
       >
-        dasdas
+        <div className={classes.contacts}>
+          <a href="">info@obmenko.org</a>
+          <div />
+          <p>Сервис работает круглосуточно.</p>
+        </div>
+        <div className={classes.account}>
+          <div className={classes.login}>
+            <img src={AccountImg} alt="" />
+            <span>Войти</span>
+          </div>
+          <div className={classes.lang}>
+            <span>RU</span>
+          </div>
+        </div>
       </Container>
     </>
   );
