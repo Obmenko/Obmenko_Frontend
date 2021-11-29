@@ -3,7 +3,7 @@
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 import _ from 'lodash';
-import Home from './Home';
+import Home from './Exchange';
 import IMAGE_DICT, { ImageItem } from '@/const/assets/image';
 
 const HomePage: FC = () => {

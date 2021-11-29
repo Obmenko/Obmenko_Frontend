@@ -5,7 +5,7 @@
 /* eslint-disable max-len */
 /* eslint-disable react/require-default-props */
 import React, {
-  FC, useCallback, useState,
+  FC, useCallback, useEffect, useState,
 } from 'react';
 import clsx from 'clsx';
 
@@ -13,9 +13,11 @@ import classes from './Slider.module.scss';
 
 interface PropsType {
   className?: string;
+  wrapperClassName?: string;
   activeSlideIndex: number;
   onChange: { (itemIndex: number): void };
   items: JSX.Element[];
+  noControls: boolean
 }
 
 const Slider: FC<PropsType> = ({
@@ -23,6 +25,8 @@ const Slider: FC<PropsType> = ({
   activeSlideIndex,
   onChange,
   items,
+  noControls,
+  wrapperClassName,
 }) => {
   const [waitingDirection, setWaitingDirection] = useState<'left' | 'right' | null>(null);
   const [lastWaitingDirection, setLastWaitingDirection] = useState<'left' | 'right' | null>(null);
@@ -36,10 +40,10 @@ const Slider: FC<PropsType> = ({
 
   return (
     <div
-      className={clsx(classes.root, className)}
+      className={clsx(classes.root, wrapperClassName)}
     >
       <div
-        className={clsx(classes[`slide_${activeSlideIndex}`], 'animate__animated', memoGetAnimationClass(waitingDirection))}
+        className={clsx(classes[`slide_${activeSlideIndex}`], 'animate__animated', memoGetAnimationClass(waitingDirection), className)}
         onTouchStart={memoOnTouchStart}
         onTouchEnd={memoOnTouchEnd}
       >
@@ -48,7 +52,7 @@ const Slider: FC<PropsType> = ({
         }
       </div>
       {
-        items.length > 1 && (
+        items.length > 1 && !noControls && (
           <div className={classes.controls}>
             {
               items.map((item, itemIndex) => (

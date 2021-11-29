@@ -1,17 +1,29 @@
-import React, { useCallback, useState } from 'react';
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { useCallback, useMemo, useState } from 'react';
 import { MenuItem } from '@mui/material';
+import _ from 'lodash';
+import clsx from 'clsx';
 import { NAVS } from '@/const/routes';
 import classes from './Home.module.scss';
 import LogoImg from '@/assets/img/logo.png';
+import BgOverlayImg from '@/assets/img/bg_overlay.png';
 import ExchangeImg from '@/assets/img/currency/exchange.svg';
 import BitcoinImg from '@/assets/img/currency/bitcoin.svg';
 import SberRubImg from '@/assets/img/currency/sber_rub.png';
 import AdvantageImg1 from '@/assets/img/advantage_1.svg';
 import AdvantageImg2 from '@/assets/img/advantage_2.svg';
 import AdvantageImg3 from '@/assets/img/advantage_3.svg';
+import ArrowLeftGrey from '@/assets/img/arrow_left_grey.svg';
+import ArrowRightWhite from '@/assets/img/arrow_right_white.svg';
 import Container from '@/utils/components/Container';
 import Select from '@/ui/Select';
 import Button from '@/ui/Button';
+import { ButtonModeEnum } from '@/ui/Button/Button';
+import REVIEWS, { ReviewItem } from '@/const/reviews';
+import useResize from '@/utils/hooks/useResize';
+import Slider from '@/ui/Slider';
+import CURRENCIES from '@/const/currencies';
 
 type CurrencyItem = {
   img: string;
@@ -49,12 +61,21 @@ const Home: React.FC = () => {
     moneySelected: CURRENCY_MONEY[0],
   });
 
+  const [reviewActiveIndex, setReviewActiveIndex] = useState<number>(0);
+
+  const { width } = useResize();
+
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [data]);
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [data]);
 
+  const memoReviewChunkList = useMemo<ReviewItem[][]>(() => _.chunk(REVIEWS, width > 480 ? 4 : 1), [width]);
+
+  const memoSetReviewActiveIndex = useCallback(handleSetReviewActiveIndex, [
+    memoReviewChunkList.length, reviewActiveIndex]);
   return (
     <div className={classes.root}>
       <Container className={classes.main} wrapperClassName={classes['main-wrapper']}>
+        <img src={BgOverlayImg} alt="" />
         <div className={classes.header}>
           <div className={classes.logo}>
             <img src={LogoImg} alt="" />
@@ -113,6 +134,9 @@ const Home: React.FC = () => {
                 />
                 <input type="number" value={data.money} readOnly className="reverse" />
               </div>
+              <div className={classes['content-calculator__item-reserve']}>
+                <span>max.: 4000000 RUB</span>
+              </div>
               <div className={classes['content-calculator__item-info']}>
                 <p>
                   <span className={classes['content-calculator__item-info__link']}>Войдите</span>
@@ -141,9 +165,100 @@ const Home: React.FC = () => {
           <p>Профессиональный подход к курсообразованию делает наши курсы лучшими в рунете</p>
         </div>
       </Container>
+      <Container className={classes.reviews} wrapperClassName={classes['reviews-wrapper']}>
+        <div className={classes['reviews-content']}>
+          <div className={classes['reviews-content__title']}>
+            <h5>
+              Отзывы
+              {' '}
+              <span>—</span>
+            </h5>
+            <h3>Что говорят клиенты</h3>
+            <div>
+              <img src={ArrowRightWhite} onClick={memoSetReviewActiveIndex('prev')} alt="" />
+              <img src={ArrowRightWhite} onClick={memoSetReviewActiveIndex('next')} alt="" />
+            </div>
+
+            <Button mode={ButtonModeEnum.TRANSPARENT}>Все отзывы</Button>
+          </div>
+          <Slider
+            className={classes['reviews-content__list']}
+            noControls
+            activeSlideIndex={reviewActiveIndex}
+            onChange={setReviewActiveIndex}
+            items={
+              width > 480 ? memoReviewChunkList.map((review) => (
+                <>
+                  <div className={classes['reviews-content__list-column']}>
+                    <div className={clsx(classes['reviews-content__list-item'])} key={`${review[0].author}__${review[0].date}`}>
+                      <p>{review[0].text}</p>
+                      <div>
+                        <span>{review[0].author}</span>
+                        <p>{review[0].date}</p>
+                      </div>
+                    </div>
+                    <div className={clsx(classes['reviews-content__list-item'], classes['reviews-content__list-item__small'])} key={`${review[1].author}__${review[1].date}`}>
+                      <p>{review[1].text}</p>
+                      <div>
+                        <span>{review[1].author}</span>
+                        <p>{review[1].date}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={classes['reviews-content__list-column']}>
+                    <div className={classes['reviews-content__list-item']} key={`${review[2].author}__${review[2].date}`}>
+                      <p>{review[2].text}</p>
+                      <div>
+                        <span>{review[2].author}</span>
+                        <p>{review[2].date}</p>
+                      </div>
+                    </div>
+                    <div className={classes['reviews-content__list-item']} key={`${review[3].author}__${review[3].date}`}>
+                      <p>{review[3].text}</p>
+                      <div>
+                        <span>{review[3].author}</span>
+                        <p>{review[3].date}</p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )) : memoReviewChunkList.map((review) => (
+                <div className={clsx(classes['reviews-content__list-item'])} key={`${review[0].author}__${review[0].date}`}>
+                  <p>{review[0].text}</p>
+                  <div>
+                    <span>{review[0].author}</span>
+                    <p>{review[0].date}</p>
+                  </div>
+                </div>
+              ))
+            }
+          />
+        </div>
+      </Container>
+      <Container className={classes.reserve} wrapperClassName={classes['reserve-wrapper']}>
+        <h4>Резерв валюты</h4>
+        <div className={classes['reserve-content']}>
+          {
+            CURRENCIES.map((currency) => (
+              <div className={classes['reserve-content__item']} key={currency.title}>
+                <img src={currency.img} alt="" />
+                <h6>{currency.title}</h6>
+                <p>{currency.value}</p>
+              </div>
+            ))
+          }
+        </div>
+      </Container>
     </div>
   );
 
+  function handleSetReviewActiveIndex(direction: 'next' | 'prev'): { (): void } {
+    return () => {
+      if (reviewActiveIndex === memoReviewChunkList.length - 1 && direction === 'next') setReviewActiveIndex(0);
+      else if (reviewActiveIndex === 0 && direction === 'prev') setReviewActiveIndex(memoReviewChunkList.length - 1);
+      else setReviewActiveIndex(reviewActiveIndex + (direction === 'prev' ? -1 : 1));
+    };
+  }
   function handleSetDataFromSelect(key: keyof CurrencyData): { (value: CurrencyItem | number | null): void } {
     return (value) => {
       setData({
