@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/require-default-props */
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import clsx from 'clsx';
 import ReactSelect from 'react-select';
 import ArrowDownBlue from '@/assets/img/arrow_down_blue.svg';

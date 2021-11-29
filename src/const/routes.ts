@@ -1,5 +1,6 @@
 export const ROUTES = {
   HOME: '/',
+  EXCHANGE: '/exchange/:id?',
   RULES: '/rules',
   FAQ: '/faq',
   REVIEWS: '/reviews',

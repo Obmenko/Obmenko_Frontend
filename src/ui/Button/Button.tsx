@@ -6,6 +6,7 @@ import classes from './Button.module.scss';
 
 export enum ButtonModeEnum {
   TRANSPARENT = 'transparent',
+  TRANSPARENT_RECT = 'transparent-rect',
   DEFAULT = 'default'
 }
 

@@ -173,6 +173,9 @@
 }
 
 .reviews {
+  & > img {
+    display: none;
+  }
   &-wrapper {
     position: relative;
     background-image: url('../../../assets/img/bg_reviews.png');

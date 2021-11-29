@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -11,7 +12,6 @@ import OkChangerImg from '@/assets/img/logos/ok_changer.jpg';
 import TraderMontoringImg from '@/assets/img/logos/trader_montoring.jpg';
 import AmlBoxImg from '@/assets/img/logos/aml_box.jpg';
 import MailImg from '@/assets/img/mail.svg';
-import { goBlank, goWithScroll } from '@/utils/functions/dom';
 
 type IProps = {
 
@@ -25,6 +25,7 @@ const Footer: React.FC<IProps> = () => {
   return (
     <Container className={classes.root} wrapperClassName={classes['root-wrapper']}>
       <div className={classes.text}>
+        <p className="onlyMobile">Обменник — Obmenko.org предлагает быстрый, безопасный обмен по самым выгодным условиям, такие виды электронных а так же криптовалют как: Bitcoin, Ethereum, Litecoin, Ripple, Zcash, Tether, Monero, Qiwi, Advanced Cash, Яндекс. Деньги, Альфа-Банк, Сбербанк, Тинькофф, EXMO CODE.</p>
         <div className={classes.nav}>
           <span onClick={memoGoTo('/')}>Карта сайта</span>
           <span onClick={memoGoTo('/')}>Правила сайта</span>

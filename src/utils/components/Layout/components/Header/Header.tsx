@@ -7,12 +7,11 @@ import React, {
 } from 'react';
 
 import clsx from 'clsx';
-import { useHistory } from 'react-router';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
 import AccountImg from '@/assets/img/account.png';
+import BurgerImg from '@/assets/img/burger.svg';
 // import BurgerImg from '@/assets/img/burger.svg';
-import { goWithScroll } from '@/utils/functions/dom';
 
 type IProps = {
   setAsideMenuOpenState: { (state: boolean): void };
@@ -23,8 +22,6 @@ const Header: FC<IProps> = ({
   setAsideMenuOpenState,
   isAsideMenuOpen,
 }) => {
-  const history = useHistory();
-
   const memoHandleSetAsideMenuOpenState = useCallback(
     handleSetAsideMenuOpenState, [isAsideMenuOpen, setAsideMenuOpenState],
   );
@@ -35,13 +32,16 @@ const Header: FC<IProps> = ({
         className={classes.root}
         wrapperClassName={classes['root-wrapper']}
       >
-        <div className={classes.contacts}>
+        <div className={clsx(classes.burger, 'onlyMobile')} onClick={memoHandleSetAsideMenuOpenState()}>
+          <img src={BurgerImg} alt="" />
+        </div>
+        <div className={clsx(classes.contacts, 'noMobile')}>
           <a href="">info@obmenko.org</a>
           <div />
           <p>Сервис работает круглосуточно.</p>
         </div>
         <div className={classes.account}>
-          <div className={classes.login}>
+          <div className={clsx(classes.login, 'noMobile')}>
             <img src={AccountImg} alt="" />
             <span>Войти</span>
           </div>

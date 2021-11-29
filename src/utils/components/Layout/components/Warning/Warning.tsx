@@ -6,7 +6,6 @@ import React, {
   FC,
 } from 'react';
 
-import clsx from 'clsx';
 import Container from '@/utils/components/Container';
 import classes from './Warning.module.scss';
 // import BurgerImg from '@/assets/img/burger.svg';
@@ -39,11 +38,11 @@ const Warning: FC<IProps> = ({
     </>
   );
 
-  function handlesetWarningOpenState(value?: boolean) {
-    return () => {
-      setWarningOpenState(value !== undefined ? value : !isWarningOpen);
-    };
-  }
+  // function handlesetWarningOpenState(value?: boolean) {
+  //   return () => {
+  //     setWarningOpenState(value !== undefined ? value : !isWarningOpen);
+  //   };
+  // }
 };
 
 export default Warning;

@@ -1,9 +1,9 @@
 import React, {
-  lazy, Suspense, FC, useEffect,
+  lazy, Suspense, FC,
 } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
-  Switch, Route, useHistory,
+  Switch, Route,
 } from 'react-router-dom';
 import '@/assets/styles/index.scss';
 import { Ripple } from 'react-spinners-css';
@@ -11,14 +11,15 @@ import Layout from '@/utils/components/Layout';
 import { ROUTES } from '@/const/routes';
 
 const HomePage = lazy(() => import('@/pages/Home'));
+const ExchangePage = lazy(() => import('@/pages/Exchange'));
 
 const App: FC = () => {
-  const history = useHistory();
-  useEffect(() => {
-    if (history.location.pathname !== '/') {
-      history.replace('/');
-    }
-  }, [history, history.location.pathname]);
+  console.log('');
+  // useEffect(() => {
+  //   if (history.location.pathname !== '/') {
+  //     history.replace('/');
+  //   }
+  // }, [history, history.location.pathname]);
 
   return (
     <>
@@ -47,7 +48,8 @@ const App: FC = () => {
           )}
         >
           <Switch>
-            <Route path={ROUTES.HOME} component={HomePage} />
+            <Route path={ROUTES.EXCHANGE} component={ExchangePage} />
+            <Route path={ROUTES.HOME} exact component={HomePage} />
           </Switch>
         </Suspense>
       </Layout>

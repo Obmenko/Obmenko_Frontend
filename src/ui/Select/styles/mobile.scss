@@ -1,0 +1,16 @@
+.root {
+  padding-bottom: 6px;
+  height: auto;
+  min-height: initial;
+}
+
+.option {
+  align-items: center;
+  & > img {
+    width: 22px;
+    // display: none;
+  }
+  & > span {
+    font-size: 12px;
+  }
+}

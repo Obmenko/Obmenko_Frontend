@@ -1,13 +1,16 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useCallback, useMemo, useState } from 'react';
-import { MenuItem } from '@mui/material';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import _ from 'lodash';
 import clsx from 'clsx';
+import { useHistory } from 'react-router';
 import { NAVS } from '@/const/routes';
 import classes from './Home.module.scss';
 import LogoImg from '@/assets/img/logo.png';
 import BgOverlayImg from '@/assets/img/bg_overlay.png';
+import BgOverlayImg2 from '@/assets/img/bg_overlay_2.png';
 import ExchangeImg from '@/assets/img/currency/exchange.svg';
 import BitcoinImg from '@/assets/img/currency/bitcoin.svg';
 import SberRubImg from '@/assets/img/currency/sber_rub.png';
@@ -23,21 +26,21 @@ import { ButtonModeEnum } from '@/ui/Button/Button';
 import REVIEWS, { ReviewItem } from '@/const/reviews';
 import useResize from '@/utils/hooks/useResize';
 import Slider from '@/ui/Slider';
-import CURRENCIES from '@/const/currencies';
+import CURRENCIES, { CurrencyItem } from '@/const/currencies';
 
-type CurrencyItem = {
+type CurrencyDataItem = {
   img: string;
   title: string;
 }
 
-const CURRENCY_BTC: CurrencyItem[] = [
+const CURRENCY_BTC: CurrencyDataItem[] = [
   {
     img: BitcoinImg,
     title: 'Bitcoin BTC',
   },
 ];
 
-const CURRENCY_MONEY: CurrencyItem[] = [
+const CURRENCY_MONEY: CurrencyDataItem[] = [
   {
     img: SberRubImg,
     title: 'Сбербанк RUB',
@@ -47,8 +50,8 @@ const CURRENCY_MONEY: CurrencyItem[] = [
 const COURSE = 4675123.9749;
 
 type CurrencyData = {
-  btcSelected: CurrencyItem,
-  moneySelected: CurrencyItem,
+  btcSelected: CurrencyDataItem,
+  moneySelected: CurrencyDataItem,
   money: string | number,
   btc: string | number
 }
@@ -62,16 +65,38 @@ const Home: React.FC = () => {
   });
 
   const [reviewActiveIndex, setReviewActiveIndex] = useState<number>(0);
+  const [currencyActiveIndex, setCurrencyActiveIndex] = useState<number>(0);
 
   const { width } = useResize();
+  const history = useHistory();
 
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [data]);
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [data]);
 
   const memoReviewChunkList = useMemo<ReviewItem[][]>(() => _.chunk(REVIEWS, width > 480 ? 4 : 1), [width]);
+  const memoCurrencyChunkList = useMemo<CurrencyItem[][]>(() => _.chunk(CURRENCIES, width > 480 ? 16 : 2), [width]);
 
+  const memoSetCurrencyActiveIndex = useCallback(handleSetCurrencyActiveIndex, [
+    currencyActiveIndex,
+    memoCurrencyChunkList.length,
+  ]);
   const memoSetReviewActiveIndex = useCallback(handleSetReviewActiveIndex, [
-    memoReviewChunkList.length, reviewActiveIndex]);
+    memoReviewChunkList.length,
+    reviewActiveIndex,
+  ]);
+
+  const memoGoToExchange = useCallback(goToExchange, [
+    data.btc, data.btcSelected.title, data.money, data.moneySelected.title, history,
+  ]);
+
+  useEffect(() => {
+    setData({
+      ...data,
+      money: +data.btc * COURSE,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.btc]);
+
   return (
     <div className={classes.root}>
       <Container className={classes.main} wrapperClassName={classes['main-wrapper']}>
@@ -80,7 +105,7 @@ const Home: React.FC = () => {
           <div className={classes.logo}>
             <img src={LogoImg} alt="" />
           </div>
-          <div className={classes.nav}>
+          <div className={clsx(classes.nav, 'noMobile')}>
             {
               NAVS.map((nav) => (
                 <span key={nav.title}>{nav.title}</span>
@@ -144,7 +169,7 @@ const Home: React.FC = () => {
                 </p>
               </div>
             </div>
-            <Button>Обменять</Button>
+            <Button onClick={memoGoToExchange}>Обменять</Button>
           </div>
         </div>
       </Container>
@@ -166,6 +191,7 @@ const Home: React.FC = () => {
         </div>
       </Container>
       <Container className={classes.reviews} wrapperClassName={classes['reviews-wrapper']}>
+        <img src={BgOverlayImg2} alt="" />
         <div className={classes['reviews-content']}>
           <div className={classes['reviews-content__title']}>
             <h5>
@@ -179,7 +205,7 @@ const Home: React.FC = () => {
               <img src={ArrowRightWhite} onClick={memoSetReviewActiveIndex('next')} alt="" />
             </div>
 
-            <Button mode={ButtonModeEnum.TRANSPARENT}>Все отзывы</Button>
+            <Button mode={ButtonModeEnum.TRANSPARENT} className="noMobile">Все отзывы</Button>
           </div>
           <Slider
             className={classes['reviews-content__list']}
@@ -233,11 +259,12 @@ const Home: React.FC = () => {
               ))
             }
           />
+          <Button mode={ButtonModeEnum.TRANSPARENT} className={clsx('onlyMobile')}>Все отзывы</Button>
         </div>
       </Container>
       <Container className={classes.reserve} wrapperClassName={classes['reserve-wrapper']}>
         <h4>Резерв валюты</h4>
-        <div className={classes['reserve-content']}>
+        <div className={clsx(classes['reserve-content'], 'noMobile')}>
           {
             CURRENCIES.map((currency) => (
               <div className={classes['reserve-content__item']} key={currency.title}>
@@ -248,9 +275,61 @@ const Home: React.FC = () => {
             ))
           }
         </div>
+        <Slider
+          className={clsx(classes['reserve-content'], 'onlyMobile')}
+          noControls
+          activeSlideIndex={currencyActiveIndex}
+          onChange={setCurrencyActiveIndex}
+          items={
+            memoCurrencyChunkList.map((currencyChunk) => (
+              <>
+                <div className={classes['reserve-content__item']} key={currencyChunk[0].title}>
+                  <img src={currencyChunk[0].img} alt="" />
+                  <h6>{currencyChunk[0].title}</h6>
+                  <p>{currencyChunk[0].value}</p>
+                </div>
+                {
+                  currencyChunk[1] && (
+                    <div className={classes['reserve-content__item']} key={currencyChunk[1].title}>
+                      <img src={currencyChunk[1].img} alt="" />
+                      <h6>{currencyChunk[1].title}</h6>
+                      <p>{currencyChunk[1].value}</p>
+                    </div>
+                  )
+                }
+              </>
+            ))
+          }
+        />
+        <div className={clsx(classes['reserve-content__controls'], 'onlyMobile')}>
+          <img src={ArrowLeftGrey} onClick={memoSetCurrencyActiveIndex('prev')} alt="" />
+          <img src={ArrowLeftGrey} onClick={memoSetCurrencyActiveIndex('next')} alt="" />
+        </div>
       </Container>
     </div>
   );
+
+  function goToExchange(): void {
+    const qs = new URLSearchParams();
+
+    const btcTypeIndex = CURRENCY_BTC.findIndex((el) => el.title === data.btcSelected.title);
+    const moneyTypeIndex = CURRENCY_MONEY.findIndex((el) => el.title === data.moneySelected.title);
+
+    qs.set('btc', data.btc.toString());
+    qs.set('money', data.money.toString());
+    if (btcTypeIndex !== -1) qs.set('btc_type', btcTypeIndex.toString());
+    if (moneyTypeIndex !== -1)qs.set('money_type', moneyTypeIndex.toString());
+
+    history.push(`/exchange/?${qs.toString()}`);
+  }
+
+  function handleSetCurrencyActiveIndex(direction: 'next' | 'prev'): { (): void } {
+    return () => {
+      if (currencyActiveIndex === memoCurrencyChunkList.length - 1 && direction === 'next') setCurrencyActiveIndex(0);
+      else if (currencyActiveIndex === 0 && direction === 'prev') setCurrencyActiveIndex(memoCurrencyChunkList.length - 1);
+      else setCurrencyActiveIndex(currencyActiveIndex + (direction === 'prev' ? -1 : 1));
+    };
+  }
 
   function handleSetReviewActiveIndex(direction: 'next' | 'prev'): { (): void } {
     return () => {
@@ -259,7 +338,7 @@ const Home: React.FC = () => {
       else setReviewActiveIndex(reviewActiveIndex + (direction === 'prev' ? -1 : 1));
     };
   }
-  function handleSetDataFromSelect(key: keyof CurrencyData): { (value: CurrencyItem | number | null): void } {
+  function handleSetDataFromSelect(key: keyof CurrencyData): { (value: CurrencyDataItem | number | null): void } {
     return (value) => {
       setData({
         ...data,
@@ -270,18 +349,10 @@ const Home: React.FC = () => {
   function handleSetDataFromInput(key: keyof CurrencyData): { (event: React.ChangeEvent<HTMLInputElement>): void } {
     return (event) => {
       const { value } = event.target;
-      if (key === 'btc') {
-        setData({
-          ...data,
-          btc: value,
-          money: +value * COURSE,
-        });
-      } else {
-        setData({
-          ...data,
-          [key]: value,
-        });
-      }
+      setData({
+        ...data,
+        [key]: value,
+      });
     };
   }
 };

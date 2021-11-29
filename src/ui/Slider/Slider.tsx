@@ -5,7 +5,7 @@
 /* eslint-disable max-len */
 /* eslint-disable react/require-default-props */
 import React, {
-  FC, useCallback, useEffect, useState,
+  FC, useCallback, useState,
 } from 'react';
 import clsx from 'clsx';
 

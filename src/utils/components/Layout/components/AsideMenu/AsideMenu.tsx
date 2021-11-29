@@ -9,8 +9,9 @@ import React, {
   FC, useCallback, useEffect,
 } from 'react';
 import { useHistory } from 'react-router';
-import { goWithScroll } from '@/utils/functions/dom';
 import classes from './AsideMenu.module.scss';
+import CrossGreyImg from '@/assets/img/cross_grey.svg';
+import AccountImg from '@/assets/img/account.png';
 
 type IProps = {
   onClose: { (): void }
@@ -29,17 +30,30 @@ const AsideMenu: FC<IProps> = ({
 
   const history = useHistory();
 
-  const memoGoWithScroll = useCallback(handleGoWithScroll, [history, onClose]);
+  const memoGoTo = useCallback(goTo, [history, onClose]);
 
   return (
     <div className={clsx(classes['root-wrapper'], 'animate__animated', 'animate__fadeInRight', 'animate__faster')}>
-      dasda
+      <div className={classes.head}>
+        <div>
+          <img src={AccountImg} alt="" />
+          <span>Войти</span>
+        </div>
+        <img src={CrossGreyImg} alt="" onClick={onClose} />
+      </div>
+      <div className={classes.nav}>
+        <span onClick={memoGoTo('/')}>Главная</span>
+        <span onClick={memoGoTo('/')}>Правила сайта</span>
+        <span onClick={memoGoTo('/')}>FAQ</span>
+        <span onClick={memoGoTo('/')}>Отзывы</span>
+        <span onClick={memoGoTo('/')}>Контакты</span>
+      </div>
     </div>
   );
 
-  function handleGoWithScroll(id: string) {
+  function goTo(path: string): { (): void } {
     return () => {
-      goWithScroll('/', id, history)();
+      history.push(path);
       onClose();
     };
   }
