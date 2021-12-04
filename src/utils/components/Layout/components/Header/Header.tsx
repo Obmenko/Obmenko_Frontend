@@ -36,7 +36,7 @@ const Header: FC<IProps> = ({
           <img src={BurgerImg} alt="" />
         </div>
         <div className={clsx(classes.contacts, 'noMobile')}>
-          <a href="">info@obmenko.org</a>
+          <a href="">info@coins.bar</a>
           <div />
           <p>Сервис работает круглосуточно.</p>
         </div>

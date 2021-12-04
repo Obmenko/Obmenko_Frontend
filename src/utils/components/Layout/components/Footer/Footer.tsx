@@ -25,7 +25,7 @@ const Footer: React.FC<IProps> = () => {
   return (
     <Container className={classes.root} wrapperClassName={classes['root-wrapper']}>
       <div className={classes.text}>
-        <p className="onlyMobile">Обменник — Obmenko.org предлагает быстрый, безопасный обмен по самым выгодным условиям, такие виды электронных а так же криптовалют как: Bitcoin, Ethereum, Litecoin, Ripple, Zcash, Tether, Monero, Qiwi, Advanced Cash, Яндекс. Деньги, Альфа-Банк, Сбербанк, Тинькофф, EXMO CODE.</p>
+        <p className="onlyMobile">Обменник — coins.bar предлагает быстрый, безопасный обмен по самым выгодным условиям, такие виды электронных а так же криптовалют как: Bitcoin, Ethereum, Litecoin, Ripple, Zcash, Tether, Monero, Qiwi, Advanced Cash, Яндекс. Деньги, Альфа-Банк, Сбербанк, Тинькофф, EXMO CODE.</p>
         <div className={classes.nav}>
           <span onClick={memoGoTo('/')}>Карта сайта</span>
           <span onClick={memoGoTo('/')}>Правила сайта</span>
@@ -40,7 +40,7 @@ const Footer: React.FC<IProps> = () => {
           <h6>Наши контакты</h6>
           <div>
             <img src={MailImg} alt="" />
-            <a href="mailto:info@obmenko.org">info@obmenko.org</a>
+            <a href="mailto:info@coins.bar">info@coins.bar</a>
           </div>
         </div>
       </div>

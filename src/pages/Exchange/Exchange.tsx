@@ -22,33 +22,15 @@ import CopyImg from '@/assets/img/copy.svg';
 import QrCodeImg from '@/assets/img/qr_code.svg';
 import Container from '@/utils/components/Container';
 import Select from '@/ui/Select';
-import BitcoinImg from '@/assets/img/currency/bitcoin.svg';
-import SberRubImg from '@/assets/img/currency/sber_rub.png';
 import Button from '@/ui/Button';
 import { ButtonModeEnum } from '@/ui/Button/Button';
+import {
+  CurrencyDataItem, CurrencyDataItemWithWallet, CURRENCY_BTC_LIST, CURRENCY_MONEY_LIST,
+} from '@/const/currencies_list';
 
 type ParamsType = {
   id: string;
 }
-
-type CurrencyDataItem = {
-  img: string;
-  title: string;
-}
-
-const CURRENCY_BTC: CurrencyDataItem[] = [
-  {
-    img: BitcoinImg,
-    title: 'Bitcoin BTC',
-  },
-];
-
-const CURRENCY_MONEY: CurrencyDataItem[] = [
-  {
-    img: SberRubImg,
-    title: 'Сбербанк RUB',
-  },
-];
 
 const COURSE = 4675123.9749;
 
@@ -59,7 +41,7 @@ enum ExchangeModeEnum {
 }
 
 type FormData = {
-  btcSelected: CurrencyDataItem,
+  btcSelected: CurrencyDataItemWithWallet,
   moneySelected: CurrencyDataItem,
   money: string | number,
   btc: string | number
@@ -74,9 +56,9 @@ const Exchange: React.FC = () => {
   const memoQueryString = useMemo(() => new URLSearchParams(window.location.search), []);
   const [data, setData] = useState<FormData>({
     btc: memoQueryString.get('btc') || '1',
-    btcSelected: memoQueryString.get('btc_type') ? CURRENCY_BTC[memoQueryString.get('btc_type') as unknown as any] : CURRENCY_BTC[0],
+    btcSelected: memoQueryString.get('btc_type') ? CURRENCY_BTC_LIST[memoQueryString.get('btc_type') as unknown as any] : CURRENCY_BTC_LIST[0],
     money: memoQueryString.get('money') || 1 * COURSE,
-    moneySelected: memoQueryString.get('money_type') ? CURRENCY_MONEY[memoQueryString.get('money_type') as unknown as any] : CURRENCY_MONEY[0],
+    moneySelected: memoQueryString.get('money_type') ? CURRENCY_MONEY_LIST[memoQueryString.get('money_type') as unknown as any] : CURRENCY_MONEY_LIST[0],
     card: null,
     phone: null,
     email: '',
@@ -140,13 +122,22 @@ const Exchange: React.FC = () => {
                 <h5>Отдаете</h5>
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
-                    data={CURRENCY_BTC}
+                    data={CURRENCY_BTC_LIST}
                     onChange={memoSetDataFromSelect('btcSelected')}
                     value={data.btcSelected}
                   />
                   <input type="number" className="reverse" value={data.btc} onChange={memoSetDataFromInput('btc')} />
                 </div>
-                <span>Курс обмена: 1 BTC = 4104633.1597 RUB</span>
+                <span>
+                  Курс обмена: 1
+                  {data.btcSelected.shortName}
+                  {' '}
+                  =
+                  {' '}
+                  {data.btcSelected.course}
+                  {' '}
+                  RUB
+                </span>
                 <input onChange={memoSetDataFromInput('telegram')} type="text" placeholder="Telegram" />
                 <input onChange={memoSetDataFromInput('email')} type="text" placeholder="E-mail*" />
                 <input onChange={memoSetDataFromInput('phone')} type="text" placeholder="Телефон*" />
@@ -165,7 +156,7 @@ const Exchange: React.FC = () => {
                 <h5>Получаете</h5>
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
-                    data={CURRENCY_MONEY}
+                    data={CURRENCY_MONEY_LIST}
                     onChange={memoSetDataFromSelect('moneySelected')}
                     value={data.moneySelected}
                   />
@@ -192,7 +183,7 @@ const Exchange: React.FC = () => {
                     <span>Сумма:</span>
                     <p>{`${data.btc} ${data.btcSelected.title}`}</p>
                   </div>
-                  <div className={classes['calculator-check__row-column__item']}>
+                  <div className={clsx(classes['calculator-check__row-column__item'], classes.noColumn)}>
                     <img src={data.btcSelected.img} alt="" />
                     <p>{data.btcSelected.title || 'N/A'}</p>
                   </div>
@@ -203,13 +194,13 @@ const Exchange: React.FC = () => {
                     <span>Сумма:</span>
                     <p>{data.money || 'N/A'}</p>
                   </div>
-                  <div className={classes['calculator-check__row-column__item']}>
+                  <div className={clsx(classes['calculator-check__row-column__item'], classes.noColumn)}>
                     <img src={data.moneySelected.img} alt="" />
                     <p>{data.moneySelected.title || 'N/A'}</p>
                   </div>
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>На счет:</span>
-                    <p>4256779985302456</p>
+                    <p>{data.btcSelected.wallet}</p>
                   </div>
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>ФИО получателя:</span>
@@ -257,7 +248,7 @@ const Exchange: React.FC = () => {
                 <p>Для осуществления обмена переведите указанную в Вашей заявке сумму в Bitcoin(BTC) на этот кошелек:</p>
                 <div>
                   <img src={CopyImg} alt="" />
-                  <span>16YkiqCApYYMQU4C7EjBLPoaARY1oqYE4h</span>
+                  <span>{data.btcSelected.wallet}</span>
                 </div>
               </div>
               <img src={QrCodeImg} alt="" />
@@ -347,7 +338,7 @@ const Exchange: React.FC = () => {
     };
   }
 
-  function handleSetDataFromSelect(key: keyof FormData): { (value: CurrencyDataItem | number | null): void } {
+  function handleSetDataFromSelect(key: keyof FormData): { (value: CurrencyDataItem | CurrencyDataItemWithWallet | number | null): void } {
     return (value) => {
       setData({
         ...data,

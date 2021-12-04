@@ -1,0 +1,244 @@
+.root {
+}
+
+.start {
+  & > .head {
+    flex-direction: column;
+    align-items: flex-start;
+    & > h3 {
+      font-size: 32px;
+    }
+    & > img {
+      position: static;
+    }
+  }
+  & .warning {
+    flex-direction: column;
+    padding: 30px;
+    &-title {
+      margin-bottom: 24px;
+      flex-direction: row;
+      align-items: center;
+      & > h4 {
+        margin-bottom: 0;
+      }
+    }
+    &-text {
+      & > p {
+        &:last-child {
+        }
+        &.white {
+        }
+        &.black {
+        }
+        &.red {
+        }
+      }
+    }
+  }
+}
+
+.calculator {
+  padding: 16px;
+  border-radius: 20px;
+  margin-top: 48px;
+  padding-bottom: 32px;
+  &-wrapper {
+  }
+  & > * {
+  }
+  & > img {
+    display: none;
+  }
+  & > button {
+  }
+  &-form {
+    flex-direction: column;
+    align-items: center;
+    & > img {
+    }
+    &__item {
+      &:last-child {
+        & > span {
+        }
+      }
+      &-selectRow {
+        & > div {
+          flex-basis: 55%;
+        }
+        & > input {
+          flex-basis: 40%;
+          font-size: 18px;
+        }
+      }
+      & > span {
+  
+      }
+      & > input {
+      }
+      & > h5 {
+      }
+      &-captcha {
+        justify-content: space-between;
+        & > div {
+          flex-basis: 44%;
+        }
+        & > input {
+          width: 100%;
+        }
+      }
+      & > .checkBox {
+      }
+    }
+  }
+  &-check {
+    &__row {
+      flex-direction: column;
+      &:last-child {
+      }
+      &-column {
+        margin-bottom: 32px;
+        width: 100%;
+        & > h4 {
+        }
+        & > h3 {
+        }
+        &__item {
+          width: 100%;
+          flex-direction: column;
+          align-items: flex-start;
+          &.noColumn {
+            flex-direction: row;
+            align-items: center;
+          }
+          & > img {
+            width: 36px;
+            min-width: 36px;
+            max-width: 36px;
+            height: 36px;
+            min-height: 36px;
+            max-height: 36px;
+          }
+          & > span {
+            flex-basis: 100%;
+            width: 100%;
+            padding-bottom: 8px;
+          }
+          & > p {
+            font-size: 14px;
+          }
+          &.bold {
+            & > span {
+            }
+            & > p {
+            }
+          }
+        }
+      }
+    }
+  }
+  &-howToPay {
+    & > h3 {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+    &__title {
+      & > p {
+        text-align: center;
+        font-size: 16px;
+      }
+      & > div {
+        &:hover {
+        }
+        & > img {
+        }
+        & > span {
+          font-size: 13px;
+        }
+      }
+    }
+    & > img {
+    }
+    &__afterPay {
+      & > h6 {
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      & > p {
+        margin-bottom: 6px;
+        text-align: center;
+      }
+    }
+    &__sum {
+      border-radius: 20px;
+      padding: 16px;
+      & > div {
+        width: 100%;
+        justify-content: space-between;
+        flex-direction: column;
+        & > p {
+        }
+        & > span {
+        }
+      }
+    }
+    &__warning {
+      padding: 32px;
+      border-radius: 20px;
+      & > p {
+        & > span {
+        }
+      }
+    }
+    &__info {
+      & > div {
+        flex-direction: column;
+        & > p {
+        }
+        & > span {
+        }
+      }
+    }
+    &__update {
+      & > div {
+        flex-direction: column;
+        & > p {
+          margin-bottom: 32px;
+        }
+        & > button {
+          position: static;
+        }
+      }
+    }
+  }
+}
+
+.progressBar {
+  &-bar {
+  }
+  &-colorPrimary {
+  }
+}
+
+.checkBox {
+  & span {
+  }
+}
+
+.end {
+  padding: 24px;
+  & > h4 {
+  }
+  & > ul {
+    & > li {
+      &:last-child {
+      }
+    }
+  }
+  & > p {
+    & > span {
+    }
+    &:last-child {
+    }
+  }
+}

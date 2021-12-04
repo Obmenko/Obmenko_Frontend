@@ -8,12 +8,11 @@ import clsx from 'clsx';
 import { useHistory } from 'react-router';
 import { NAVS } from '@/const/routes';
 import classes from './Home.module.scss';
-import LogoImg from '@/assets/img/logo.png';
+import LogoImg from '@/assets/img/logo.svg';
 import BgOverlayImg from '@/assets/img/bg_overlay.png';
 import BgOverlayImg2 from '@/assets/img/bg_overlay_2.png';
 import ExchangeImg from '@/assets/img/currency/exchange.svg';
-import BitcoinImg from '@/assets/img/currency/bitcoin.svg';
-import SberRubImg from '@/assets/img/currency/sber_rub.png';
+
 import AdvantageImg1 from '@/assets/img/advantage_1.svg';
 import AdvantageImg2 from '@/assets/img/advantage_2.svg';
 import AdvantageImg3 from '@/assets/img/advantage_3.svg';
@@ -26,31 +25,15 @@ import { ButtonModeEnum } from '@/ui/Button/Button';
 import REVIEWS, { ReviewItem } from '@/const/reviews';
 import useResize from '@/utils/hooks/useResize';
 import Slider from '@/ui/Slider';
-import CURRENCIES, { CurrencyItem } from '@/const/currencies';
-
-type CurrencyDataItem = {
-  img: string;
-  title: string;
-}
-
-const CURRENCY_BTC: CurrencyDataItem[] = [
-  {
-    img: BitcoinImg,
-    title: 'Bitcoin BTC',
-  },
-];
-
-const CURRENCY_MONEY: CurrencyDataItem[] = [
-  {
-    img: SberRubImg,
-    title: 'Сбербанк RUB',
-  },
-];
+import CURRENCY_RESERVE_LIST, { CurrencyItem } from '@/const/currency_reserve_list';
+import {
+  CurrencyDataItem, CurrencyDataItemWithWallet, CURRENCY_BTC_LIST, CURRENCY_MONEY_LIST,
+} from '@/const/currencies_list';
 
 const COURSE = 4675123.9749;
 
 type CurrencyData = {
-  btcSelected: CurrencyDataItem,
+  btcSelected: CurrencyDataItemWithWallet,
   moneySelected: CurrencyDataItem,
   money: string | number,
   btc: string | number
@@ -59,9 +42,9 @@ type CurrencyData = {
 const Home: React.FC = () => {
   const [data, setData] = useState<CurrencyData>({
     btc: '1',
-    btcSelected: CURRENCY_BTC[0],
+    btcSelected: CURRENCY_BTC_LIST[0],
     money: 1 * COURSE,
-    moneySelected: CURRENCY_MONEY[0],
+    moneySelected: CURRENCY_MONEY_LIST[0],
   });
 
   const [reviewActiveIndex, setReviewActiveIndex] = useState<number>(0);
@@ -74,7 +57,9 @@ const Home: React.FC = () => {
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [data]);
 
   const memoReviewChunkList = useMemo<ReviewItem[][]>(() => _.chunk(REVIEWS, width > 480 ? 4 : 1), [width]);
-  const memoCurrencyChunkList = useMemo<CurrencyItem[][]>(() => _.chunk(CURRENCIES, width > 480 ? 16 : 2), [width]);
+  const memoCurrencyChunkList = useMemo<CurrencyItem[][]>(
+    () => _.chunk(CURRENCY_RESERVE_LIST, width > 480 ? 16 : 2), [width],
+  );
 
   const memoSetCurrencyActiveIndex = useCallback(handleSetCurrencyActiveIndex, [
     currencyActiveIndex,
@@ -123,7 +108,7 @@ const Home: React.FC = () => {
               <h3>Отдаёте</h3>
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
-                  data={CURRENCY_BTC}
+                  data={CURRENCY_BTC_LIST}
                   onChange={memoSetDataFromSelect('btcSelected')}
                   value={data.btcSelected}
                 />
@@ -132,10 +117,12 @@ const Home: React.FC = () => {
               <div className={classes['content-calculator__item-info']}>
                 <p>
                   <span>Курс обмена:</span>
+                  1
                   {' '}
-                  1 BTC =
+                  {data.btcSelected.shortName}
                   {' '}
-                  {COURSE}
+                  =
+                  {data.btcSelected.course}
                   {' '}
                   RUB
                 </p>
@@ -153,7 +140,7 @@ const Home: React.FC = () => {
               <h3>Получаете</h3>
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
-                  data={CURRENCY_MONEY}
+                  data={CURRENCY_MONEY_LIST}
                   onChange={memoSetDataFromSelect('moneySelected')}
                   value={data.moneySelected}
                 />
@@ -266,7 +253,7 @@ const Home: React.FC = () => {
         <h4>Резерв валюты</h4>
         <div className={clsx(classes['reserve-content'], 'noMobile')}>
           {
-            CURRENCIES.map((currency) => (
+            CURRENCY_RESERVE_LIST.map((currency) => (
               <div className={classes['reserve-content__item']} key={currency.title}>
                 <img src={currency.img} alt="" />
                 <h6>{currency.title}</h6>
@@ -312,8 +299,8 @@ const Home: React.FC = () => {
   function goToExchange(): void {
     const qs = new URLSearchParams();
 
-    const btcTypeIndex = CURRENCY_BTC.findIndex((el) => el.title === data.btcSelected.title);
-    const moneyTypeIndex = CURRENCY_MONEY.findIndex((el) => el.title === data.moneySelected.title);
+    const btcTypeIndex = CURRENCY_BTC_LIST.findIndex((el) => el.title === data.btcSelected.title);
+    const moneyTypeIndex = CURRENCY_MONEY_LIST.findIndex((el) => el.title === data.moneySelected.title);
 
     qs.set('btc', data.btc.toString());
     qs.set('money', data.money.toString());
@@ -338,7 +325,9 @@ const Home: React.FC = () => {
       else setReviewActiveIndex(reviewActiveIndex + (direction === 'prev' ? -1 : 1));
     };
   }
-  function handleSetDataFromSelect(key: keyof CurrencyData): { (value: CurrencyDataItem | number | null): void } {
+  function handleSetDataFromSelect(key: keyof CurrencyData): {
+    (value: CurrencyDataItem | CurrencyDataItemWithWallet | number | null): void
+  } {
     return (value) => {
       setData({
         ...data,

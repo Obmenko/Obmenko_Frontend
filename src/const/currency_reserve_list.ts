@@ -15,7 +15,7 @@ export type CurrencyItem = {
   value: number;
 }
 
-const CURRENCIES: CurrencyItem[] = [
+const CURRENCY_RESERVE_LIST: CurrencyItem[] = [
   {
     img: VtbImg,
     title: 'ВТБ24 RUB',
@@ -78,4 +78,4 @@ const CURRENCIES: CurrencyItem[] = [
   },
 ];
 
-export default CURRENCIES;
+export default CURRENCY_RESERVE_LIST;

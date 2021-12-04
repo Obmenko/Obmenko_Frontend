@@ -9,7 +9,7 @@ import IMAGE_DICT, { ImageItem } from '@/const/assets/image';
 const HomePage: FC = () => {
   return (
     <>
-      <Helmet title="Obmenko">
+      <Helmet title="Coins">
         dada
       </Helmet>
       <Home />

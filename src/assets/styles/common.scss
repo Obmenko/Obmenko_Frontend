@@ -2,6 +2,21 @@
   box-sizing: border-box;
   color: $color-black;
   font-family: "Lato", sans-serif;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-blue;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }
 
 body {
@@ -55,6 +70,10 @@ input {
   /* Firefox */
   &[type=number] {
     -moz-appearance: textfield;
+  }
+
+  @include media-mobile {
+    font-size: 18px;
   }
 }
 

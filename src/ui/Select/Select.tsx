@@ -1,12 +1,15 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/require-default-props */
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import clsx from 'clsx';
 import ReactSelect from 'react-select';
 import ArrowDownBlue from '@/assets/img/arrow_down_blue.svg';
 
 import classes from './Select.module.scss';
+import useResize from '@/utils/hooks/useResize';
 
 interface PropsType {
   OptionComponent?: (data: OptionType) => JSX.Element;
@@ -51,19 +54,37 @@ const Select: FC<PropsType> = ({
   onChange,
 }) => {
   const memoOnChange = useCallback(handleOnChange, [onChange]);
+  const [isOpen, setOpenState] = useState<boolean>(false);
+
+  const memoOnClick = useCallback(onClick, [isOpen]);
+
+  const { width } = useResize();
 
   return (
     <ReactSelect
       options={data}
       onChange={memoOnChange}
       className={classes['root-wrapper']}
-      hideSelectedOptions
+      {...(
+        width <= 480 ? {}
+          : {
+            menuIsOpen: isOpen,
+          }
+      )
+      }
+      // onMenuClose={memoOnClick(false)}
       components={{
         Control: ({ innerProps, children }) => (
           <div
             {...innerProps}
             className={clsx(innerProps.className, classes.root)}
+            onClick={memoOnClick()}
           >
+            {children}
+          </div>
+        ),
+        MenuList: ({ innerProps, children }) => (
+          <div {...innerProps} className={clsx(innerProps?.className, classes.menuList)}>
             {children}
           </div>
         ),
@@ -82,7 +103,7 @@ const Select: FC<PropsType> = ({
         ),
         IndicatorSeparator: () => (<></>),
         ValueContainer: ({ innerProps }) => (
-          <div {...innerProps}>
+          <div {...innerProps} className={classes.valueContainer}>
             {
               ValueComponent
                 ? ValueComponent(value)
@@ -93,6 +114,13 @@ const Select: FC<PropsType> = ({
       }}
     />
   );
+
+  function onClick(value?: boolean): {(): void} {
+    return () => {
+      console.log(value);
+      setOpenState(value || !isOpen);
+    };
+  }
 
   function handleOnChange(option: OptionType | null): void {
     if (option) onChange(option);
