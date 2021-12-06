@@ -36,18 +36,18 @@ const Header: FC<IProps> = ({
           <img src={BurgerImg} alt="" />
         </div>
         <div className={clsx(classes.contacts, 'noMobile')}>
-          <a href="">info@coins.bar</a>
+          <a href="">info@coins.gives</a>
           <div />
           <p>Сервис работает круглосуточно.</p>
         </div>
         <div className={classes.account}>
-          <div className={clsx(classes.login, 'noMobile')}>
+          {/* <div className={clsx(classes.login, 'noMobile')}>
             <img src={AccountImg} alt="" />
             <span>Войти</span>
           </div>
           <div className={classes.lang}>
             <span>RU</span>
-          </div>
+          </div> */}
         </div>
       </Container>
     </>

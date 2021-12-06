@@ -29,123 +29,123 @@ import TronImg from '@/assets/img/currency/tron.svg';
 // import VisaMasterCardImg from '@/assets/img/currency/visamastercard.svg';
 // import VtbImg from '@/assets/img/currency/vtb.svg';
 import WavesImg from '@/assets/img/currency/waves.jpg';
+import { CurrencyUnitEnum } from '@/types/exchange';
 // import ZCashImg from '@/assets/img/currency/zcash.svg';
 
-export type CurrencyDataItem = {
+export interface CurrencyDataItemWithWallet {
   img: string;
   title: string;
-}
-
-export interface CurrencyDataItemWithWallet extends CurrencyDataItem {
   wallet: string;
-  shortName: string;
-  course: number;
+  shortName: CurrencyUnitEnum;
+  courseToUsd: number;
+  onlyMoney?: boolean
 }
 
-export const CURRENCY_BTC_LIST: CurrencyDataItemWithWallet[] = [
+export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
   {
     img: BitcoinImg,
     title: 'Bitcoin BTC',
     wallet: 'bc1qr7fw4x2dt4lp3gjh427njfq2l8vcw5420sc08h',
-    shortName: 'BTC',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.BTC,
+    courseToUsd: 1,
   },
   {
     img: EthereumImg,
     title: 'Ethereum(ERC20)',
     wallet: '0x5B4a943Ad1A9C59cB00DB5Eac15f2f1b684EfA29',
-    shortName: 'ETH',
-    course: 4675123.9749,
-  }, {
+    shortName: CurrencyUnitEnum.ETH,
+    courseToUsd: 1,
+  },
+  {
     img: RippleImg,
     title: 'Ripple',
     wallet: 'rNNxf7j7HVhhdnkMDERsq9TNhhgSSpfakS',
-    shortName: 'XRP(Ripple)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.XRP,
+    courseToUsd: 1,
   },
   {
     img: BinanceImg,
     title: 'Binance Chain',
     wallet: 'bnb17wt70r4clut6xle4my7l8q90ae2yd7efckkw3p',
-    shortName: 'BNB',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.BNB,
+    courseToUsd: 1,
   },
   {
     img: LitecoinImg,
     title: 'Litecoin',
     wallet: 'ltc1ql4me2skxlgn82tmy0v2gn6gt80dphw8hk57q4a',
-    shortName: 'LTC (Litecoin)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.LTC,
+    courseToUsd: 1,
   },
   {
     img: PolygonImg,
     title: 'Polygon',
     wallet: '0x5B4a943Ad1A9C59cB00DB5Eac15f2f1b684EfA29',
-    shortName: 'Polygon (Matic)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.MATIC,
+    courseToUsd: 1,
   },
   {
     img: StellarImg,
     title: 'Stellar lumens',
     wallet: 'GD4AUYERLCQMJRWDO3S2BZAKLA2NGAVKDTRKQQPZXM77SMDV4HBI3OIZ',
-    shortName: 'XLM (Stellar)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.XLM,
+    courseToUsd: 1,
   },
   {
     img: TronImg,
     title: 'Tron (TRC20)',
     wallet: 'TNjYBmHTUXPVapnATtiwFDiuHgZczyH5Nz',
-    shortName: 'TRX (Tron)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.TRX,
+    courseToUsd: 1,
   },
   {
     img: CosmosImg,
     title: 'Cosmos',
     wallet: 'cosmos1kzz8vzue5tvnt07v5yz57606kutju6mjfctmjt',
-    shortName: 'Atom (Cosmos)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.ATOM,
+    courseToUsd: 1,
   },
   {
     img: DashImg,
     title: 'Dash',
     wallet: 'Xm4Z6CyDW9tK6g11XpLCNMfVdQWdgVLBsf',
-    shortName: 'Dash',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.DASH,
+    courseToUsd: 1,
   },
 
   {
     img: DogecoinImg,
     title: 'Dogecoin',
     wallet: 'DKvKLoD8kwSBX5JPmQ7sjBgqUScppBKKNP',
-    shortName: 'DOGE (Dogecoin)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.DOG,
+    courseToUsd: 1,
   },
   {
     img: WavesImg,
     title: 'Waves',
     wallet: '3PNYAhpEUqj58L1P7Zj5fkU9UAd3yPjNyYx',
-    shortName: 'Waves',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.WAVES,
+    courseToUsd: 1,
   },
   {
     img: SolanaImg,
     title: 'Solana',
     wallet: '7Hn42XExQ9WJtnQfkttJFx1SjhuqFrNccMpBuwkoHF77',
-    shortName: 'SOL (Solana)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.SOL,
+    courseToUsd: 1,
   },
   {
     img: TetherTRC20Img,
-    title: 'Tether (TRC20)',
+    title: 'USDT (Tether)',
     wallet: 'TNjYBmHTUXPVapnATtiwFDiuHgZczyH5Nz',
-    shortName: 'USDT (Tether)',
-    course: 4675123.9749,
+    shortName: CurrencyUnitEnum.USDT,
+    courseToUsd: 1,
   },
-];
-
-export const CURRENCY_MONEY_LIST: CurrencyDataItem[] = [
   {
-    img: SberRubImg,
-    title: 'Сбербанк RUB',
+    img: TetherTRC20Img,
+    title: 'Sberbank RUB',
+    wallet: 'RUB',
+    shortName: CurrencyUnitEnum.RUB,
+    courseToUsd: 1,
   },
 ];

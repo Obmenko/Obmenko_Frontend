@@ -10,6 +10,7 @@ import ArrowDownBlue from '@/assets/img/arrow_down_blue.svg';
 
 import classes from './Select.module.scss';
 import useResize from '@/utils/hooks/useResize';
+import { CurrencyDataItemWithWallet } from '@/const/currencies_list';
 
 interface PropsType {
   OptionComponent?: (data: OptionType) => JSX.Element;
@@ -19,10 +20,7 @@ interface PropsType {
   onChange: {(value: OptionType): void}
 }
 
-type OptionType = {
-  img: string;
-  title: string
-}
+type OptionType = CurrencyDataItemWithWallet;
 
 const Option: FC<OptionType> = ({
   img,
@@ -65,6 +63,7 @@ const Select: FC<PropsType> = ({
       options={data}
       onChange={memoOnChange}
       className={classes['root-wrapper']}
+      closeMenuOnSelect
       {...(
         width <= 480 ? {}
           : {
@@ -123,6 +122,7 @@ const Select: FC<PropsType> = ({
   }
 
   function handleOnChange(option: OptionType | null): void {
+    setOpenState(false);
     if (option) onChange(option);
   }
 };

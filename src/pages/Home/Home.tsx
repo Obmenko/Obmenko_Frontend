@@ -27,14 +27,14 @@ import useResize from '@/utils/hooks/useResize';
 import Slider from '@/ui/Slider';
 import CURRENCY_RESERVE_LIST, { CurrencyItem } from '@/const/currency_reserve_list';
 import {
-  CurrencyDataItem, CurrencyDataItemWithWallet, CURRENCY_BTC_LIST, CURRENCY_MONEY_LIST,
+  CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
 
 const COURSE = 4675123.9749;
 
 type CurrencyData = {
   btcSelected: CurrencyDataItemWithWallet,
-  moneySelected: CurrencyDataItem,
+  moneySelected: CurrencyDataItemWithWallet,
   money: string | number,
   btc: string | number
 }
@@ -42,9 +42,9 @@ type CurrencyData = {
 const Home: React.FC = () => {
   const [data, setData] = useState<CurrencyData>({
     btc: '1',
-    btcSelected: CURRENCY_BTC_LIST[0],
+    btcSelected: CURRENCY_LIST[0],
     money: 1 * COURSE,
-    moneySelected: CURRENCY_MONEY_LIST[0],
+    moneySelected: CURRENCY_LIST[0],
   });
 
   const [reviewActiveIndex, setReviewActiveIndex] = useState<number>(0);
@@ -108,7 +108,7 @@ const Home: React.FC = () => {
               <h3>Отдаёте</h3>
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
-                  data={CURRENCY_BTC_LIST}
+                  data={CURRENCY_LIST}
                   onChange={memoSetDataFromSelect('btcSelected')}
                   value={data.btcSelected}
                 />
@@ -122,7 +122,7 @@ const Home: React.FC = () => {
                   {data.btcSelected.shortName}
                   {' '}
                   =
-                  {data.btcSelected.course}
+                  {data.btcSelected.courseToUsd}
                   {' '}
                   RUB
                 </p>
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
               <h3>Получаете</h3>
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
-                  data={CURRENCY_MONEY_LIST}
+                  data={CURRENCY_LIST}
                   onChange={memoSetDataFromSelect('moneySelected')}
                   value={data.moneySelected}
                 />
@@ -192,7 +192,7 @@ const Home: React.FC = () => {
               <img src={ArrowRightWhite} onClick={memoSetReviewActiveIndex('next')} alt="" />
             </div>
 
-            <Button mode={ButtonModeEnum.TRANSPARENT} className="noMobile">Все отзывы</Button>
+            {/* <Button mode={ButtonModeEnum.TRANSPARENT} className="noMobile">Все отзывы</Button> */}
           </div>
           <Slider
             className={classes['reviews-content__list']}
@@ -299,8 +299,8 @@ const Home: React.FC = () => {
   function goToExchange(): void {
     const qs = new URLSearchParams();
 
-    const btcTypeIndex = CURRENCY_BTC_LIST.findIndex((el) => el.title === data.btcSelected.title);
-    const moneyTypeIndex = CURRENCY_MONEY_LIST.findIndex((el) => el.title === data.moneySelected.title);
+    const btcTypeIndex = CURRENCY_LIST.findIndex((el) => el.title === data.btcSelected.title);
+    const moneyTypeIndex = CURRENCY_LIST.findIndex((el) => el.title === data.moneySelected.title);
 
     qs.set('btc', data.btc.toString());
     qs.set('money', data.money.toString());
@@ -326,7 +326,7 @@ const Home: React.FC = () => {
     };
   }
   function handleSetDataFromSelect(key: keyof CurrencyData): {
-    (value: CurrencyDataItem | CurrencyDataItemWithWallet | number | null): void
+    (value: CurrencyDataItemWithWallet | number | null): void
   } {
     return (value) => {
       setData({

@@ -31,7 +31,7 @@ const Warning: FC<IProps> = ({
         <p>
           По всем вопросам обращайтесь к оператору. ВНИМАНИЕ! Telegram только по ссылке
           {' '}
-          <a href="">Telegram</a>
+          <a href="https://t.me/coins_gives_support" target="_blank" rel="noreferrer">Telegram</a>
           , множество поддельных аккаунтов.
         </p>
       </Container>

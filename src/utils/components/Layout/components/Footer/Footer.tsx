@@ -12,6 +12,7 @@ import OkChangerImg from '@/assets/img/logos/ok_changer.jpg';
 import TraderMontoringImg from '@/assets/img/logos/trader_montoring.jpg';
 import AmlBoxImg from '@/assets/img/logos/aml_box.jpg';
 import MailImg from '@/assets/img/mail.svg';
+import { goBlank } from '@/utils/functions/dom';
 
 type IProps = {
 
@@ -25,11 +26,12 @@ const Footer: React.FC<IProps> = () => {
   return (
     <Container className={classes.root} wrapperClassName={classes['root-wrapper']}>
       <div className={classes.text}>
-        <p className="onlyMobile">Обменник — coins.bar предлагает быстрый, безопасный обмен по самым выгодным условиям, такие виды электронных а так же криптовалют как: Bitcoin, Ethereum, Litecoin, Ripple, Zcash, Tether, Monero, Qiwi, Advanced Cash, Яндекс. Деньги, Альфа-Банк, Сбербанк, Тинькофф, EXMO CODE.</p>
+        <p className="onlyMobile">Обменник — coins.gives предлагает быстрый, безопасный обмен по самым выгодным условиям, такие виды электронных а так же криптовалют как: Bitcoin, Ethereum, Litecoin, Ripple, Zcash, Tether, Monero, Qiwi, Advanced Cash, Яндекс. Деньги, Альфа-Банк, Сбербанк, Тинькофф, EXMO CODE.</p>
         <div className={classes.nav}>
-          <span onClick={memoGoTo('/')}>Карта сайта</span>
+          <span onClick={goBlank('https://t.me/coins_gives_support')}>Telegram Support</span>
+          {/* <span onClick={memoGoTo('/')}>Карта сайта</span>
           <span onClick={memoGoTo('/')}>Правила сайта</span>
-          <span onClick={memoGoTo('/')}>Политика конфиденциальности</span>
+          <span onClick={memoGoTo('/')}>Политика конфиденциальности</span> */}
         </div>
         <div className={classes.chart}>
           <h6>График работы</h6>
@@ -40,17 +42,17 @@ const Footer: React.FC<IProps> = () => {
           <h6>Наши контакты</h6>
           <div>
             <img src={MailImg} alt="" />
-            <a href="mailto:info@coins.bar">info@coins.bar</a>
+            <a href="mailto:info@coins.gives">info@coins.gives</a>
           </div>
         </div>
       </div>
-      <div className={classes.logos}>
+      {/* <div className={classes.logos}>
         <img src={BestChangeImg} alt="" />
         <img src={CourseExpertImg} alt="" />
         <img src={TraderMontoringImg} alt="" />
         <img src={OkChangerImg} alt="" />
         <img src={AmlBoxImg} alt="" />
-      </div>
+      </div> */}
     </Container>
   );
 

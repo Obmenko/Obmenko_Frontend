@@ -29,7 +29,7 @@ const CURRENCY_RESERVE_LIST: CurrencyItem[] = [
   {
     img: RippleImg,
     title: 'Ripple xrp2',
-    value: 0,
+    value: 20000,
   },
   {
     img: DogecoinImg,

@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import Checkbox from '@mui/material/Checkbox';
 import { LinearProgress } from '@mui/material';
 import { useParams } from 'react-router';
+import { v4 as uuidv4 } from 'uuid';
 import classes from './Exchange.module.scss';
 import BgOverlayImg3 from '@/assets/img/bg_overlay_3.png';
 import ArrowRightWhiteShortImg from '@/assets/img/arrow_right_white_short.svg';
@@ -25,7 +26,7 @@ import Select from '@/ui/Select';
 import Button from '@/ui/Button';
 import { ButtonModeEnum } from '@/ui/Button/Button';
 import {
-  CurrencyDataItem, CurrencyDataItemWithWallet, CURRENCY_BTC_LIST, CURRENCY_MONEY_LIST,
+  CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
 
 type ParamsType = {
@@ -33,6 +34,12 @@ type ParamsType = {
 }
 
 const COURSE = 4675123.9749;
+
+enum RequestStatusEnum {
+  WAITING_FOR_CLIENT = 'Принята, ожидает оплаты клиентом',
+  WAITING_FOR_CONFIRM = 'Ожидаем поступления средств',
+  CONFIRMED = 'Платёж подтверждён, производим выплату'
+}
 
 enum ExchangeModeEnum {
   FORM ='form',
@@ -42,7 +49,7 @@ enum ExchangeModeEnum {
 
 type FormData = {
   btcSelected: CurrencyDataItemWithWallet,
-  moneySelected: CurrencyDataItem,
+  moneySelected: CurrencyDataItemWithWallet,
   money: string | number,
   btc: string | number
   card: number | null;
@@ -56,9 +63,9 @@ const Exchange: React.FC = () => {
   const memoQueryString = useMemo(() => new URLSearchParams(window.location.search), []);
   const [data, setData] = useState<FormData>({
     btc: memoQueryString.get('btc') || '1',
-    btcSelected: memoQueryString.get('btc_type') ? CURRENCY_BTC_LIST[memoQueryString.get('btc_type') as unknown as any] : CURRENCY_BTC_LIST[0],
+    btcSelected: memoQueryString.get('btc_type') ? CURRENCY_LIST[memoQueryString.get('btc_type') as unknown as any] : CURRENCY_LIST[0],
     money: memoQueryString.get('money') || 1 * COURSE,
-    moneySelected: memoQueryString.get('money_type') ? CURRENCY_MONEY_LIST[memoQueryString.get('money_type') as unknown as any] : CURRENCY_MONEY_LIST[0],
+    moneySelected: memoQueryString.get('money_type') ? CURRENCY_LIST[memoQueryString.get('money_type') as unknown as any] : CURRENCY_LIST[0],
     card: null,
     phone: null,
     email: '',
@@ -69,11 +76,14 @@ const Exchange: React.FC = () => {
   const { id: requestId } = useParams<ParamsType>();
 
   const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.FORM : ExchangeModeEnum.HOW_TO_PAY);
+  const [requestStatus, setRequestStatus] = useState<RequestStatusEnum>(RequestStatusEnum.WAITING_FOR_CLIENT);
 
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [data]);
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [data]);
 
   const memoGoToMode = useCallback(goToMode, [mode]);
+
+  const memoRequestId = useMemo(() => requestId || uuidv4().split('-').slice(0, 3).join('-'), [requestId]);
 
   useEffect(() => {
     setData({
@@ -83,6 +93,18 @@ const Exchange: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.btc]);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM) {
+      timer = setTimeout(() => {
+        setRequestStatus(RequestStatusEnum.CONFIRMED);
+      }, 5 * 60 * 1000);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [requestStatus]);
+
   return (
     <div className={classes.root}>
       <Container className={classes.start} wrapperClassName={classes['start-wrapper']}>
@@ -90,9 +112,9 @@ const Exchange: React.FC = () => {
           <img src={ArrowLeftGreyShortImg} alt="" onClick={memoGoToMode('prev')} />
           <h3>
             {
-              mode === ExchangeModeEnum.FORM ? 'Обмен Bitcoin BTC на Сбербанк RUB'
-                : mode === ExchangeModeEnum.CHECK ? 'Обмен Bitcoin BTC на Сбербанк RUB'
-                  : `Заявка ID ${requestId}`
+              mode === ExchangeModeEnum.FORM ? `Обмен ${data.btcSelected.title} на ${data.moneySelected.title}`
+                : mode === ExchangeModeEnum.CHECK ? `Обмен ${data.btcSelected.title} на ${data.moneySelected.title}`
+                  : `Заявка ID ${memoRequestId}`
             }
           </h3>
         </div>
@@ -103,13 +125,10 @@ const Exchange: React.FC = () => {
           </div>
           <div className={classes['warning-text']}>
             <p className={classes.white}>
-              Данная операция производится оператором в ручном режиме и занимает от 5 до 60 минут в рабочее время (см. статус оператора).
-              {' '}
-              <br />
               Как только Ваши средства будут зачислены мы произведем оплату на указанные в заявке реквизиты. В связи с высокой волатильностью рынка, курс обновляется каждые 5 секунд.
             </p>
-            <p className={classes.black}>Время для отправки криптовалюты составляет 15 минут, после этого времени заявка считается не актуальной и необходимо создать новую.Обращаем Ваше внимание, что курс фиксируется на момент зачисления криптовалюты на наш кошелек.</p>
-            <p className={classes.red}>Внимание! Будет проведена AML-проверка Вашей транзакции.При риске 90% и более заявка обрабатывается согласно правил п. 5.22. (потребуется дополнительная верификация)</p>
+            <p className={classes.black}>Время для отправки криптовалюты составляет 15 минут, после этого времени заявка считается не актуальной и необходимо создать новую. Обращаем Ваше внимание, что курс фиксируется на момент зачисления криптовалюты на наш кошелек.</p>
+            <p className={classes.red}>Внимание! Будет проведена AML-проверка Вашей транзакции. При риске 90% и более заявка обрабатывается согласно правил п. 5.22. (потребуется дополнительная верификация)</p>
           </div>
         </div>
       </Container>
@@ -122,7 +141,7 @@ const Exchange: React.FC = () => {
                 <h5>Отдаете</h5>
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
-                    data={CURRENCY_BTC_LIST}
+                    data={CURRENCY_LIST}
                     onChange={memoSetDataFromSelect('btcSelected')}
                     value={data.btcSelected}
                   />
@@ -134,14 +153,14 @@ const Exchange: React.FC = () => {
                   {' '}
                   =
                   {' '}
-                  {data.btcSelected.course}
+                  {data.btcSelected.courseToUsd}
                   {' '}
                   RUB
                 </span>
                 <input onChange={memoSetDataFromInput('telegram')} type="text" placeholder="Telegram" />
                 <input onChange={memoSetDataFromInput('email')} type="text" placeholder="E-mail*" />
                 <input onChange={memoSetDataFromInput('phone')} type="text" placeholder="Телефон*" />
-                <div className={classes['calculator-form__item-captcha']}>
+                {/* <div className={classes['calculator-form__item-captcha']}>
                   <div>
                     <img src={CaptchaImg1} alt="" />
                     <span>+</span>
@@ -149,20 +168,27 @@ const Exchange: React.FC = () => {
                     <span>=</span>
                   </div>
                   <input type="text" />
-                </div>
+                </div> */}
               </div>
               <img src={ExchangeImg} alt="" />
               <div className={classes['calculator-form__item']}>
                 <h5>Получаете</h5>
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
-                    data={CURRENCY_MONEY_LIST}
+                    data={CURRENCY_LIST}
                     onChange={memoSetDataFromSelect('moneySelected')}
                     value={data.moneySelected}
                   />
                   <input type="number" value={data.money} readOnly className="reverse" />
                 </div>
-                <span>min.: 30000 RUB, max.: 4000000 RUB</span>
+                <span>
+                  min.: 30000
+                  {' '}
+                  {data.moneySelected.title}
+                  , max.: 4000000
+                  {' '}
+                  {data.moneySelected.title}
+                </span>
                 <input onChange={memoSetDataFromInput('card')} type="text" placeholder="Номер карты получателя*" />
                 <input onChange={memoSetDataFromInput('fullname')} type="text" placeholder="ФИО получателя*" />
                 <div className={classes.checkBox}>
@@ -245,13 +271,19 @@ const Exchange: React.FC = () => {
             <div className={classes['calculator-howToPay']}>
               <h3>Как оплатить</h3>
               <div className={classes['calculator-howToPay__title']}>
-                <p>Для осуществления обмена переведите указанную в Вашей заявке сумму в Bitcoin(BTC) на этот кошелек:</p>
+                <p>
+                  Для осуществления обмена переведите указанную в Вашей заявке сумму в
+                  {' '}
+                  {data.btcSelected.title}
+                  {' '}
+                  на этот кошелек:
+                </p>
                 <div>
                   <img src={CopyImg} alt="" />
                   <span>{data.btcSelected.wallet}</span>
                 </div>
               </div>
-              <img src={QrCodeImg} alt="" />
+              {/* <img src={QrCodeImg} alt="" /> */}
               <div className={classes['calculator-howToPay__afterPay']}>
                 <h6>После оплаты:</h6>
                 <p>Нажмите на кнопку «Я оплатил заявку»</p>
@@ -281,7 +313,7 @@ const Exchange: React.FC = () => {
                 </div>
                 <div>
                   <span>Статус заявки:</span>
-                  <p>Принята, ожидает оплаты клиентом</p>
+                  <p>{requestStatus}</p>
                 </div>
               </div>
               <div className={classes['calculator-howToPay__update']}>
@@ -310,7 +342,15 @@ const Exchange: React.FC = () => {
         </Button>
       </Container>
       <Container className={classes.end} wrapperClassName={classes['end-wrapper']}>
-        <h4>Обмен Bitcoin BTC на Сбербанк RUB</h4>
+        <h4>
+          Обмен
+          {' '}
+          {data.btcSelected.title}
+          {' '}
+          на
+          {' '}
+          {data.moneySelected.title}
+        </h4>
         <p>Для обмена Вам необходимо выполнить несколько шагов:</p>
         <ul>
           <li>1. Заполните все поля представленной формы. Нажмите кнопку «ОБМЕНЯТЬ».</li>
@@ -318,11 +358,6 @@ const Exchange: React.FC = () => {
           <li>3. Оплатите заявку. Для этого следует совершить перевод необходимой суммы, следуя инструкциям на нашем сайте.</li>
           <li>4. После выполнения указанных действий, система переместит Вас на страницу «Состояние заявки», где будет указан статус вашего перевода.</li>
         </ul>
-        <p>
-          <span>Внимание:</span>
-          {' '}
-          для выполнения данной операции потребуется участие оператора (см. статус оператора).
-        </p>
       </Container>
     </div>
   );
@@ -332,13 +367,16 @@ const Exchange: React.FC = () => {
       if (direction === 'next') {
         if (mode === ExchangeModeEnum.FORM) setMode(ExchangeModeEnum.CHECK);
         else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.HOW_TO_PAY);
-      } else if (mode === ExchangeModeEnum.HOW_TO_PAY) setMode(ExchangeModeEnum.CHECK);
-      else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.FORM);
+        else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
+          setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
+        }
+      } else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.FORM);
+
       // else try { history.back(); } catch (e) { console.log(e); }
     };
   }
 
-  function handleSetDataFromSelect(key: keyof FormData): { (value: CurrencyDataItem | CurrencyDataItemWithWallet | number | null): void } {
+  function handleSetDataFromSelect(key: keyof FormData): { (value: CurrencyDataItemWithWallet | number | null): void } {
     return (value) => {
       setData({
         ...data,
