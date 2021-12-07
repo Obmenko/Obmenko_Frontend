@@ -279,7 +279,7 @@ const Home: React.FC = () => {
               ))
             }
           />
-          <Button mode={ButtonModeEnum.TRANSPARENT} className={clsx('onlyMobile')}>Все отзывы</Button>
+          {/* <Button mode={ButtonModeEnum.TRANSPARENT} className={clsx('onlyMobile')}>Все отзывы</Button> */}
         </div>
       </Container>
       <Container className={classes.reserve} wrapperClassName={classes['reserve-wrapper']}>
