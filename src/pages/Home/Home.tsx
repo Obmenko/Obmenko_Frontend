@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { useHistory } from 'react-router';
 import { NAVS } from '@/const/routes';
 import classes from './Home.module.scss';
-import LogoImg from '@/assets/img/logo.svg';
+import LogoImg from '@/assets/img/logo.png';
 import BgOverlayImg from '@/assets/img/bg_overlay.png';
 import BgOverlayImg2 from '@/assets/img/bg_overlay_2.png';
 import ExchangeImg from '@/assets/img/currency/exchange.svg';
@@ -50,7 +50,7 @@ const Home: React.FC = () => {
     from: 1,
     fromSelected: CURRENCY_LIST[0],
     to: 1,
-    toSelected: CURRENCY_LIST[0],
+    toSelected: CURRENCY_LIST[1],
   });
 
   const [course, setCourse] = useState<CourseData>({
