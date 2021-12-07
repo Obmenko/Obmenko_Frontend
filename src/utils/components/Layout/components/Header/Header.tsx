@@ -9,7 +9,7 @@ import React, {
 import clsx from 'clsx';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
-import AccountImg from '@/assets/img/account.png';
+// import AccountImg from '@/assets/img/account.png';
 import BurgerImg from '@/assets/img/burger.svg';
 // import BurgerImg from '@/assets/img/burger.svg';
 

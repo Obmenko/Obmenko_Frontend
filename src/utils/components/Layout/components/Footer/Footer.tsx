@@ -2,15 +2,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import classes from './Footer.module.scss';
 import Container from '@/utils/components/Container';
-import BestChangeImg from '@/assets/img/logos/best_change.jpg';
-import CourseExpertImg from '@/assets/img/logos/course_expert.jpg';
-import OkChangerImg from '@/assets/img/logos/ok_changer.jpg';
-import TraderMontoringImg from '@/assets/img/logos/trader_montoring.jpg';
-import AmlBoxImg from '@/assets/img/logos/aml_box.jpg';
+// import BestChangeImg from '@/assets/img/logos/best_change.jpg';
+// import CourseExpertImg from '@/assets/img/logos/course_expert.jpg';
+// import OkChangerImg from '@/assets/img/logos/ok_changer.jpg';
+// import TraderMontoringImg from '@/assets/img/logos/trader_montoring.jpg';
+// import AmlBoxImg from '@/assets/img/logos/aml_box.jpg';
 import MailImg from '@/assets/img/mail.svg';
 import { goBlank } from '@/utils/functions/dom';
 
@@ -21,7 +21,7 @@ type IProps = {
 const Footer: React.FC<IProps> = () => {
   const history = useHistory();
 
-  const memoGoTo = useCallback(goTo, [history]);
+  // const memoGoTo = useCallback(goTo, [history]);
 
   return (
     <Container className={classes.root} wrapperClassName={classes['root-wrapper']}>
@@ -56,11 +56,11 @@ const Footer: React.FC<IProps> = () => {
     </Container>
   );
 
-  function goTo(path: string): { (): void } {
-    return () => {
-      history.push(path);
-    };
-  }
+  // function goTo(path: string): { (): void } {
+  //   return () => {
+  //     history.push(path);
+  //   };
+  // }
 };
 
 export default Footer;
