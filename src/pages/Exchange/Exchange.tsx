@@ -44,7 +44,7 @@ enum RequestStatusEnum {
 }
 
 enum ExchangeModeEnum {
-  FORM ='form',
+  FORM = 'form',
   CHECK = 'check',
   HOW_TO_PAY = 'how_to_pay'
 }
@@ -79,11 +79,13 @@ type CourseData = {
 const Exchange: React.FC = () => {
   const memoQueryString = useMemo(() => new URLSearchParams(window.location.search), []);
 
+  // console.log(memoQueryString.get('to'));
+
   const formik = useFormik<FormData>({
     initialValues: {
       from: memoQueryString.get('from') || '1',
       fromSelected: memoQueryString.get('from_type') ? CURRENCY_LIST[memoQueryString.get('from_type') as unknown as any] : CURRENCY_LIST[0],
-      to: memoQueryString.get('to') || 1,
+      to: memoQueryString.get('to') || '1',
       toSelected: memoQueryString.get('to_type') ? CURRENCY_LIST[memoQueryString.get('to_type') as unknown as any] : CURRENCY_LIST[0],
       card: null,
       phone: null,
@@ -120,6 +122,10 @@ const Exchange: React.FC = () => {
     },
   });
 
+  useEffect(() => {
+    console.log(formik.values);
+  }, [formik.values]);
+
   const [course, setCourse] = useState<CourseData>({
     from: formik.values.fromSelected.unit,
     to: formik.values.toSelected.unit,
@@ -143,9 +149,9 @@ const Exchange: React.FC = () => {
   );
 
   useEffect(() => {
-    formik.setFieldValue('to', +formik.values.from);
+    formik.setFieldValue('to', +formik.values.from * course.rate);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.from]);
+  }, [formik.values.from, course.rate]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -168,6 +174,11 @@ const Exchange: React.FC = () => {
       });
     });
   }, [formik.values.fromSelected.unit, formik.values.toSelected.unit]);
+
+  const memoRequestStatusValue = useMemo(
+    () => (requestStatus === RequestStatusEnum.WAITING_FOR_CLIENT ? 33 : requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM ? 66 : 100),
+    [requestStatus],
+  );
 
   return (
     <div className={classes.root}>
@@ -399,7 +410,7 @@ const Exchange: React.FC = () => {
               <div className={classes['calculator-howToPay__update']}>
                 <LinearProgress
                   variant="determinate"
-                  value={60}
+                  value={memoRequestStatusValue}
                   classes={{
                     bar: classes['progressBar-bar'],
                     colorPrimary: classes['progressBar-colorPrimary'],

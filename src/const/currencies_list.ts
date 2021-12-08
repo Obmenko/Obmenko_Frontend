@@ -118,7 +118,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     title: 'Dogecoin',
     wallet: 'DKvKLoD8kwSBX5JPmQ7sjBgqUScppBKKNP',
     isBtc: true,
-    unit: CurrencyUnitEnum.DOG,
+    unit: CurrencyUnitEnum.DOGE,
   },
   {
     img: WavesImg,

@@ -11,7 +11,7 @@ export enum CurrencyUnitEnum {
   TRX = 'TRX',
   ATOM = 'ATOM',
   DASH = 'DASH',
-  DOG = 'DOG',
+  DOGE = 'DOGE',
   WAVES = 'WAVES',
   SOL = 'SOL',
   RUB = 'RUB',
