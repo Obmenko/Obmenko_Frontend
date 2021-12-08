@@ -116,15 +116,10 @@ const Exchange: React.FC = () => {
     },
     onSubmit: () => {
       if (_.isEmpty(formik.errors)) {
-        console.log('object');
         setMode(ExchangeModeEnum.CHECK);
       }
     },
   });
-
-  useEffect(() => {
-    console.log(formik.values);
-  }, [formik.values]);
 
   const [course, setCourse] = useState<CourseData>({
     from: formik.values.fromSelected.unit,
