@@ -10,7 +10,7 @@ import React, {
 import clsx from 'clsx';
 import Checkbox from '@mui/material/Checkbox';
 import { LinearProgress } from '@mui/material';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { useFormik } from 'formik';
 import _ from 'lodash';
@@ -79,7 +79,7 @@ type CourseData = {
 const Exchange: React.FC = () => {
   const memoQueryString = useMemo(() => new URLSearchParams(window.location.search), []);
 
-  // console.log(memoQueryString.get('to'));
+  const history = useHistory();
 
   const formik = useFormik<FormData>({
     initialValues: {
@@ -135,7 +135,7 @@ const Exchange: React.FC = () => {
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [formik]);
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [formik]);
 
-  const memoGoToMode = useCallback(goToMode, [formik, mode]);
+  const memoGoToMode = useCallback(goToMode, [formik, history, mode]);
 
   const memoRequestId = useMemo(() => requestId || uuidv4().split('-').slice(0, 3).join('-'), [requestId]);
   const memoFromList = useMemo(
@@ -458,8 +458,7 @@ const Exchange: React.FC = () => {
           setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
         }
       } else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.FORM);
-
-      // else try { history.back(); } catch (e) { console.log(e); }
+      else try { history.replace('/'); } catch (e) { console.log(e); }
     };
   }
 
