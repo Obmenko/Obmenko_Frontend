@@ -182,12 +182,12 @@ const Home: React.FC = () => {
                   {data.toSelected.unit}
                 </span>
               </div>
-              <div className={classes['content-calculator__item-info']}>
+              {/* <div className={classes['content-calculator__item-info']}>
                 <p>
                   <span className={classes['content-calculator__item-info__link']}>Войдите</span>
                   в аккаунт и получите персональную скидку
                 </p>
-              </div>
+              </div> */}
             </div>
             <Button onClick={memoGoToExchange}>Обменять</Button>
           </div>
