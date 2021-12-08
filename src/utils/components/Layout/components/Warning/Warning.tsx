@@ -19,7 +19,7 @@ const Warning: FC<IProps> = ({
   setWarningOpenState,
   isWarningOpen,
 }) => {
-  console.log('object');
+  console.log('');
 
   return (
     <>

@@ -32,6 +32,7 @@ import {
 } from '@/const/currencies_list';
 import { CurrencyUnitEnum } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
+import { countFeePercent } from '@/utils/functions/rates';
 
 type ParamsType = {
   id: string;
@@ -74,6 +75,7 @@ type CourseData = {
   from: CurrencyUnitEnum,
   to: CurrencyUnitEnum,
   rate: number,
+  feePercent: number
 }
 
 const Exchange: React.FC = () => {
@@ -125,6 +127,7 @@ const Exchange: React.FC = () => {
     from: formik.values.fromSelected.unit,
     to: formik.values.toSelected.unit,
     rate: 1,
+    feePercent: 0,
   });
 
   const { id: requestId } = useParams<ParamsType>();
@@ -162,10 +165,14 @@ const Exchange: React.FC = () => {
 
   useEffect(() => {
     getExchangePair(formik.values.fromSelected.unit, formik.values.toSelected.unit).then((coinApiData) => {
+      const from = formik.values.fromSelected.unit;
+      const to = formik.values.toSelected.unit;
+      const feePercent = countFeePercent(from, to);
       setCourse({
-        from: formik.values.fromSelected.unit,
-        to: formik.values.toSelected.unit,
-        rate: coinApiData.rate,
+        from,
+        to,
+        rate: coinApiData.rate * (1 + feePercent / 100),
+        feePercent,
       });
     });
   }, [formik.values.fromSelected.unit, formik.values.toSelected.unit]);

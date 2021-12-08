@@ -116,7 +116,6 @@ const Select: FC<PropsType> = ({
 
   function onClick(value?: boolean): {(): void} {
     return () => {
-      console.log(value);
       setOpenState(value || !isOpen);
     };
   }

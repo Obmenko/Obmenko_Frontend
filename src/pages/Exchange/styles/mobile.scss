@@ -59,6 +59,7 @@
     }
     &__item {
       &:last-child {
+        margin-top: 32px;
         & > span {
         }
       }
@@ -68,7 +69,7 @@
         }
         & > input {
           flex-basis: 40%;
-          font-size: 18px;
+          font-size: 14px;
         }
       }
       & > span {

@@ -31,6 +31,7 @@ import {
 } from '@/const/currencies_list';
 import { CurrencyUnitEnum } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
+import { countFeePercent } from '@/utils/functions/rates';
 
 type CurrencyData = {
   fromSelected: CurrencyDataItemWithWallet,
@@ -43,6 +44,7 @@ type CourseData = {
   from: CurrencyUnitEnum,
   to: CurrencyUnitEnum,
   rate: number,
+  feePercent: number
 }
 
 const Home: React.FC = () => {
@@ -57,6 +59,7 @@ const Home: React.FC = () => {
     from: data.fromSelected.unit,
     to: data.toSelected.unit,
     rate: 1,
+    feePercent: 0,
   });
 
   const [reviewActiveIndex, setReviewActiveIndex] = useState<number>(0);
@@ -101,10 +104,14 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     getExchangePair(data.fromSelected.unit, data.toSelected.unit).then((coinApiData) => {
+      const from = data.fromSelected.unit;
+      const to = data.toSelected.unit;
+      const feePercent = countFeePercent(from, to);
       setCourse({
-        from: data.fromSelected.unit,
-        to: data.toSelected.unit,
-        rate: coinApiData.rate,
+        from,
+        to,
+        rate: coinApiData.rate * (1 + feePercent / 100),
+        feePercent,
       });
     });
   }, [data.fromSelected.unit, data.toSelected.unit]);
