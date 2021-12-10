@@ -40,6 +40,10 @@
         text-transform: uppercase;
         color: white;
         margin-right: 30px;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
         &:last-child {
           margin-right: 0;
         }

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {
@@ -70,6 +71,7 @@ const Home: React.FC = () => {
 
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [data]);
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [data]);
+  const memoGoTo = useCallback(goTo, [history]);
 
   const memoReviewChunkList = useMemo<ReviewItem[][]>(() => _.chunk(REVIEWS, width > 480 ? 4 : 1), [width]);
   const memoCurrencyChunkList = useMemo<CurrencyItem[][]>(
@@ -127,7 +129,7 @@ const Home: React.FC = () => {
           <div className={clsx(classes.nav, 'noMobile')}>
             {
               NAVS.map((nav) => (
-                <span key={nav.title}>{nav.title}</span>
+                <span key={nav.title} onClick={memoGoTo(nav.path)}>{nav.title}</span>
               ))
             }
           </div>
@@ -382,6 +384,11 @@ const Home: React.FC = () => {
         ...data,
         [key]: value,
       });
+    };
+  }
+  function goTo(path: string): { (): void } {
+    return () => {
+      history.push(path);
     };
   }
 };

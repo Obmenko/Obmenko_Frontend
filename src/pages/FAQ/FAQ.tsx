@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import classes from './FAQ.module.scss';
 import Container from '@/utils/components/Container';
 import CONTACTS from '@/const/contacts';
+import { ROUTES } from '@/const/routes';
 
 const FAQ: React.FC = () => {
   console.log('object');
@@ -17,7 +18,7 @@ const FAQ: React.FC = () => {
         <h3>
           В каком режиме работает обменник
           {' '}
-          <a href={CONTACTS.siteUrl}>{CONTACTS.name}</a>
+          <a href={ROUTES.HOME}>{CONTACTS.name}</a>
           ?
         </h3>
         <p>Мы работаем круглосуточно.</p>

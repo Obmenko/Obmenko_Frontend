@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router';
 import classes from './Footer.module.scss';
 import Container from '@/utils/components/Container';
@@ -14,6 +14,7 @@ import Container from '@/utils/components/Container';
 import MailImg from '@/assets/img/mail.svg';
 import { goBlank } from '@/utils/functions/dom';
 import CONTACTS from '@/const/contacts';
+import { ROUTES } from '@/const/routes';
 
 type IProps = {
 
@@ -22,7 +23,7 @@ type IProps = {
 const Footer: React.FC<IProps> = () => {
   const history = useHistory();
 
-  // const memoGoTo = useCallback(goTo, [history]);
+  const memoGoTo = useCallback(goTo, [history]);
 
   return (
     <Container className={classes.root} wrapperClassName={classes['root-wrapper']}>
@@ -38,8 +39,9 @@ const Footer: React.FC<IProps> = () => {
           <span onClick={goBlank(CONTACTS.telegramLink)}>
             Telegram
           </span>
+          <span onClick={memoGoTo(ROUTES.FAQ)}>FAQ</span>
+          <span onClick={memoGoTo(ROUTES.RULES)}>Правила сайта</span>
           {/* <span onClick={memoGoTo('/')}>Карта сайта</span>
-          <span onClick={memoGoTo('/')}>Правила сайта</span>
           <span onClick={memoGoTo('/')}>Политика конфиденциальности</span> */}
         </div>
         <div className={classes.chart}>
@@ -65,11 +67,11 @@ const Footer: React.FC<IProps> = () => {
     </Container>
   );
 
-  // function goTo(path: string): { (): void } {
-  //   return () => {
-  //     history.push(path);
-  //   };
-  // }
+  function goTo(path: string): { (): void } {
+    return () => {
+      history.push(path);
+    };
+  }
 };
 
 export default Footer;
