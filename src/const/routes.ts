@@ -16,10 +16,10 @@ export const NAVS = [
   //   path: ROUTES.RULES,
   //   title: 'Правила сайта',
   // },
-  // {
-  //   path: ROUTES.FAQ,
-  //   title: 'FAQ',
-  // },
+  {
+    path: ROUTES.FAQ,
+    title: 'FAQ',
+  },
   // {
   //   path: ROUTES.REVIEWS,
   //   title: 'Отзывы',

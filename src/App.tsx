@@ -12,14 +12,10 @@ import { ROUTES } from '@/const/routes';
 
 const HomePage = lazy(() => import('@/pages/Home'));
 const ExchangePage = lazy(() => import('@/pages/Exchange'));
+const FAQPage = lazy(() => import('@/pages/FAQ'));
 
 const App: FC = () => {
   console.log('');
-  // useEffect(() => {
-  //   if (history.location.pathname !== '/') {
-  //     history.replace('/');
-  //   }
-  // }, [history, history.location.pathname]);
 
   return (
     <>
@@ -50,6 +46,7 @@ const App: FC = () => {
           <Switch>
             <Route path={ROUTES.EXCHANGE} component={ExchangePage} />
             <Route path={ROUTES.HOME} exact component={HomePage} />
+            <Route path={ROUTES.FAQ} exact component={FAQPage} />
           </Switch>
         </Suspense>
       </Layout>
