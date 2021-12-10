@@ -5,6 +5,7 @@ import React from 'react';
 import clsx from 'clsx';
 import classes from './FAQ.module.scss';
 import Container from '@/utils/components/Container';
+import CONTACTS from '@/const/contacts';
 
 const FAQ: React.FC = () => {
   console.log('object');
@@ -16,7 +17,7 @@ const FAQ: React.FC = () => {
         <h3>
           В каком режиме работает обменник
           {' '}
-          <a href="https://coins.gives">Coins.gives</a>
+          <a href={CONTACTS.siteUrl}>{CONTACTS.name}</a>
           ?
         </h3>
         <p>Мы работаем круглосуточно.</p>
@@ -111,7 +112,7 @@ const FAQ: React.FC = () => {
                   <p>
                     Написать нам на почту:
                     {' '}
-                    <a href="mailto:info@coins.gives">info@coins.gives</a>
+                    <a href={`mailto:${CONTACTS.email}`}>{CONTACTS.email}</a>
                   </p>
                 </li>
                 <li>
@@ -127,7 +128,7 @@ const FAQ: React.FC = () => {
                   <p>
                     А так же на наш Телеграм:
                     {' '}
-                    <a href="http://" target="_blank" rel="noopener noreferrer">@Obmenko</a>
+                    <a href={CONTACTS.telegramLink} target="_blank" rel="noopener noreferrer">{CONTACTS.telegram}</a>
                   </p>
                 </li>
               </ul>
@@ -164,7 +165,7 @@ const FAQ: React.FC = () => {
               <span>«Ошибочная»</span>
               . В этом случае пришлите нам на почту
               {' '}
-              <a href="mailto:info@coins.gives">info@coins.gives</a>
+              <a href={`mailto:${CONTACTS.email}`}>{CONTACTS.email}</a>
               {' '}
               верные реквизиты с указанием номера Вашей заявки с почты, указанной Вами при создании заявки и мы в кратчайшие сроки обработаем Вашу заявку.
             </p>

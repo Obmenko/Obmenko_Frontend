@@ -11,6 +11,7 @@
     font-weight: bold;
     text-align: center;
     width: 100%;
+    margin-bottom: 80px;
   }
   & > section {
     margin-bottom: 54px;
@@ -23,6 +24,7 @@
       line-height: inherit;
       color: $color-blue;
       font-weight: inherit;
+      font-weight: bold;
     }
     & h3 {
       font-weight: bold;
@@ -87,6 +89,16 @@
             background-color: transparent;
           }
         }
+      }
+    }
+    & ol {
+      list-style: none;
+      padding-bottom: 16px;
+      & > li {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        margin-left: 32px;
       }
     }
     & > * {

@@ -11,6 +11,7 @@ import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
 // import AccountImg from '@/assets/img/account.png';
 import BurgerImg from '@/assets/img/burger.svg';
+import CONTACTS from '@/const/contacts';
 // import BurgerImg from '@/assets/img/burger.svg';
 
 type IProps = {
@@ -36,7 +37,7 @@ const Header: FC<IProps> = ({
           <img src={BurgerImg} alt="" />
         </div>
         <div className={clsx(classes.contacts, 'noMobile')}>
-          <a href="">info@coins.gives</a>
+          <a href={`mailto:${CONTACTS.email}`}>{CONTACTS.email}</a>
           <div />
           <p>Сервис работает круглосуточно.</p>
         </div>

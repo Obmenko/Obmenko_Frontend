@@ -8,6 +8,7 @@ import React, {
 
 import Container from '@/utils/components/Container';
 import classes from './Warning.module.scss';
+import CONTACTS from '@/const/contacts';
 // import BurgerImg from '@/assets/img/burger.svg';
 
 type IProps = {
@@ -31,7 +32,7 @@ const Warning: FC<IProps> = ({
         <p>
           По всем вопросам обращайтесь к оператору. ВНИМАНИЕ! Telegram только по ссылке
           {' '}
-          <a href="https://t.me/coins_gives_support" target="_blank" rel="noreferrer">Telegram</a>
+          <a href={CONTACTS.telegramLink} target="_blank" rel="noreferrer">Telegram</a>
           , множество поддельных аккаунтов.
         </p>
       </Container>

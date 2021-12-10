@@ -13,6 +13,7 @@ import { ROUTES } from '@/const/routes';
 const HomePage = lazy(() => import('@/pages/Home'));
 const ExchangePage = lazy(() => import('@/pages/Exchange'));
 const FAQPage = lazy(() => import('@/pages/FAQ'));
+const RulesPage = lazy(() => import('@/pages/Rules'));
 
 const App: FC = () => {
   console.log('');
@@ -47,6 +48,7 @@ const App: FC = () => {
             <Route path={ROUTES.EXCHANGE} component={ExchangePage} />
             <Route path={ROUTES.HOME} exact component={HomePage} />
             <Route path={ROUTES.FAQ} exact component={FAQPage} />
+            <Route path={ROUTES.RULES} exact component={RulesPage} />
           </Switch>
         </Suspense>
       </Layout>

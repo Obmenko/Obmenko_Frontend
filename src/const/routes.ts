@@ -12,10 +12,10 @@ export const NAVS = [
     path: ROUTES.HOME,
     title: 'Главная',
   },
-  // {
-  //   path: ROUTES.RULES,
-  //   title: 'Правила сайта',
-  // },
+  {
+    path: ROUTES.RULES,
+    title: 'Правила сайта',
+  },
   {
     path: ROUTES.FAQ,
     title: 'FAQ',

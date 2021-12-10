@@ -3,16 +3,16 @@
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 import _ from 'lodash';
-import SiteRules from './SiteRules';
+import Rules from './Rules';
 import IMAGE_DICT, { ImageItem } from '@/const/assets/image';
 
-const SiteRulesPage: FC = () => {
+const RulesPage: FC = () => {
   return (
     <>
       <Helmet title="Coins">
         dada
       </Helmet>
-      <SiteRules />
+      <Rules />
     </>
   );
 
@@ -25,4 +25,4 @@ const SiteRulesPage: FC = () => {
   }
 };
 
-export default SiteRulesPage;
+export default RulesPage;
