@@ -31,6 +31,8 @@ import {
 import { CurrencyUnitEnum } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
+import { goBlank } from '@/utils/functions/dom';
+import CONTACTS from '@/const/contacts';
 
 type CurrencyData = {
   fromSelected: CurrencyDataItemWithWallet,
@@ -167,7 +169,12 @@ const Home: React.FC = () => {
                   {' '}
                   {data.toSelected.unit}
                   {' '}
-                  <span className={classes['content-calculator__item-info__link']}>Не хватает?</span>
+                  <span
+                    className={classes['content-calculator__item-info__link']}
+                    onClick={goBlank(CONTACTS.telegramLink)}
+                  >
+                    Не хватает?
+                  </span>
                 </p>
               </div>
             </div>
