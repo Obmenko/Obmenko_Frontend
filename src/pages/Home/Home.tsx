@@ -22,11 +22,9 @@ import ArrowRightWhite from '@/assets/img/arrow_right_white.svg';
 import Container from '@/utils/components/Container';
 import Select from '@/ui/Select';
 import Button from '@/ui/Button';
-import { ButtonModeEnum } from '@/ui/Button/Button';
 import REVIEWS, { ReviewItem } from '@/const/reviews';
 import useResize from '@/utils/hooks/useResize';
 import Slider from '@/ui/Slider';
-import CURRENCY_RESERVE_LIST, { CurrencyItem } from '@/const/currency_reserve_list';
 import {
   CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
@@ -74,8 +72,8 @@ const Home: React.FC = () => {
   const memoGoTo = useCallback(goTo, [history]);
 
   const memoReviewChunkList = useMemo<ReviewItem[][]>(() => _.chunk(REVIEWS, width > 480 ? 4 : 1), [width]);
-  const memoCurrencyChunkList = useMemo<CurrencyItem[][]>(
-    () => _.chunk(CURRENCY_RESERVE_LIST, width > 480 ? 16 : 2), [width],
+  const memoCurrencyChunkList = useMemo<CurrencyDataItemWithWallet[][]>(
+    () => _.chunk(CURRENCY_LIST, width > 480 ? 16 : 2), [width],
   );
 
   const memoSetCurrencyActiveIndex = useCallback(handleSetCurrencyActiveIndex, [
@@ -165,7 +163,7 @@ const Home: React.FC = () => {
                 <p>
                   <span>Резерв:</span>
                   {' '}
-                  6000000
+                  {data.toSelected.reserve}
                   {' '}
                   {data.toSelected.unit}
                   {' '}
@@ -184,13 +182,13 @@ const Home: React.FC = () => {
                 />
                 <input type="number" value={data.to} readOnly className="reverse" />
               </div>
-              <div className={classes['content-calculator__item-reserve']}>
+              {/* <div className={classes['content-calculator__item-reserve']}>
                 <span>
                   max.: 4000000
                   {' '}
                   {data.toSelected.unit}
                 </span>
-              </div>
+              </div> */}
               {/* <div className={classes['content-calculator__item-info']}>
                 <p>
                   <span className={classes['content-calculator__item-info__link']}>Войдите</span>
@@ -295,11 +293,11 @@ const Home: React.FC = () => {
         <h4>Резерв валюты</h4>
         <div className={clsx(classes['reserve-content'], 'noMobile')}>
           {
-            CURRENCY_RESERVE_LIST.map((currency) => (
+            CURRENCY_LIST.map((currency) => (
               <div className={classes['reserve-content__item']} key={currency.title}>
                 <img src={currency.img} alt="" />
                 <h6>{currency.title}</h6>
-                <p>{currency.value}</p>
+                <p>{currency.reserve}</p>
               </div>
             ))
           }
@@ -315,14 +313,14 @@ const Home: React.FC = () => {
                 <div className={classes['reserve-content__item']} key={currencyChunk[0].title}>
                   <img src={currencyChunk[0].img} alt="" />
                   <h6>{currencyChunk[0].title}</h6>
-                  <p>{currencyChunk[0].value}</p>
+                  <p>{currencyChunk[0].reserve}</p>
                 </div>
                 {
                   currencyChunk[1] && (
                     <div className={classes['reserve-content__item']} key={currencyChunk[1].title}>
                       <img src={currencyChunk[1].img} alt="" />
                       <h6>{currencyChunk[1].title}</h6>
-                      <p>{currencyChunk[1].value}</p>
+                      <p>{currencyChunk[1].reserve}</p>
                     </div>
                   )
                 }

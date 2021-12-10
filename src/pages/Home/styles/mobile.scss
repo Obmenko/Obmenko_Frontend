@@ -184,6 +184,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    gap: initial;
     &__item {
       width: 65%;
       display: flex;

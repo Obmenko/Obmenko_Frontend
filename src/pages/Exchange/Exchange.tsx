@@ -260,12 +260,14 @@ const Exchange: React.FC = () => {
                   <input type="number" value={formik.values.to} readOnly className="reverse" />
                 </div>
                 <span>
-                  min.: 30000
+
+                  &nbsp;
+                  {/* min.: 30000
                   {' '}
                   {formik.values.toSelected.unit}
                   , max.: 4000000
                   {' '}
-                  {formik.values.toSelected.unit}
+                  {formik.values.toSelected.unit} */}
                 </span>
                 {
                   formik.values.toSelected.isBtc ? (

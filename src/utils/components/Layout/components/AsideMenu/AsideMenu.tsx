@@ -36,10 +36,10 @@ const AsideMenu: FC<IProps> = ({
   return (
     <div className={clsx(classes['root-wrapper'], 'animate__animated', 'animate__fadeInRight', 'animate__faster')}>
       <div className={classes.head}>
-        <div>
+        {/* <div>
           <img src={AccountImg} alt="" />
           <span>Войти</span>
-        </div>
+        </div> */}
         <img src={CrossGreyImg} alt="" onClick={onClose} />
       </div>
       <div className={classes.nav}>
