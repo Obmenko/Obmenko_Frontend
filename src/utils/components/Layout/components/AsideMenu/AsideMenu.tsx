@@ -12,6 +12,7 @@ import { useHistory } from 'react-router';
 import classes from './AsideMenu.module.scss';
 import CrossGreyImg from '@/assets/img/cross_grey.svg';
 import AccountImg from '@/assets/img/account.png';
+import { ROUTES } from '@/const/routes';
 
 type IProps = {
   onClose: { (): void }
@@ -42,11 +43,11 @@ const AsideMenu: FC<IProps> = ({
         <img src={CrossGreyImg} alt="" onClick={onClose} />
       </div>
       <div className={classes.nav}>
-        <span onClick={memoGoTo('/')}>Главная</span>
-        <span onClick={memoGoTo('/')}>Правила сайта</span>
-        <span onClick={memoGoTo('/')}>FAQ</span>
-        <span onClick={memoGoTo('/')}>Отзывы</span>
-        <span onClick={memoGoTo('/')}>Контакты</span>
+        <span onClick={memoGoTo(ROUTES.HOME)}>Главная</span>
+        <span onClick={memoGoTo(ROUTES.RULES)}>Правила сайта</span>
+        <span onClick={memoGoTo(ROUTES.FAQ)}>FAQ</span>
+        {/* <span onClick={memoGoTo('/')}>Отзывы</span> */}
+        {/* <span onClick={memoGoTo('/')}>Контакты</span> */}
       </div>
     </div>
   );
