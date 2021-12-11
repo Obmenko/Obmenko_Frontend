@@ -30,9 +30,10 @@ import { ButtonModeEnum } from '@/ui/Button/Button';
 import {
   CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
-import { CurrencyUnitEnum } from '@/types/exchange';
+import { CourseData, CurrencyUnitEnum } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
+import { createRequest, ICreateRequest } from '@/api/request';
 
 type ParamsType = {
   id: string;
@@ -50,18 +51,7 @@ enum ExchangeModeEnum {
   HOW_TO_PAY = 'how_to_pay'
 }
 
-type FormData = {
-  fromSelected: CurrencyDataItemWithWallet,
-  toSelected: CurrencyDataItemWithWallet,
-  to: string | number,
-  from: string | number
-  card: number | null;
-  wallet: string;
-  phone: number | null;
-  email: string;
-  telegram: string;
-  fullname: string;
-}
+type FormData = Omit<ICreateRequest, 'course'>
 
 type FormErrors = {
   phone?: string;
@@ -69,13 +59,6 @@ type FormErrors = {
   fullname?: string;
   card?: string;
   wallet?: string;
-}
-
-type CourseData = {
-  from: CurrencyUnitEnum,
-  to: CurrencyUnitEnum,
-  rate: number,
-  feePercent: number
 }
 
 const Exchange: React.FC = () => {
@@ -458,12 +441,17 @@ const Exchange: React.FC = () => {
   );
 
   function goToMode(direction: 'next' | 'prev') {
-    return () => {
+    return async () => {
       if (direction === 'next') {
         if (mode === ExchangeModeEnum.FORM) {
           formik.submitForm();
-        } else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.HOW_TO_PAY);
-        else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
+        } else if (mode === ExchangeModeEnum.CHECK) {
+          await createRequest({
+            ...formik.values,
+            course,
+          });
+          // setMode(ExchangeModeEnum.HOW_TO_PAY);
+        } else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
           setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
         }
       } else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.FORM);

@@ -17,3 +17,10 @@ export enum CurrencyUnitEnum {
   RUB = 'RUB',
   USDT = 'USDT',
 }
+
+export type CourseData = {
+  from: CurrencyUnitEnum,
+  to: CurrencyUnitEnum,
+  rate: number,
+  feePercent: number
+}
