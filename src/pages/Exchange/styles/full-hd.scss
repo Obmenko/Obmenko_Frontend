@@ -450,6 +450,11 @@
   }
 }
 
+.submitError {
+  color: $color-red;
+  margin-top: 12px;
+}
+
 .end {
   background-color: $color-blue;
   border-radius: 30px;

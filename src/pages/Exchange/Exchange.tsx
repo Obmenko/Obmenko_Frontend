@@ -30,7 +30,7 @@ import { ButtonModeEnum } from '@/ui/Button/Button';
 import {
   CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
-import { CourseData, CurrencyUnitEnum } from '@/types/exchange';
+import { CourseData } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
 import { createRequest, ICreateRequest } from '@/api/request';
@@ -64,6 +64,8 @@ type FormErrors = {
 const Exchange: React.FC = () => {
   const memoQueryString = useMemo(() => new URLSearchParams(window.location.search), []);
 
+  const [submitError, setSubmitError] = useState<string>('');
+
   const history = useHistory();
 
   const formik = useFormik<FormData>({
@@ -87,9 +89,6 @@ const Exchange: React.FC = () => {
 
       if (!values.phone) {
         errors.phone = 'Не указан телефон';
-      }
-      if (!values.fullname) {
-        errors.fullname = 'Не указано полное имя';
       }
       if (values.toSelected.isBtc && !values.wallet) {
         errors.wallet = 'Не указан кошелёк';
@@ -121,7 +120,7 @@ const Exchange: React.FC = () => {
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [formik]);
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [formik]);
 
-  const memoGoToMode = useCallback(goToMode, [formik, history, mode]);
+  const memoGoToMode = useCallback(goToMode, [course, formik, history, mode]);
 
   const memoRequestId = useMemo(() => requestId || uuidv4().split('-').slice(0, 3).join('-'), [requestId]);
   const memoFromList = useMemo(
@@ -259,7 +258,7 @@ const Exchange: React.FC = () => {
                     <input className={clsx(formik.errors.card && 'invalid')} onChange={memoSetDataFromInput('card')} type="number" placeholder="Номер карты получателя*" value={formik.values.card === null ? '' : formik.values.card} />
                   )
                 }
-                <input className={clsx(formik.errors.fullname && 'invalid')} onChange={memoSetDataFromInput('fullname')} type="text" placeholder="ФИО получателя*" />
+                <input className={clsx(formik.errors.fullname && 'invalid')} onChange={memoSetDataFromInput('fullname')} type="text" placeholder="ФИО получателя" />
                 <div className={classes.checkBox}>
                   <Checkbox defaultChecked />
                   <span>Не запоминать введённые данные</span>
@@ -418,6 +417,11 @@ const Exchange: React.FC = () => {
                 : 'Я оплатил заявку'
           }
         </Button>
+        {
+          submitError && (
+            <span className={classes.submitError}>{submitError}</span>
+          )
+        }
       </Container>
       <Container className={classes.end} wrapperClassName={classes['end-wrapper']}>
         <h4>
@@ -446,11 +450,17 @@ const Exchange: React.FC = () => {
         if (mode === ExchangeModeEnum.FORM) {
           formik.submitForm();
         } else if (mode === ExchangeModeEnum.CHECK) {
-          await createRequest({
-            ...formik.values,
-            course,
-          });
-          // setMode(ExchangeModeEnum.HOW_TO_PAY);
+          try {
+            const res = await createRequest({
+              ...formik.values,
+              course,
+            });
+            if (!res.success) throw new Error(res.message);
+            else setMode(ExchangeModeEnum.HOW_TO_PAY);
+          } catch (e) {
+            console.log(e);
+            setSubmitError('Произошла ошибка при создании заявки');
+          }
         } else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
           setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
         }
