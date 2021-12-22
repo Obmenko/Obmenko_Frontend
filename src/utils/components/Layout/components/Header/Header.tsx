@@ -3,15 +3,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {
-  FC, useCallback,
+  FC, useCallback, useContext,
 } from 'react';
 
 import clsx from 'clsx';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
-// import AccountImg from '@/assets/img/account.png';
+import AccountImg from '@/assets/img/account.png';
 import BurgerImg from '@/assets/img/burger.svg';
 import CONTACTS from '@/const/contacts';
+import ModalContext, { ModalTypeEnum } from '@/context/modal';
+import { AuthModalModeEnum } from '@/components/AuthModal/AuthModal';
 // import BurgerImg from '@/assets/img/burger.svg';
 
 type IProps = {
@@ -26,6 +28,8 @@ const Header: FC<IProps> = ({
   const memoHandleSetAsideMenuOpenState = useCallback(
     handleSetAsideMenuOpenState, [isAsideMenuOpen, setAsideMenuOpenState],
   );
+
+  const { openModal } = useContext(ModalContext);
 
   return (
     <>
@@ -42,11 +46,24 @@ const Header: FC<IProps> = ({
           <p>Сервис работает круглосуточно.</p>
         </div>
         <div className={classes.account}>
-          {/* <div className={clsx(classes.login, 'noMobile')}>
+          <div
+            className={clsx(classes.login, 'noMobile')}
+            onClick={openModal(ModalTypeEnum.AUTH, {
+              mode: AuthModalModeEnum.LOGIN,
+            })}
+          >
             <img src={AccountImg} alt="" />
             <span>Войти</span>
           </div>
-          <div className={classes.lang}>
+          <div
+            className={clsx(classes.registration, 'noMobile')}
+            onClick={openModal(ModalTypeEnum.AUTH, {
+              mode: AuthModalModeEnum.REGISTRATION,
+            })}
+          >
+            <span>Регистрация</span>
+          </div>
+          {/* <div className={classes.lang}>
             <span>RU</span>
           </div> */}
         </div>

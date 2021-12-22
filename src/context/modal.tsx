@@ -3,7 +3,7 @@ import React from 'react';
 import { ModalDataUnion } from '@/types/modal';
 
 export enum ModalTypeEnum {
-  CERTIFICATE = 'certificate'
+  AUTH = 'auth'
 }
 
 export type ModalTypeOptions = {

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { ModalTypeEnum } from '@/context/modal';
-import CertificateModal from '@/components/CertificateModal/CertificateModal';
+import AuthModal from '@/components/AuthModal';
 
 const MODAL_CONFIG = {
-  [ModalTypeEnum.CERTIFICATE]: (data: any): JSX.Element => (
-    <CertificateModal {...data} />
+  [ModalTypeEnum.AUTH]: (data: any): JSX.Element => (
+    <AuthModal {...data} />
   ),
 };
 

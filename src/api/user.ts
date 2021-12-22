@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import axios from 'axios';
 import { CurrencyDataItemWithWallet } from '@/const/currencies_list';
 import { CourseData } from '@/types/exchange';

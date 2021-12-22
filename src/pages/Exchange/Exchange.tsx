@@ -70,10 +70,10 @@ const Exchange: React.FC = () => {
 
   const formik = useFormik<FormData>({
     initialValues: {
-      from: memoQueryString.get('from') || '1',
-      fromSelected: memoQueryString.get('from_type') ? CURRENCY_LIST[memoQueryString.get('from_type') as unknown as any] : CURRENCY_LIST[0],
-      to: memoQueryString.get('to') || '1',
-      toSelected: memoQueryString.get('to_type') ? CURRENCY_LIST[memoQueryString.get('to_type') as unknown as any] : CURRENCY_LIST[0],
+      countFrom: memoQueryString.get('from') || '1',
+      coinFrom: memoQueryString.get('from_type') ? CURRENCY_LIST[memoQueryString.get('from_type') as unknown as any] : CURRENCY_LIST[0],
+      countTo: memoQueryString.get('to') || '1',
+      coinTo: memoQueryString.get('to_type') ? CURRENCY_LIST[memoQueryString.get('to_type') as unknown as any] : CURRENCY_LIST[0],
       card: null,
       phone: null,
       email: '',
@@ -90,10 +90,10 @@ const Exchange: React.FC = () => {
       if (!values.phone) {
         errors.phone = 'Не указан телефон';
       }
-      if (values.toSelected.isBtc && !values.wallet) {
+      if (values.coinTo.isBtc && !values.wallet) {
         errors.wallet = 'Не указан кошелёк';
       }
-      if (!values.toSelected.isBtc && !values.card) {
+      if (!values.coinTo.isBtc && !values.card) {
         errors.card = 'Не указан номер карты';
       }
       return errors;
@@ -106,8 +106,8 @@ const Exchange: React.FC = () => {
   });
 
   const [course, setCourse] = useState<CourseData>({
-    from: formik.values.fromSelected.unit,
-    to: formik.values.toSelected.unit,
+    from: formik.values.coinFrom.unit,
+    to: formik.values.coinTo.unit,
     rate: 1,
     feePercent: 0,
   });
@@ -124,14 +124,14 @@ const Exchange: React.FC = () => {
 
   const memoRequestId = useMemo(() => requestId || uuidv4().split('-').slice(0, 3).join('-'), [requestId]);
   const memoFromList = useMemo(
-    () => CURRENCY_LIST.filter((el) => el.unit !== formik.values.fromSelected.unit && !el.onlyTo),
-    [formik.values.fromSelected.unit],
+    () => CURRENCY_LIST.filter((el) => el.unit !== formik.values.coinFrom.unit && !el.onlyTo),
+    [formik.values.coinFrom.unit],
   );
 
   useEffect(() => {
-    formik.setFieldValue('to', +formik.values.from * course.rate);
+    formik.setFieldValue('to', +formik.values.countFrom * course.rate);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.from, course.rate]);
+  }, [formik.values.countFrom, course.rate]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -146,9 +146,9 @@ const Exchange: React.FC = () => {
   }, [requestStatus]);
 
   useEffect(() => {
-    getExchangePair(formik.values.fromSelected.unit, formik.values.toSelected.unit).then((coinApiData) => {
-      const from = formik.values.fromSelected.unit;
-      const to = formik.values.toSelected.unit;
+    getExchangePair(formik.values.coinFrom.unit, formik.values.coinTo.unit).then((coinApiData) => {
+      const from = formik.values.coinFrom.unit;
+      const to = formik.values.coinTo.unit;
       const feePercent = countFeePercent(from, to);
       setCourse({
         from,
@@ -157,7 +157,7 @@ const Exchange: React.FC = () => {
         feePercent,
       });
     });
-  }, [formik.values.fromSelected.unit, formik.values.toSelected.unit]);
+  }, [formik.values.coinFrom.unit, formik.values.coinTo.unit]);
 
   const memoRequestStatusValue = useMemo(
     () => (requestStatus === RequestStatusEnum.WAITING_FOR_CLIENT ? 33 : requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM ? 66 : 100),
@@ -171,8 +171,8 @@ const Exchange: React.FC = () => {
           <img src={ArrowLeftGreyShortImg} alt="" onClick={memoGoToMode('prev')} />
           <h3>
             {
-              mode === ExchangeModeEnum.FORM ? `Обмен ${formik.values.fromSelected.title} на ${formik.values.toSelected.title}`
-                : mode === ExchangeModeEnum.CHECK ? `Обмен ${formik.values.fromSelected.title} на ${formik.values.toSelected.title}`
+              mode === ExchangeModeEnum.FORM ? `Обмен ${formik.values.coinFrom.title} на ${formik.values.coinTo.title}`
+                : mode === ExchangeModeEnum.CHECK ? `Обмен ${formik.values.coinFrom.title} на ${formik.values.coinTo.title}`
                   : `Заявка ID ${memoRequestId}`
             }
           </h3>
@@ -201,21 +201,21 @@ const Exchange: React.FC = () => {
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
                     data={memoFromList}
-                    onChange={memoSetDataFromSelect('fromSelected')}
-                    value={formik.values.fromSelected}
+                    onChange={memoSetDataFromSelect('coinFrom')}
+                    value={formik.values.coinFrom}
                   />
-                  <input type="number" className="reverse" value={formik.values.from} onChange={memoSetDataFromInput('from')} />
+                  <input type="number" className="reverse" value={formik.values.countFrom} onChange={memoSetDataFromInput('countFrom')} />
                 </div>
                 <span>
                   Курс обмена: 1
                   {' '}
-                  {formik.values.fromSelected.unit}
+                  {formik.values.coinFrom.unit}
                   {' '}
                   =
                   {' '}
-                  {+formik.values.from * course.rate}
+                  {+formik.values.countFrom * course.rate}
                   {' '}
-                  {formik.values.toSelected.unit}
+                  {formik.values.coinTo.unit}
                 </span>
                 <input className={clsx(formik.errors.email && 'invalid')} onChange={memoSetDataFromInput('email')} type="text" placeholder="E-mail*" />
                 <input className={clsx(formik.errors.phone && 'invalid')} onChange={memoSetDataFromInput('phone')} type="text" placeholder="Телефон*" />
@@ -236,23 +236,23 @@ const Exchange: React.FC = () => {
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
                     data={CURRENCY_LIST}
-                    onChange={memoSetDataFromSelect('toSelected')}
-                    value={formik.values.toSelected}
+                    onChange={memoSetDataFromSelect('coinTo')}
+                    value={formik.values.coinTo}
                   />
-                  <input type="number" value={formik.values.to} readOnly className="reverse" />
+                  <input type="number" value={formik.values.countTo} readOnly className="reverse" />
                 </div>
                 <span>
 
                   &nbsp;
                   {/* min.: 30000
                   {' '}
-                  {formik.values.toSelected.unit}
+                  {formik.values.coinTo.unit}
                   , max.: 4000000
                   {' '}
-                  {formik.values.toSelected.unit} */}
+                  {formik.values.coinTo.unit} */}
                 </span>
                 {
-                  formik.values.toSelected.isBtc ? (
+                  formik.values.coinTo.isBtc ? (
                     <input className={clsx(formik.errors.wallet && 'invalid')} onChange={memoSetDataFromInput('wallet')} type="text" placeholder="Кошелёк получателя*" value={formik.values.wallet} />
                   ) : (
                     <input className={clsx(formik.errors.card && 'invalid')} onChange={memoSetDataFromInput('card')} type="number" placeholder="Номер карты получателя*" value={formik.values.card === null ? '' : formik.values.card} />
@@ -275,25 +275,25 @@ const Exchange: React.FC = () => {
                   <h4>Отдаёте</h4>
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>Сумма:</span>
-                    <p>{`${formik.values.from} ${formik.values.fromSelected.title}`}</p>
+                    <p>{`${formik.values.countFrom} ${formik.values.coinFrom.title}`}</p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.noColumn)}>
-                    <img src={formik.values.fromSelected.img} alt="" />
-                    <p>{formik.values.fromSelected.title || 'N/A'}</p>
+                    <img src={formik.values.coinFrom.img} alt="" />
+                    <p>{formik.values.coinFrom.title || 'N/A'}</p>
                   </div>
                 </div>
                 <div className={classes['calculator-check__row-column']}>
                   <h4>Получаете</h4>
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>Сумма:</span>
-                    <p>{formik.values.to || 'N/A'}</p>
+                    <p>{formik.values.countTo || 'N/A'}</p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.noColumn)}>
-                    <img src={formik.values.toSelected.img} alt="" />
-                    <p>{formik.values.toSelected.title || 'N/A'}</p>
+                    <img src={formik.values.coinTo.img} alt="" />
+                    <p>{formik.values.coinTo.title || 'N/A'}</p>
                   </div>
                   {
-                    formik.values.fromSelected.isBtc ? (
+                    formik.values.coinFrom.isBtc ? (
                       <div className={classes['calculator-check__row-column__item']}>
                         <span>На кошелёк:</span>
                         <p>{formik.values.wallet}</p>
@@ -351,13 +351,13 @@ const Exchange: React.FC = () => {
                 <p>
                   Для осуществления обмена переведите указанную в Вашей заявке сумму в
                   {' '}
-                  {formik.values.fromSelected.title}
+                  {formik.values.coinFrom.title}
                   {' '}
                   на этот кошелек:
                 </p>
                 <div>
                   <img src={CopyImg} alt="" />
-                  <span>{formik.values.fromSelected.wallet}</span>
+                  <span>{formik.values.coinFrom.wallet}</span>
                 </div>
               </div>
               {/* <img src={QrCodeImg} alt="" /> */}
@@ -369,11 +369,11 @@ const Exchange: React.FC = () => {
               <div className={classes['calculator-howToPay__sum']}>
                 <div>
                   <span>Сумма платежа:</span>
-                  <p>{`${formik.values.from} ${formik.values.fromSelected.title}`}</p>
+                  <p>{`${formik.values.countFrom} ${formik.values.coinFrom.title}`}</p>
                 </div>
                 <div>
                   <span>Сумма к получению:</span>
-                  <p>{`${formik.values.to} ${formik.values.toSelected.title}`}</p>
+                  <p>{`${formik.values.countTo} ${formik.values.coinTo.title}`}</p>
                 </div>
               </div>
               <div className={classes['calculator-howToPay__warning']}>
@@ -427,11 +427,11 @@ const Exchange: React.FC = () => {
         <h4>
           Обмен
           {' '}
-          {formik.values.fromSelected.title}
+          {formik.values.coinFrom.title}
           {' '}
           на
           {' '}
-          {formik.values.toSelected.title}
+          {formik.values.coinTo.title}
         </h4>
         <p>Для обмена Вам необходимо выполнить несколько шагов:</p>
         <ul>

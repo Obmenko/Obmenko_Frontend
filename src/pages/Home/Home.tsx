@@ -35,10 +35,10 @@ import { goBlank } from '@/utils/functions/dom';
 import CONTACTS from '@/const/contacts';
 
 type CurrencyData = {
-  fromSelected: CurrencyDataItemWithWallet,
-  toSelected: CurrencyDataItemWithWallet,
-  to: string | number,
-  from: string | number
+  coinFrom: CurrencyDataItemWithWallet,
+  coinTo: CurrencyDataItemWithWallet,
+  countTo: string | number,
+  countFrom: string | number
 }
 
 type CourseData = {
@@ -50,15 +50,15 @@ type CourseData = {
 
 const Home: React.FC = () => {
   const [data, setData] = useState<CurrencyData>({
-    from: 1,
-    fromSelected: CURRENCY_LIST[0],
-    to: 1,
-    toSelected: CURRENCY_LIST[1],
+    countFrom: 1,
+    coinFrom: CURRENCY_LIST[0],
+    countTo: 1,
+    coinTo: CURRENCY_LIST[1],
   });
 
   const [course, setCourse] = useState<CourseData>({
-    from: data.fromSelected.unit,
-    to: data.toSelected.unit,
+    from: data.coinFrom.unit,
+    to: data.coinTo.unit,
     rate: 1,
     feePercent: 0,
   });
@@ -88,26 +88,26 @@ const Home: React.FC = () => {
   ]);
 
   const memoGoToExchange = useCallback(goToExchange, [
-    data.from, data.fromSelected.title, data.to, data.toSelected.title, history,
+    data.countFrom, data.coinFrom.title, data.countTo, data.coinTo.title, history,
   ]);
 
   const memoFromList = useMemo(
-    () => CURRENCY_LIST.filter((el) => el.unit !== data.fromSelected.unit && !el.onlyTo),
-    [data.fromSelected.unit],
+    () => CURRENCY_LIST.filter((el) => el.unit !== data.coinFrom.unit && !el.onlyTo),
+    [data.coinFrom.unit],
   );
 
   useEffect(() => {
     setData({
       ...data,
-      to: +data.from * course.rate,
+      countTo: +data.countFrom * course.rate,
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [course.rate, data.from]);
+  }, [course.rate, data.countFrom]);
 
   useEffect(() => {
-    getExchangePair(data.fromSelected.unit, data.toSelected.unit).then((coinApiData) => {
-      const from = data.fromSelected.unit;
-      const to = data.toSelected.unit;
+    getExchangePair(data.coinFrom.unit, data.coinTo.unit).then((coinApiData) => {
+      const from = data.coinFrom.unit;
+      const to = data.coinTo.unit;
       const feePercent = countFeePercent(from, to);
       setCourse({
         from,
@@ -116,7 +116,7 @@ const Home: React.FC = () => {
         feePercent,
       });
     });
-  }, [data.fromSelected.unit, data.toSelected.unit]);
+  }, [data.coinFrom.unit, data.coinTo.unit]);
 
   return (
     <div className={classes.root}>
@@ -145,29 +145,29 @@ const Home: React.FC = () => {
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
                   data={memoFromList}
-                  onChange={memoSetDataFromSelect('fromSelected')}
-                  value={data.fromSelected}
+                  onChange={memoSetDataFromSelect('coinFrom')}
+                  value={data.coinFrom}
                 />
-                <input type="number" className="reverse" value={data.from} onChange={memoSetDataFromInput('from')} />
+                <input type="number" className="reverse" value={data.countFrom} onChange={memoSetDataFromInput('countFrom')} />
               </div>
               <div className={classes['content-calculator__item-info']}>
                 <p>
                   <span>Курс обмена:</span>
                   1
                   {' '}
-                  {data.fromSelected.unit}
+                  {data.coinFrom.unit}
                   {' '}
                   =
-                  {+data.from * course.rate}
+                  {+data.countFrom * course.rate}
                   {' '}
-                  {data.toSelected.unit}
+                  {data.coinTo.unit}
                 </p>
                 <p>
                   <span>Резерв:</span>
                   {' '}
-                  {data.toSelected.reserve}
+                  {data.coinTo.reserve}
                   {' '}
-                  {data.toSelected.unit}
+                  {data.coinTo.unit}
                   {' '}
                   <span
                     className={classes['content-calculator__item-info__link']}
@@ -184,16 +184,16 @@ const Home: React.FC = () => {
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
                   data={CURRENCY_LIST}
-                  onChange={memoSetDataFromSelect('toSelected')}
-                  value={data.toSelected}
+                  onChange={memoSetDataFromSelect('coinTo')}
+                  value={data.coinTo}
                 />
-                <input type="number" value={data.to} readOnly className="reverse" />
+                <input type="number" value={data.countTo} readOnly className="reverse" />
               </div>
               {/* <div className={classes['content-calculator__item-reserve']}>
                 <span>
                   max.: 4000000
                   {' '}
-                  {data.toSelected.unit}
+                  {data.coinTo.unit}
                 </span>
               </div> */}
               {/* <div className={classes['content-calculator__item-info']}>
@@ -346,11 +346,11 @@ const Home: React.FC = () => {
   function goToExchange(): void {
     const qs = new URLSearchParams();
 
-    const fromTypeIndex = CURRENCY_LIST.findIndex((el) => el.title === data.fromSelected.title);
-    const toTypeIndex = CURRENCY_LIST.findIndex((el) => el.title === data.toSelected.title);
+    const fromTypeIndex = CURRENCY_LIST.findIndex((el) => el.title === data.coinFrom.title);
+    const toTypeIndex = CURRENCY_LIST.findIndex((el) => el.title === data.coinTo.title);
 
-    qs.set('from', data.from.toString());
-    qs.set('to', data.to.toString());
+    qs.set('from', data.countFrom.toString());
+    qs.set('to', data.countTo.toString());
     if (fromTypeIndex !== -1) qs.set('from_type', fromTypeIndex.toString());
     if (toTypeIndex !== -1)qs.set('to_type', toTypeIndex.toString());
 
