@@ -94,7 +94,7 @@ const Header: FC<IProps> = ({
               <>
                 <div
                   className={clsx(classes.login, 'noMobile')}
-                  onClick={() => history.push(ROUTES.ACCOUNT)}
+                  onClick={() => history.push(ROUTES.ACCOUNT_REQUESTS)}
                 >
                   <img src={AccountImg} alt="" />
                   <span>{user?.username || 'N/A'}</span>

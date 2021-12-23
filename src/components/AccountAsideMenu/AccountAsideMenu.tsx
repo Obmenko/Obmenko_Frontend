@@ -4,8 +4,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useFormik } from 'formik';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router';
 import clsx from 'clsx';
 import { ACCOUNT_NAVS } from '@/const/routes';

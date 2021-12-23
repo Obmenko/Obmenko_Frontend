@@ -150,7 +150,7 @@ const Exchange: React.FC = () => {
   const memoSetExchangeDataFromSelect = useCallback(handleSetExchangeDataFromSelect, [exchangeFormik]);
   const memoSetUserDataFromInput = useCallback(handleSetUserDataFromInput, [userFormik]);
 
-  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, requestId, token, userFormik.values]);
+  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, requestId, token, user, userFormik]);
 
   const memoFromList = useMemo(
     () => CURRENCY_LIST.filter((el) => el.unit !== exchangeFormik.values.coinFrom.unit && !el.onlyTo),
@@ -165,18 +165,6 @@ const Exchange: React.FC = () => {
     exchangeFormik.setFieldValue('countTo', +exchangeFormik.values.countFrom * course.rate);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exchangeFormik.values.countFrom, course.rate]);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    if (requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM) {
-      timer = setTimeout(() => {
-        setRequestStatus(RequestStatusEnum.CONFIRMED);
-      }, 5 * 60 * 1000);
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [requestStatus]);
 
   useEffect(() => {
     getExchangePair(exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit).then((coinApiData) => {
@@ -232,7 +220,7 @@ const Exchange: React.FC = () => {
               Как только Ваши средства будут зачислены мы произведем оплату на указанные в заявке реквизиты. В связи с высокой волатильностью рынка, курс обновляется каждые 5 секунд.
             </p>
             <p className={classes.black}>Время для отправки криптовалюты составляет 15 минут, после этого времени заявка считается не актуальной и необходимо создать новую. Обращаем Ваше внимание, что курс фиксируется на момент зачисления криптовалюты на наш кошелек.</p>
-            <p className={classes.red}>Внимание! Будет проведена AML-проверка Вашей транзакции. При риске 90% и более заявка обрабатывается согласно правил п. 5.22. (потребуется дополнительная верификация)</p>
+            {/* <p className={classes.red}>Внимание! Будет проведена AML-проверка Вашей транзакции. При риске 90% и более заявка обрабатывается согласно правил п. 5.22. (потребуется дополнительная верификация)</p> */}
           </div>
         </div>
       </Container>
@@ -520,10 +508,10 @@ const Exchange: React.FC = () => {
             setSubmitError('Произошла ошибка при создании заявки');
           }
         } else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
+          setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
           await updateRequest(token, requestId || '', {
             status: RemoteRequestStatusEnum.PROCESSING,
           });
-          setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
         }
       } else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.FORM);
       else try { history.replace('/'); } catch (e) { console.log(e); }

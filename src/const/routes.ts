@@ -27,16 +27,16 @@ export const NAVS = [
 
 export const ACCOUNT_NAVS = [
   {
+    path: ROUTES.ACCOUNT_REQUESTS,
+    title: 'Ваши операции',
+  },
+  {
     path: ROUTES.ACCOUNT,
     title: 'Личный кабинет',
   },
   {
     path: ROUTES.ACCOUNT_PRIVACY_SETTINGS,
     title: 'Настройки безопасности',
-  },
-  {
-    path: ROUTES.ACCOUNT_REQUESTS,
-    title: 'Ваши операции',
   },
   {
     path: ROUTES.RULES,
