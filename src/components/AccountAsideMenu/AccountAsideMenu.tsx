@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-key */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -10,6 +11,7 @@ import clsx from 'clsx';
 import { ACCOUNT_NAVS } from '@/const/routes';
 import ArrowRightBlue from '@/assets/img/arrow_right_blue.svg';
 import classes from './AccountAsideMenu.module.scss';
+import SaleImg from '@/assets/img/sale.svg';
 
 export enum AuthModalModeEnum {
   LOGIN = 'login',
@@ -17,17 +19,24 @@ export enum AuthModalModeEnum {
 }
 
 type IProps = {
-  activePath: string
+  activePath: string,
+  isSaleImg?: boolean
 }
 
 const AccountAsideMenu: React.FC<IProps> = ({
   activePath,
+  isSaleImg,
 }) => {
   const history = useHistory();
 
   const memoGo = useCallback(go, [history]);
   return (
     <div className={classes.root}>
+      {
+        isSaleImg && (
+          <img src={SaleImg} alt="" />
+        )
+      }
       {
         ACCOUNT_NAVS.map((navItem) => (
           <div

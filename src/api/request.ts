@@ -6,9 +6,10 @@ import { getAuthHeaders } from './user';
 
 const API_BASE = process.env.REACT_APP_API_BASE;
 
-export enum RequestStatusEnum {
+export enum RemoteRequestStatusEnum {
   NEW = 'new',
   PAYED = 'payed',
+  PROCESSING = 'processing',
   CANCELLED = 'cancelled',
   REJECTED = 'rejected'
 }
@@ -20,7 +21,7 @@ export type RequestType = {
   countTo: string | number,
   countFrom: string | number
   userId: string;
-  status: RequestStatusEnum,
+  status: RemoteRequestStatusEnum,
   wallet?: string,
   card?: string,
   createdAt?: number;
@@ -44,22 +45,18 @@ export const createRequest = (
 
 export const deleteRequest = (
   token: string,
-  data: ICreateRequest,
 ): Promise<RequestType> => axios({
   method: 'DELETE',
   url: `${API_BASE}/request`,
   headers: getAuthHeaders(token),
-  data,
 }).then((res) => res.data);
 
 export const getRequestList = (
   token: string,
-  data: ICreateRequest,
-): Promise<RequestType> => axios({
+): Promise<RequestType[]> => axios({
   method: 'GET',
   url: `${API_BASE}/request`,
   headers: getAuthHeaders(token),
-  data,
 }).then((res) => res.data);
 
 export const getRequestById = (
@@ -69,4 +66,15 @@ export const getRequestById = (
   method: 'GET',
   url: `${API_BASE}/request/${id}`,
   headers: getAuthHeaders(token),
+}).then((res) => res.data);
+
+export const updateRequest = (
+  token: string,
+  id: string,
+  data: IUpdateRequest,
+): Promise<RequestType> => axios({
+  method: 'PUT',
+  url: `${API_BASE}/request/${id}`,
+  headers: getAuthHeaders(token),
+  data,
 }).then((res) => res.data);

@@ -14,6 +14,7 @@ import { useHistory, useParams } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { useFormik } from 'formik';
 import _ from 'lodash';
+import { DateTime } from 'luxon';
 import classes from './Exchange.module.scss';
 import BgOverlayImg3 from '@/assets/img/bg_overlay_3.png';
 import ArrowRightWhiteShortImg from '@/assets/img/arrow_right_white_short.svg';
@@ -33,7 +34,9 @@ import {
 import { CourseData } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
-import { createRequest, ICreateRequest } from '@/api/request';
+import {
+  createRequest, getRequestById, ICreateRequest, RemoteRequestStatusEnum, RequestType, updateRequest,
+} from '@/api/request';
 import { IUpdateUser, UserType } from '@/api/user';
 import AuthContext from '@/context/auth';
 
@@ -69,7 +72,10 @@ type UserFormErrors = {
 
 const Exchange: React.FC = () => {
   const memoQueryString = useMemo(() => new URLSearchParams(window.location.search), []);
+  const [request, setRequest] = useState<RequestType | null>(null);
 
+  const { id: paramRequestId } = useParams<ParamsType>();
+  const [requestId, setRequestId] = useState<string | null>(paramRequestId);
   const [submitError, setSubmitError] = useState<string>('');
 
   const history = useHistory();
@@ -119,7 +125,7 @@ const Exchange: React.FC = () => {
       }
       return errors;
     },
-    onSubmit: () => {
+    onSubmit: async () => {
       if (_.isEmpty(exchangeFormik.errors) && _.isEmpty(userFormik.errors)) {
         setMode(ExchangeModeEnum.CHECK);
       }
@@ -133,8 +139,6 @@ const Exchange: React.FC = () => {
     feePercent: 0,
   });
 
-  const { id: requestId } = useParams<ParamsType>();
-
   const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.FORM : ExchangeModeEnum.HOW_TO_PAY);
   const [requestStatus, setRequestStatus] = useState<RequestStatusEnum>(RequestStatusEnum.WAITING_FOR_CLIENT);
   const { token } = useContext(AuthContext);
@@ -142,18 +146,20 @@ const Exchange: React.FC = () => {
   const memoSetExchangeDataFromInput = useCallback(handleSetExchangeDataFromInput, [exchangeFormik]);
   const memoSetExchangeDataFromSelect = useCallback(handleSetExchangeDataFromSelect, [exchangeFormik]);
   const memoSetUserDataFromInput = useCallback(handleSetUserDataFromInput, [userFormik]);
-  const memoSetUserDataFromSelect = useCallback(handleSetUserDataFromSelect, [userFormik]);
 
   const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, token]);
 
-  const memoRequestId = useMemo(() => requestId || uuidv4().split('-').slice(0, 3).join('-'), [requestId]);
   const memoFromList = useMemo(
     () => CURRENCY_LIST.filter((el) => el.unit !== exchangeFormik.values.coinFrom.unit && !el.onlyTo),
     [exchangeFormik.values.coinFrom.unit],
   );
+  const memoCreationDate = useMemo(() => DateTime
+    .fromMillis(request?.createdAt || 0)
+    .setLocale('ru')
+    .toLocaleString(DateTime.DATETIME_SHORT), [request?.createdAt]);
 
   useEffect(() => {
-    exchangeFormik.setFieldValue('to', +exchangeFormik.values.countFrom * course.rate);
+    exchangeFormik.setFieldValue('countTo', +exchangeFormik.values.countFrom * course.rate);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exchangeFormik.values.countFrom, course.rate]);
 
@@ -177,11 +183,16 @@ const Exchange: React.FC = () => {
       setCourse({
         from,
         to,
-        rate: coinApiData.rate * (1 + feePercent / 100),
+        rate: coinApiData.rate * (1 - feePercent / 100),
         feePercent,
       });
     });
   }, [exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit]);
+
+  useEffect(() => {
+    console.log('object');
+    if (requestId) getRequestById(token, requestId).then((data) => setRequest(data));
+  }, [requestId, token]);
 
   const memoRequestStatusValue = useMemo(
     () => (requestStatus === RequestStatusEnum.WAITING_FOR_CLIENT ? 33 : requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM ? 66 : 100),
@@ -192,12 +203,16 @@ const Exchange: React.FC = () => {
     <div className={classes.root}>
       <Container className={classes.start} wrapperClassName={classes['start-wrapper']}>
         <div className={classes.head}>
-          <img src={ArrowLeftGreyShortImg} alt="" onClick={memoGoToMode('prev')} />
+          {
+            mode !== ExchangeModeEnum.CHECK && (
+              <img src={ArrowLeftGreyShortImg} alt="" onClick={memoGoToMode('prev')} />
+            )
+          }
           <h3>
             {
               mode === ExchangeModeEnum.FORM ? `Обмен ${exchangeFormik.values.coinFrom.title} на ${exchangeFormik.values.coinTo.title}`
                 : mode === ExchangeModeEnum.CHECK ? `Обмен ${exchangeFormik.values.coinFrom.title} на ${exchangeFormik.values.coinTo.title}`
-                  : `Заявка ID ${memoRequestId}`
+                  : `Заявка ID ${requestId}`
             }
           </h3>
         </div>
@@ -310,7 +325,11 @@ const Exchange: React.FC = () => {
                   <h4>Получаете</h4>
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>Сумма:</span>
-                    <p>{exchangeFormik.values.countTo || 'N/A'}</p>
+                    <p>
+                      {exchangeFormik.values.countTo || 'N/A'}
+                      {' '}
+                      {exchangeFormik.values.coinTo.title || 'N/A'}
+                    </p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.noColumn)}>
                     <img src={exchangeFormik.values.coinTo.img} alt="" />
@@ -393,11 +412,11 @@ const Exchange: React.FC = () => {
               <div className={classes['calculator-howToPay__sum']}>
                 <div>
                   <span>Сумма платежа:</span>
-                  <p>{`${exchangeFormik.values.countFrom} ${exchangeFormik.values.coinFrom.title}`}</p>
+                  <p>{`${request?.countFrom} ${request?.coinFrom}`}</p>
                 </div>
                 <div>
                   <span>Сумма к получению:</span>
-                  <p>{`${exchangeFormik.values.countTo} ${exchangeFormik.values.coinTo.title}`}</p>
+                  <p>{`${request?.countTo} ${request?.coinTo}`}</p>
                 </div>
               </div>
               <div className={classes['calculator-howToPay__warning']}>
@@ -410,7 +429,7 @@ const Exchange: React.FC = () => {
               <div className={classes['calculator-howToPay__info']}>
                 <div>
                   <span>Время создания:</span>
-                  <p>29.11.2021, 03:45 МСК</p>
+                  <p>{memoCreationDate}</p>
                 </div>
                 <div>
                   <span>Статус заявки:</span>
@@ -476,7 +495,8 @@ const Exchange: React.FC = () => {
         } else if (mode === ExchangeModeEnum.CHECK) {
           try {
             try {
-              const res = await createRequest(token, exchangeFormik.values);
+              const { _id: requestId } = await createRequest(token, exchangeFormik.values);
+              setRequestId(requestId);
               setMode(ExchangeModeEnum.HOW_TO_PAY);
             } catch (e) {
               console.error();
@@ -486,6 +506,9 @@ const Exchange: React.FC = () => {
             setSubmitError('Произошла ошибка при создании заявки');
           }
         } else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
+          await updateRequest(token, requestId || '', {
+            status: RemoteRequestStatusEnum.PROCESSING,
+          });
           setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
         }
       } else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.FORM);
@@ -493,11 +516,6 @@ const Exchange: React.FC = () => {
     };
   }
 
-  function handleSetUserDataFromSelect(key: keyof UserFormData): { (value: CurrencyDataItemWithWallet | number | null): void } {
-    return (value) => {
-      userFormik.setFieldValue(key, value);
-    };
-  }
   function handleSetUserDataFromInput(key: keyof UserFormData): { (event: React.ChangeEvent<HTMLInputElement>): void } {
     return (event) => {
       const { value } = event.target;

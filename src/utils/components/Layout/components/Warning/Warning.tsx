@@ -19,31 +19,27 @@ type IProps = {
 const Warning: FC<IProps> = ({
   setWarningOpenState,
   isWarningOpen,
-}) => {
-  console.log('');
+}) => (
+  <>
+    <Container
+      className={classes.root}
+      wrapperClassName={classes['root-wrapper']}
+    >
+      <p>Cервис работает КРУГЛОСУТОЧНО в штатном режиме</p>
+      <p>
+        По всем вопросам обращайтесь к оператору. ВНИМАНИЕ! Telegram только по ссылке
+        {' '}
+        <a href={CONTACTS.telegramLink} target="_blank" rel="noreferrer">Telegram</a>
+        , множество поддельных аккаунтов.
+      </p>
+    </Container>
+  </>
+);
 
-  return (
-    <>
-      <Container
-        className={classes.root}
-        wrapperClassName={classes['root-wrapper']}
-      >
-        <p>Cервис работает КРУГЛОСУТОЧНО в штатном режиме</p>
-        <p>
-          По всем вопросам обращайтесь к оператору. ВНИМАНИЕ! Telegram только по ссылке
-          {' '}
-          <a href={CONTACTS.telegramLink} target="_blank" rel="noreferrer">Telegram</a>
-          , множество поддельных аккаунтов.
-        </p>
-      </Container>
-    </>
-  );
-
-  // function handlesetWarningOpenState(value?: boolean) {
-  //   return () => {
-  //     setWarningOpenState(value !== undefined ? value : !isWarningOpen);
-  //   };
-  // }
-};
+// function handlesetWarningOpenState(value?: boolean) {
+//   return () => {
+//     setWarningOpenState(value !== undefined ? value : !isWarningOpen);
+//   };
+// }
 
 export default Warning;

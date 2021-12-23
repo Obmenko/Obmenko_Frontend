@@ -42,7 +42,6 @@ const Layout: FC<PropsType> = ({ children }) => {
     if (token) {
       setCookie(CookiesMapEnum.AUTH_TOKEN, token);
       getUser(token).then((data) => {
-        console.log(data);
         setUser(data);
       });
     } else {

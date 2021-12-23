@@ -20,7 +20,7 @@ interface PropsType {
   onChange: {(value: OptionType): void}
 }
 
-type OptionType = CurrencyDataItemWithWallet;
+type OptionType = any;
 
 const Option: FC<OptionType> = ({
   img,
