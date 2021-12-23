@@ -1,5 +1,33 @@
+.root {
+  min-width: initial;
+  padding: 20px;
+  padding-top: 40px;
+  padding-bottom: 32px;
+}
+
 .content {
   width: 100%;
   min-width: initial;
   max-width: initial;
+  & > h4 {
+    font-size: 24px;
+  }
+}
+
+.cross {
+  top: 20px;
+  right: 20px;
+  width: 30px;
+}
+
+.button {
+  margin-top: 20px;
+  padding: 15px !important;
+  width: 70%;
+}
+
+.changeMode {
+  & > * {
+    font-size: 14px !important;
+  }
 }

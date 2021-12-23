@@ -61,7 +61,7 @@ const Header: FC<IProps> = ({
             !user && (
               <>
                 <div
-                  className={clsx(classes.login, 'noMobile')}
+                  className={clsx(classes.login)}
                   onClick={() => openModal(ModalTypeEnum.AUTH, {
                     mode: AuthModalModeEnum.LOGIN,
                   })()}

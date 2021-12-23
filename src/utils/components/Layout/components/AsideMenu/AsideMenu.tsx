@@ -43,6 +43,7 @@ const AsideMenu: FC<IProps> = ({
         <img src={CrossGreyImg} alt="" onClick={onClose} />
       </div>
       <div className={classes.nav}>
+        <span onClick={memoGoTo(ROUTES.ACCOUNT)}>Личный кабинет</span>
         <span onClick={memoGoTo(ROUTES.HOME)}>Главная</span>
         <span onClick={memoGoTo(ROUTES.RULES)}>Правила сайта</span>
         <span onClick={memoGoTo(ROUTES.FAQ)}>FAQ</span>

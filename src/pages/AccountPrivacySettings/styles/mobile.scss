@@ -1,0 +1,21 @@
+.root {
+  flex-direction: column-reverse;
+  padding-top: 48px;
+  padding-bottom: 64px;
+  & > img {
+    display: none;
+  }
+}
+
+.form {
+  flex-basis: initial;
+  margin-bottom: 40px;
+  padding: 48px 32px;
+  & > h4 {
+    font-size: 24px;
+  }
+}
+
+.button {
+  margin-top: 24px;
+}
