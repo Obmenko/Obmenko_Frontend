@@ -117,9 +117,9 @@ const Exchange: React.FC = () => {
     validate: (values): ExchangeFormErrors => {
       const errors: ExchangeFormErrors = {};
 
-      if (values.coinTo.isBtc && !values.wallet) {
-        errors.wallet = 'Не указан кошелёк';
-      }
+      // if (values.coinTo.isBtc && !values.wallet) {
+      //   errors.wallet = 'Не указан кошелёк';
+      // }
       if (!values.coinTo.isBtc && !values.card) {
         errors.card = 'Не указан номер карты';
       }
@@ -147,7 +147,7 @@ const Exchange: React.FC = () => {
   const memoSetExchangeDataFromSelect = useCallback(handleSetExchangeDataFromSelect, [exchangeFormik]);
   const memoSetUserDataFromInput = useCallback(handleSetUserDataFromInput, [userFormik]);
 
-  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, token]);
+  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, requestId, token]);
 
   const memoFromList = useMemo(
     () => CURRENCY_LIST.filter((el) => el.unit !== exchangeFormik.values.coinFrom.unit && !el.onlyTo),
@@ -258,7 +258,7 @@ const Exchange: React.FC = () => {
                 </span>
                 <input className={clsx(userFormik.errors.email && 'invalid')} onChange={memoSetUserDataFromInput('email')} type="text" placeholder="E-mail*" />
                 <input className={clsx(userFormik.errors.phone && 'invalid')} onChange={memoSetUserDataFromInput('phone')} type="text" placeholder="Телефон*" />
-                <input onChange={memoSetUserDataFromInput('telegram')} type="text" placeholder="Telegram" />
+                {/* <input onChange={memoSetUserDataFromInput('telegram')} type="text" placeholder="Telegram" /> */}
                 {/* <div className={classes['calculator-form__item-captcha']}>
                   <div>
                     <img src={CaptchaImg1} alt="" />
@@ -292,12 +292,12 @@ const Exchange: React.FC = () => {
                 </span>
                 {
                   exchangeFormik.values.coinTo.isBtc ? (
-                    <input className={clsx(exchangeFormik.errors.wallet && 'invalid')} onChange={memoSetExchangeDataFromInput('wallet')} type="text" placeholder="Кошелёк получателя*" value={exchangeFormik.values.wallet} />
+                    <input className={clsx(exchangeFormik.errors.wallet && 'invalid')} onChange={memoSetExchangeDataFromInput('wallet')} type="text" placeholder="Кошелёк получателя" value={exchangeFormik.values.wallet} />
                   ) : (
                     <input className={clsx(exchangeFormik.errors.card && 'invalid')} onChange={memoSetExchangeDataFromInput('card')} type="number" placeholder="Номер карты получателя*" value={exchangeFormik.values.card === null ? '' : exchangeFormik.values.card} />
                   )
                 }
-                <input className={clsx(userFormik.errors.fullname && 'invalid')} onChange={memoSetUserDataFromInput('fullname')} type="text" placeholder="ФИО получателя" />
+                {/* <input className={clsx(userFormik.errors.fullname && 'invalid')} onChange={memoSetUserDataFromInput('fullname')} type="text" placeholder="ФИО получателя" /> */}
                 <div className={classes.checkBox}>
                   <Checkbox defaultChecked />
                   <span>Не запоминать введённые данные</span>
@@ -339,7 +339,7 @@ const Exchange: React.FC = () => {
                     exchangeFormik.values.coinFrom.isBtc ? (
                       <div className={classes['calculator-check__row-column__item']}>
                         <span>На кошелёк:</span>
-                        <p>{exchangeFormik.values.wallet}</p>
+                        <p>{exchangeFormik.values.wallet || 'N/A'}</p>
                       </div>
                     ) : (
                       <div className={classes['calculator-check__row-column__item']}>
