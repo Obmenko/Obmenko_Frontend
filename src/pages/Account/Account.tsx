@@ -38,8 +38,6 @@ type FormDataErrors = {
 }
 
 const Account: React.FC<IProps> = () => {
-  console.log('object');
-
   const { token } = useContext(AuthContext);
   const { user } = useContext(UserContext);
 

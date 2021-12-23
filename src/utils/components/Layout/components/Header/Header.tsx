@@ -4,14 +4,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {
-  FC, useCallback, useContext,
+  FC, useCallback, useContext, useEffect, useMemo,
 } from 'react';
 
 import clsx from 'clsx';
-import { useHistory } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
 import AccountImg from '@/assets/img/account.png';
+import LogoImg from '@/assets/img/logo.png';
 import BurgerImg from '@/assets/img/burger.svg';
 import ExitImg from '@/assets/img/exit.svg';
 import CONTACTS from '@/const/contacts';
@@ -39,8 +40,10 @@ const Header: FC<IProps> = ({
   const { user, setUser } = useContext(UserContext);
   const { setToken } = useContext(AuthContext);
   const history = useHistory();
+  const routeMatch = useRouteMatch('/');
 
-  const memoOnExit = useCallback(onExit, [closeAllModal, setToken, setUser]);
+  const memoOnExit = useCallback(onExit, [closeAllModal, history, setToken, setUser]);
+  const needLogo = useMemo(() => !routeMatch?.isExact, [routeMatch?.isExact]);
 
   return (
     <>
@@ -51,11 +54,17 @@ const Header: FC<IProps> = ({
         <div className={clsx(classes.burger, 'onlyMobile')} onClick={memoHandleSetAsideMenuOpenState()}>
           <img src={BurgerImg} alt="" />
         </div>
-        <div className={clsx(classes.contacts, 'noMobile')}>
-          <a href={`mailto:${CONTACTS.email}`}>{CONTACTS.email}</a>
-          <div />
-          <p>Сервис работает круглосуточно.</p>
-        </div>
+        {
+          needLogo ? (
+            <img src={LogoImg} alt="" className="noMobile" onClick={() => history.push('/')} />
+          ) : (
+            <div className={clsx(classes.contacts, 'noMobile')}>
+              <a href={`mailto:${CONTACTS.email}`}>{CONTACTS.email}</a>
+              <div />
+              <p>Сервис работает круглосуточно.</p>
+            </div>
+          )
+        }
         <div className={classes.account}>
           {
             !user && (
@@ -117,3 +126,6 @@ const Header: FC<IProps> = ({
 };
 
 export default Header;
+function useNavigate() {
+  throw new Error('Function not implemented.');
+}

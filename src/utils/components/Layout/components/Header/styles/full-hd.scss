@@ -8,6 +8,9 @@
   &-wrapper {
     background-color: $color-grey-text;
   }
+  & > img {
+    cursor: pointer;
+  }
 }
 
 .contacts {

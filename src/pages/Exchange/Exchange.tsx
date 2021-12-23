@@ -37,7 +37,7 @@ import { countFeePercent } from '@/utils/functions/rates';
 import {
   createRequest, getRequestById, ICreateRequest, RemoteRequestStatusEnum, RequestType, updateRequest,
 } from '@/api/request';
-import { IUpdateUser, UserType } from '@/api/user';
+import { IUpdateUser } from '@/api/user';
 import AuthContext from '@/context/auth';
 import UserContext from '@/context/user';
 
@@ -150,7 +150,7 @@ const Exchange: React.FC = () => {
   const memoSetExchangeDataFromSelect = useCallback(handleSetExchangeDataFromSelect, [exchangeFormik]);
   const memoSetUserDataFromInput = useCallback(handleSetUserDataFromInput, [userFormik]);
 
-  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, requestId, token]);
+  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, requestId, token, userFormik.values]);
 
   const memoFromList = useMemo(
     () => CURRENCY_LIST.filter((el) => el.unit !== exchangeFormik.values.coinFrom.unit && !el.onlyTo),
@@ -497,21 +497,26 @@ const Exchange: React.FC = () => {
     return async () => {
       if (direction === 'next') {
         if (mode === ExchangeModeEnum.FORM) {
-          exchangeFormik.submitForm();
+          if (user || (userFormik.values.email && userFormik.values.phone)) exchangeFormik.submitForm();
+          else userFormik.validateForm();
         } else if (mode === ExchangeModeEnum.CHECK) {
           try {
             try {
+              // if (!user || (!userFormik.values.email || !userFormik.values.phone)) {
+              //   userFormik.validateForm();
+              //   return;
+              // }
               const { _id: requestId } = await createRequest(token, {
                 ...exchangeFormik.values,
                 ...userFormik.values,
               });
+              history.replace(`/exchange/${requestId}`);
               setRequestId(requestId);
               setMode(ExchangeModeEnum.HOW_TO_PAY);
             } catch (e) {
               console.error();
             }
           } catch (e) {
-            console.log(e);
             setSubmitError('Произошла ошибка при создании заявки');
           }
         } else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
