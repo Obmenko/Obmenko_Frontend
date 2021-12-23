@@ -39,6 +39,7 @@ import {
 } from '@/api/request';
 import { IUpdateUser, UserType } from '@/api/user';
 import AuthContext from '@/context/auth';
+import UserContext from '@/context/user';
 
 type ParamsType = {
   id: string;
@@ -80,12 +81,14 @@ const Exchange: React.FC = () => {
 
   const history = useHistory();
 
+  const { user } = useContext(UserContext);
+
   const userFormik = useFormik<UserFormData>({
     initialValues: {
-      email: '',
-      phone: '',
-      telegram: '',
-      fullname: '',
+      email: user?.email || '',
+      phone: user?.phone || '',
+      telegram: user?.telegram || '',
+      fullname: user?.fullname || '',
     },
     validate: (values): UserFormErrors => {
       const errors: UserFormErrors = {};
@@ -190,7 +193,6 @@ const Exchange: React.FC = () => {
   }, [exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit]);
 
   useEffect(() => {
-    console.log('object');
     if (requestId) getRequestById(token, requestId).then((data) => setRequest(data));
   }, [requestId, token]);
 
@@ -198,6 +200,10 @@ const Exchange: React.FC = () => {
     () => (requestStatus === RequestStatusEnum.WAITING_FOR_CLIENT ? 33 : requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM ? 66 : 100),
     [requestStatus],
   );
+
+  // useEffect(() => {
+  //   user
+  // }, [])
 
   return (
     <div className={classes.root}>
@@ -256,8 +262,8 @@ const Exchange: React.FC = () => {
                   {' '}
                   {exchangeFormik.values.coinTo.unit}
                 </span>
-                <input className={clsx(userFormik.errors.email && 'invalid')} onChange={memoSetUserDataFromInput('email')} type="text" placeholder="E-mail*" />
-                <input className={clsx(userFormik.errors.phone && 'invalid')} onChange={memoSetUserDataFromInput('phone')} type="text" placeholder="Телефон*" />
+                <input className={clsx(userFormik.errors.email && 'invalid')} value={userFormik.values.email} onChange={memoSetUserDataFromInput('email')} type="text" placeholder="E-mail*" />
+                <input className={clsx(userFormik.errors.phone && 'invalid')} value={userFormik.values.phone} onChange={memoSetUserDataFromInput('phone')} type="text" placeholder="Телефон*" />
                 {/* <input onChange={memoSetUserDataFromInput('telegram')} type="text" placeholder="Telegram" /> */}
                 {/* <div className={classes['calculator-form__item-captcha']}>
                   <div>
@@ -363,11 +369,11 @@ const Exchange: React.FC = () => {
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
                     <span>E-mail:</span>
-                    <p>{userFormik.values.email || 'N/A'}</p>
+                    <p>{userFormik.values.email || user?.email || 'N/A'}</p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
                     <span>Telegram:</span>
-                    <p>{userFormik.values.telegram || 'N/A'}</p>
+                    <p>{userFormik.values.telegram || user?.telegram || 'N/A'}</p>
                   </div>
                 </div>
                 <div className={classes['calculator-check__row-column']}>

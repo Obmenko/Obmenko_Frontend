@@ -104,6 +104,7 @@ const Header: FC<IProps> = ({
 
   function onExit() {
     closeAllModal()();
+    history.push(ROUTES.HOME);
     setUser(null);
     setToken('');
   }
