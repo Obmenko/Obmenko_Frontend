@@ -9,11 +9,13 @@ import '@/assets/styles/index.scss';
 import { Ripple } from 'react-spinners-css';
 import Layout from '@/utils/components/Layout';
 import { ROUTES } from '@/const/routes';
+import { ProtectedRoute } from './utils/components/ProtectedRoute';
 
 const HomePage = lazy(() => import('@/pages/Home'));
 const ExchangePage = lazy(() => import('@/pages/Exchange'));
 const FAQPage = lazy(() => import('@/pages/FAQ'));
 const RulesPage = lazy(() => import('@/pages/Rules'));
+const AccountPage = lazy(() => import('@/pages/Account'));
 
 const App: FC = () => {
   console.log('');
@@ -45,7 +47,8 @@ const App: FC = () => {
           )}
         >
           <Switch>
-            <Route path={ROUTES.EXCHANGE} component={ExchangePage} />
+            <ProtectedRoute path={ROUTES.EXCHANGE} component={ExchangePage} />
+            <ProtectedRoute path={ROUTES.ACCOUNT} exact component={AccountPage} />
             <Route path={ROUTES.HOME} exact component={HomePage} />
             <Route path={ROUTES.FAQ} exact component={FAQPage} />
             <Route path={ROUTES.RULES} exact component={RulesPage} />

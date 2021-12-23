@@ -20,7 +20,8 @@ export type ModalType = ModalTypeOptions & {
 
 type ModalContextType = {
   modalList: ModalType[],
-  openModal: { (type: ModalTypeEnum, data: ModalDataUnion, onClose?: { (): void }): () => void },
+  openModal: { (type: ModalTypeEnum, data: ModalDataUnion, onClose?: { (): void }):
+  (options?: ModalTypeOptions) => void },
   closeModal: { (type: ModalTypeEnum): () => void },
   closeAllModal: { (): () => void }
 }

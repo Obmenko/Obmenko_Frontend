@@ -1,33 +1,59 @@
 import axios from 'axios';
-import { CurrencyDataItemWithWallet } from '@/const/currencies_list';
-import { CourseData } from '@/types/exchange';
+import { HeadersMapEnum } from '@/types/config';
 
-const API_BASE = process.env.REACT_APP_API_TG_BASE;
+const API_BASE = process.env.REACT_APP_API_BASE;
 
-type OCreateRequest = {
-  message: string
-  success: boolean
+export type UserType = {
+  _id: string,
+  token: string,
+  email: string,
+  username: string,
+  fullname?: string,
+  telegram?: string,
+  phone?: string,
 }
 
-export type ICreateRequest = {
-  coinFrom: CurrencyDataItemWithWallet,
-  coinTo: CurrencyDataItemWithWallet,
-  countTo: string | number,
-  countFrom: string | number
-  card: number | null;
-  wallet: string;
-  phone: number | null;
-  email: string;
-  telegram: string;
-  fullname: string;
-  course: CourseData
+export const getAuthHeaders = (token: string) => ({
+  [HeadersMapEnum.AUTH_TOKEN]: token,
+});
+
+export type ICreateUser = Pick<UserType, 'email' | 'username'> & { password: string }
+export type IUpdateUser = Partial<Omit<UserType, 'token' | 'password' | '_id'>>
+export type IUserAuth = {
+  email: string,
+  password: string
 }
 
-/* eslint-disable import/prefer-default-export */
-export const createRequest = (
-  data: ICreateRequest,
-): Promise<OCreateRequest> => axios({
+export const getUser = (
+  token: string,
+): Promise<UserType> => axios({
+  method: 'GET',
+  url: `${API_BASE}/user`,
+  headers: getAuthHeaders(token),
+}).then((res) => res.data);
+
+export const createUser = (
+  data: ICreateUser,
+): Promise<UserType> => axios({
   method: 'POST',
-  url: `${API_BASE}/request`,
+  url: `${API_BASE}/user`,
+  data,
+}).then((res) => res.data);
+
+export const updateUser = (
+  token: string,
+  data: IUpdateUser,
+): Promise<UserType> => axios({
+  method: 'PUT',
+  url: `${API_BASE}/user`,
+  headers: getAuthHeaders(token),
+  data,
+}).then((res) => res.data);
+
+export const authUser = (
+  data: IUserAuth,
+): Promise<UserType> => axios({
+  method: 'POST',
+  url: `${API_BASE}/user/auth`,
   data,
 }).then((res) => res.data);

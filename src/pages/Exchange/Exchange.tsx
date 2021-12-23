@@ -5,7 +5,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useContext, useEffect, useMemo, useState,
 } from 'react';
 import clsx from 'clsx';
 import Checkbox from '@mui/material/Checkbox';
@@ -34,6 +34,8 @@ import { CourseData } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
 import { createRequest, ICreateRequest } from '@/api/request';
+import { IUpdateUser, UserType } from '@/api/user';
+import AuthContext from '@/context/auth';
 
 type ParamsType = {
   id: string;
@@ -51,14 +53,18 @@ enum ExchangeModeEnum {
   HOW_TO_PAY = 'how_to_pay'
 }
 
-type FormData = Omit<ICreateRequest, 'course'>
+type ExchangeFormData = Omit<ICreateRequest, 'userId'>
+type UserFormData = IUpdateUser
 
-type FormErrors = {
+type ExchangeFormErrors = {
+  card?: string;
+  wallet?: string;
+}
+
+type UserFormErrors = {
   phone?: string;
   email?: string;
   fullname?: string;
-  card?: string;
-  wallet?: string;
 }
 
 const Exchange: React.FC = () => {
@@ -68,21 +74,15 @@ const Exchange: React.FC = () => {
 
   const history = useHistory();
 
-  const formik = useFormik<FormData>({
+  const userFormik = useFormik<UserFormData>({
     initialValues: {
-      countFrom: memoQueryString.get('from') || '1',
-      coinFrom: memoQueryString.get('from_type') ? CURRENCY_LIST[memoQueryString.get('from_type') as unknown as any] : CURRENCY_LIST[0],
-      countTo: memoQueryString.get('to') || '1',
-      coinTo: memoQueryString.get('to_type') ? CURRENCY_LIST[memoQueryString.get('to_type') as unknown as any] : CURRENCY_LIST[0],
-      card: null,
-      phone: null,
       email: '',
-      wallet: '',
+      phone: '',
       telegram: '',
       fullname: '',
     },
-    validate: (values): FormErrors => {
-      const errors: FormErrors = {};
+    validate: (values): UserFormErrors => {
+      const errors: UserFormErrors = {};
       if (!values.email) {
         errors.email = 'Не указана почта';
       }
@@ -90,6 +90,27 @@ const Exchange: React.FC = () => {
       if (!values.phone) {
         errors.phone = 'Не указан телефон';
       }
+      return errors;
+    },
+    onSubmit: () => {
+      if (_.isEmpty(exchangeFormik.errors)) {
+        setMode(ExchangeModeEnum.CHECK);
+      }
+    },
+  });
+
+  const exchangeFormik = useFormik<ExchangeFormData>({
+    initialValues: {
+      countFrom: memoQueryString.get('from') || '1',
+      coinFrom: memoQueryString.get('from_type') ? CURRENCY_LIST[memoQueryString.get('from_type') as unknown as any] : CURRENCY_LIST[0],
+      countTo: memoQueryString.get('to') || '1',
+      coinTo: memoQueryString.get('to_type') ? CURRENCY_LIST[memoQueryString.get('to_type') as unknown as any] : CURRENCY_LIST[0],
+      card: '',
+      wallet: '',
+    },
+    validate: (values): ExchangeFormErrors => {
+      const errors: ExchangeFormErrors = {};
+
       if (values.coinTo.isBtc && !values.wallet) {
         errors.wallet = 'Не указан кошелёк';
       }
@@ -99,15 +120,15 @@ const Exchange: React.FC = () => {
       return errors;
     },
     onSubmit: () => {
-      if (_.isEmpty(formik.errors)) {
+      if (_.isEmpty(exchangeFormik.errors) && _.isEmpty(userFormik.errors)) {
         setMode(ExchangeModeEnum.CHECK);
       }
     },
   });
 
   const [course, setCourse] = useState<CourseData>({
-    from: formik.values.coinFrom.unit,
-    to: formik.values.coinTo.unit,
+    from: exchangeFormik.values.coinFrom.unit,
+    to: exchangeFormik.values.coinTo.unit,
     rate: 1,
     feePercent: 0,
   });
@@ -116,22 +137,25 @@ const Exchange: React.FC = () => {
 
   const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.FORM : ExchangeModeEnum.HOW_TO_PAY);
   const [requestStatus, setRequestStatus] = useState<RequestStatusEnum>(RequestStatusEnum.WAITING_FOR_CLIENT);
+  const { token } = useContext(AuthContext);
 
-  const memoSetDataFromInput = useCallback(handleSetDataFromInput, [formik]);
-  const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [formik]);
+  const memoSetExchangeDataFromInput = useCallback(handleSetExchangeDataFromInput, [exchangeFormik]);
+  const memoSetExchangeDataFromSelect = useCallback(handleSetExchangeDataFromSelect, [exchangeFormik]);
+  const memoSetUserDataFromInput = useCallback(handleSetUserDataFromInput, [userFormik]);
+  const memoSetUserDataFromSelect = useCallback(handleSetUserDataFromSelect, [userFormik]);
 
-  const memoGoToMode = useCallback(goToMode, [course, formik, history, mode]);
+  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, token]);
 
   const memoRequestId = useMemo(() => requestId || uuidv4().split('-').slice(0, 3).join('-'), [requestId]);
   const memoFromList = useMemo(
-    () => CURRENCY_LIST.filter((el) => el.unit !== formik.values.coinFrom.unit && !el.onlyTo),
-    [formik.values.coinFrom.unit],
+    () => CURRENCY_LIST.filter((el) => el.unit !== exchangeFormik.values.coinFrom.unit && !el.onlyTo),
+    [exchangeFormik.values.coinFrom.unit],
   );
 
   useEffect(() => {
-    formik.setFieldValue('to', +formik.values.countFrom * course.rate);
+    exchangeFormik.setFieldValue('to', +exchangeFormik.values.countFrom * course.rate);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.countFrom, course.rate]);
+  }, [exchangeFormik.values.countFrom, course.rate]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -146,9 +170,9 @@ const Exchange: React.FC = () => {
   }, [requestStatus]);
 
   useEffect(() => {
-    getExchangePair(formik.values.coinFrom.unit, formik.values.coinTo.unit).then((coinApiData) => {
-      const from = formik.values.coinFrom.unit;
-      const to = formik.values.coinTo.unit;
+    getExchangePair(exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit).then((coinApiData) => {
+      const from = exchangeFormik.values.coinFrom.unit;
+      const to = exchangeFormik.values.coinTo.unit;
       const feePercent = countFeePercent(from, to);
       setCourse({
         from,
@@ -157,7 +181,7 @@ const Exchange: React.FC = () => {
         feePercent,
       });
     });
-  }, [formik.values.coinFrom.unit, formik.values.coinTo.unit]);
+  }, [exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit]);
 
   const memoRequestStatusValue = useMemo(
     () => (requestStatus === RequestStatusEnum.WAITING_FOR_CLIENT ? 33 : requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM ? 66 : 100),
@@ -171,8 +195,8 @@ const Exchange: React.FC = () => {
           <img src={ArrowLeftGreyShortImg} alt="" onClick={memoGoToMode('prev')} />
           <h3>
             {
-              mode === ExchangeModeEnum.FORM ? `Обмен ${formik.values.coinFrom.title} на ${formik.values.coinTo.title}`
-                : mode === ExchangeModeEnum.CHECK ? `Обмен ${formik.values.coinFrom.title} на ${formik.values.coinTo.title}`
+              mode === ExchangeModeEnum.FORM ? `Обмен ${exchangeFormik.values.coinFrom.title} на ${exchangeFormik.values.coinTo.title}`
+                : mode === ExchangeModeEnum.CHECK ? `Обмен ${exchangeFormik.values.coinFrom.title} на ${exchangeFormik.values.coinTo.title}`
                   : `Заявка ID ${memoRequestId}`
             }
           </h3>
@@ -201,25 +225,25 @@ const Exchange: React.FC = () => {
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
                     data={memoFromList}
-                    onChange={memoSetDataFromSelect('coinFrom')}
-                    value={formik.values.coinFrom}
+                    onChange={memoSetExchangeDataFromSelect('coinFrom')}
+                    value={exchangeFormik.values.coinFrom}
                   />
-                  <input type="number" className="reverse" value={formik.values.countFrom} onChange={memoSetDataFromInput('countFrom')} />
+                  <input type="number" className="reverse" value={exchangeFormik.values.countFrom} onChange={memoSetExchangeDataFromInput('countFrom')} />
                 </div>
                 <span>
                   Курс обмена: 1
                   {' '}
-                  {formik.values.coinFrom.unit}
+                  {exchangeFormik.values.coinFrom.unit}
                   {' '}
                   =
                   {' '}
-                  {+formik.values.countFrom * course.rate}
+                  {+exchangeFormik.values.countFrom * course.rate}
                   {' '}
-                  {formik.values.coinTo.unit}
+                  {exchangeFormik.values.coinTo.unit}
                 </span>
-                <input className={clsx(formik.errors.email && 'invalid')} onChange={memoSetDataFromInput('email')} type="text" placeholder="E-mail*" />
-                <input className={clsx(formik.errors.phone && 'invalid')} onChange={memoSetDataFromInput('phone')} type="text" placeholder="Телефон*" />
-                <input onChange={memoSetDataFromInput('telegram')} type="text" placeholder="Telegram" />
+                <input className={clsx(userFormik.errors.email && 'invalid')} onChange={memoSetUserDataFromInput('email')} type="text" placeholder="E-mail*" />
+                <input className={clsx(userFormik.errors.phone && 'invalid')} onChange={memoSetUserDataFromInput('phone')} type="text" placeholder="Телефон*" />
+                <input onChange={memoSetUserDataFromInput('telegram')} type="text" placeholder="Telegram" />
                 {/* <div className={classes['calculator-form__item-captcha']}>
                   <div>
                     <img src={CaptchaImg1} alt="" />
@@ -236,10 +260,10 @@ const Exchange: React.FC = () => {
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
                     data={CURRENCY_LIST}
-                    onChange={memoSetDataFromSelect('coinTo')}
-                    value={formik.values.coinTo}
+                    onChange={memoSetExchangeDataFromSelect('coinTo')}
+                    value={exchangeFormik.values.coinTo}
                   />
-                  <input type="number" value={formik.values.countTo} readOnly className="reverse" />
+                  <input type="number" value={exchangeFormik.values.countTo} readOnly className="reverse" />
                 </div>
                 <span>
 
@@ -252,13 +276,13 @@ const Exchange: React.FC = () => {
                   {formik.values.coinTo.unit} */}
                 </span>
                 {
-                  formik.values.coinTo.isBtc ? (
-                    <input className={clsx(formik.errors.wallet && 'invalid')} onChange={memoSetDataFromInput('wallet')} type="text" placeholder="Кошелёк получателя*" value={formik.values.wallet} />
+                  exchangeFormik.values.coinTo.isBtc ? (
+                    <input className={clsx(exchangeFormik.errors.wallet && 'invalid')} onChange={memoSetExchangeDataFromInput('wallet')} type="text" placeholder="Кошелёк получателя*" value={exchangeFormik.values.wallet} />
                   ) : (
-                    <input className={clsx(formik.errors.card && 'invalid')} onChange={memoSetDataFromInput('card')} type="number" placeholder="Номер карты получателя*" value={formik.values.card === null ? '' : formik.values.card} />
+                    <input className={clsx(exchangeFormik.errors.card && 'invalid')} onChange={memoSetExchangeDataFromInput('card')} type="number" placeholder="Номер карты получателя*" value={exchangeFormik.values.card === null ? '' : exchangeFormik.values.card} />
                   )
                 }
-                <input className={clsx(formik.errors.fullname && 'invalid')} onChange={memoSetDataFromInput('fullname')} type="text" placeholder="ФИО получателя" />
+                <input className={clsx(userFormik.errors.fullname && 'invalid')} onChange={memoSetUserDataFromInput('fullname')} type="text" placeholder="ФИО получателя" />
                 <div className={classes.checkBox}>
                   <Checkbox defaultChecked />
                   <span>Не запоминать введённые данные</span>
@@ -275,39 +299,39 @@ const Exchange: React.FC = () => {
                   <h4>Отдаёте</h4>
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>Сумма:</span>
-                    <p>{`${formik.values.countFrom} ${formik.values.coinFrom.title}`}</p>
+                    <p>{`${exchangeFormik.values.countFrom} ${exchangeFormik.values.coinFrom.title}`}</p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.noColumn)}>
-                    <img src={formik.values.coinFrom.img} alt="" />
-                    <p>{formik.values.coinFrom.title || 'N/A'}</p>
+                    <img src={exchangeFormik.values.coinFrom.img} alt="" />
+                    <p>{exchangeFormik.values.coinFrom.title || 'N/A'}</p>
                   </div>
                 </div>
                 <div className={classes['calculator-check__row-column']}>
                   <h4>Получаете</h4>
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>Сумма:</span>
-                    <p>{formik.values.countTo || 'N/A'}</p>
+                    <p>{exchangeFormik.values.countTo || 'N/A'}</p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.noColumn)}>
-                    <img src={formik.values.coinTo.img} alt="" />
-                    <p>{formik.values.coinTo.title || 'N/A'}</p>
+                    <img src={exchangeFormik.values.coinTo.img} alt="" />
+                    <p>{exchangeFormik.values.coinTo.title || 'N/A'}</p>
                   </div>
                   {
-                    formik.values.coinFrom.isBtc ? (
+                    exchangeFormik.values.coinFrom.isBtc ? (
                       <div className={classes['calculator-check__row-column__item']}>
                         <span>На кошелёк:</span>
-                        <p>{formik.values.wallet}</p>
+                        <p>{exchangeFormik.values.wallet}</p>
                       </div>
                     ) : (
                       <div className={classes['calculator-check__row-column__item']}>
                         <span>На счет:</span>
-                        <p>{formik.values.card}</p>
+                        <p>{exchangeFormik.values.card}</p>
                       </div>
                     )
                   }
                   <div className={classes['calculator-check__row-column__item']}>
                     <span>ФИО получателя:</span>
-                    <p>{formik.values.fullname || 'N/A'}</p>
+                    <p>{userFormik.values.fullname || 'N/A'}</p>
                   </div>
                 </div>
               </div>
@@ -316,15 +340,15 @@ const Exchange: React.FC = () => {
                   <h3>Личные данные</h3>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
                     <span>Номер моб. телефона:</span>
-                    <p>{formik.values.phone || 'N/A'}</p>
+                    <p>{userFormik.values.phone || 'N/A'}</p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
                     <span>E-mail:</span>
-                    <p>{formik.values.email || 'N/A'}</p>
+                    <p>{userFormik.values.email || 'N/A'}</p>
                   </div>
                   <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
                     <span>Telegram:</span>
-                    <p>{formik.values.telegram || 'N/A'}</p>
+                    <p>{userFormik.values.telegram || 'N/A'}</p>
                   </div>
                 </div>
                 <div className={classes['calculator-check__row-column']}>
@@ -351,13 +375,13 @@ const Exchange: React.FC = () => {
                 <p>
                   Для осуществления обмена переведите указанную в Вашей заявке сумму в
                   {' '}
-                  {formik.values.coinFrom.title}
+                  {exchangeFormik.values.coinFrom.title}
                   {' '}
                   на этот кошелек:
                 </p>
                 <div>
                   <img src={CopyImg} alt="" />
-                  <span>{formik.values.coinFrom.wallet}</span>
+                  <span>{exchangeFormik.values.coinFrom.wallet}</span>
                 </div>
               </div>
               {/* <img src={QrCodeImg} alt="" /> */}
@@ -369,11 +393,11 @@ const Exchange: React.FC = () => {
               <div className={classes['calculator-howToPay__sum']}>
                 <div>
                   <span>Сумма платежа:</span>
-                  <p>{`${formik.values.countFrom} ${formik.values.coinFrom.title}`}</p>
+                  <p>{`${exchangeFormik.values.countFrom} ${exchangeFormik.values.coinFrom.title}`}</p>
                 </div>
                 <div>
                   <span>Сумма к получению:</span>
-                  <p>{`${formik.values.countTo} ${formik.values.coinTo.title}`}</p>
+                  <p>{`${exchangeFormik.values.countTo} ${exchangeFormik.values.coinTo.title}`}</p>
                 </div>
               </div>
               <div className={classes['calculator-howToPay__warning']}>
@@ -427,11 +451,11 @@ const Exchange: React.FC = () => {
         <h4>
           Обмен
           {' '}
-          {formik.values.coinFrom.title}
+          {exchangeFormik.values.coinFrom.title}
           {' '}
           на
           {' '}
-          {formik.values.coinTo.title}
+          {exchangeFormik.values.coinTo.title}
         </h4>
         <p>Для обмена Вам необходимо выполнить несколько шагов:</p>
         <ul>
@@ -448,15 +472,15 @@ const Exchange: React.FC = () => {
     return async () => {
       if (direction === 'next') {
         if (mode === ExchangeModeEnum.FORM) {
-          formik.submitForm();
+          exchangeFormik.submitForm();
         } else if (mode === ExchangeModeEnum.CHECK) {
           try {
-            const res = await createRequest({
-              ...formik.values,
-              course,
-            });
-            if (!res.success) throw new Error(res.message);
-            else setMode(ExchangeModeEnum.HOW_TO_PAY);
+            try {
+              const res = await createRequest(token, exchangeFormik.values);
+              setMode(ExchangeModeEnum.HOW_TO_PAY);
+            } catch (e) {
+              console.error();
+            }
           } catch (e) {
             console.log(e);
             setSubmitError('Произошла ошибка при создании заявки');
@@ -469,15 +493,27 @@ const Exchange: React.FC = () => {
     };
   }
 
-  function handleSetDataFromSelect(key: keyof FormData): { (value: CurrencyDataItemWithWallet | number | null): void } {
+  function handleSetUserDataFromSelect(key: keyof UserFormData): { (value: CurrencyDataItemWithWallet | number | null): void } {
     return (value) => {
-      formik.setFieldValue(key, value);
+      userFormik.setFieldValue(key, value);
     };
   }
-  function handleSetDataFromInput(key: keyof FormData): { (event: React.ChangeEvent<HTMLInputElement>): void } {
+  function handleSetUserDataFromInput(key: keyof UserFormData): { (event: React.ChangeEvent<HTMLInputElement>): void } {
     return (event) => {
       const { value } = event.target;
-      formik.setFieldValue(key, value);
+      userFormik.setFieldValue(key, value);
+    };
+  }
+
+  function handleSetExchangeDataFromSelect(key: keyof ExchangeFormData): { (value: CurrencyDataItemWithWallet | number | null): void } {
+    return (value) => {
+      exchangeFormik.setFieldValue(key, value);
+    };
+  }
+  function handleSetExchangeDataFromInput(key: keyof ExchangeFormData): { (event: React.ChangeEvent<HTMLInputElement>): void } {
+    return (event) => {
+      const { value } = event.target;
+      exchangeFormik.setFieldValue(key, value);
     };
   }
 };

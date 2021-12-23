@@ -5,6 +5,9 @@ export const ROUTES = {
   FAQ: '/faq',
   REVIEWS: '/reviews',
   CONTACTS: '/contacts',
+  ACCOUNT: '/account',
+  ACCOUNT_PRIVACY_SETTINGS: '/account/settings',
+  ACCOUNT_REQUESTS: '/account/requests',
 };
 
 export const NAVS = [
@@ -20,12 +23,27 @@ export const NAVS = [
     path: ROUTES.FAQ,
     title: 'FAQ',
   },
-  // {
-  //   path: ROUTES.REVIEWS,
-  //   title: 'Отзывы',
-  // },
-  // {
-  //   path: ROUTES.CONTACTS,
-  //   title: 'Контакты',
-  // },
+];
+
+export const ACCOUNT_NAVS = [
+  {
+    path: ROUTES.ACCOUNT,
+    title: 'Личный кабинет',
+  },
+  {
+    path: ROUTES.ACCOUNT_PRIVACY_SETTINGS,
+    title: 'Настройки безопасности',
+  },
+  {
+    path: ROUTES.ACCOUNT_REQUESTS,
+    title: 'Ваши операции',
+  },
+  {
+    path: ROUTES.RULES,
+    title: 'Правила сайта',
+  },
+  {
+    path: ROUTES.FAQ,
+    title: 'FAQ',
+  },
 ];

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -7,13 +8,18 @@ import React, {
 } from 'react';
 
 import clsx from 'clsx';
+import { useHistory } from 'react-router';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
 import AccountImg from '@/assets/img/account.png';
 import BurgerImg from '@/assets/img/burger.svg';
+import ExitImg from '@/assets/img/exit.svg';
 import CONTACTS from '@/const/contacts';
 import ModalContext, { ModalTypeEnum } from '@/context/modal';
 import { AuthModalModeEnum } from '@/components/AuthModal/AuthModal';
+import UserContext from '@/context/user';
+import { ROUTES } from '@/const/routes';
+import AuthContext from '@/context/auth';
 // import BurgerImg from '@/assets/img/burger.svg';
 
 type IProps = {
@@ -29,7 +35,12 @@ const Header: FC<IProps> = ({
     handleSetAsideMenuOpenState, [isAsideMenuOpen, setAsideMenuOpenState],
   );
 
-  const { openModal } = useContext(ModalContext);
+  const { openModal, closeAllModal } = useContext(ModalContext);
+  const { user, setUser } = useContext(UserContext);
+  const { setToken } = useContext(AuthContext);
+  const history = useHistory();
+
+  const memoOnExit = useCallback(onExit, [closeAllModal, setToken, setUser]);
 
   return (
     <>
@@ -46,23 +57,43 @@ const Header: FC<IProps> = ({
           <p>Сервис работает круглосуточно.</p>
         </div>
         <div className={classes.account}>
-          <div
-            className={clsx(classes.login, 'noMobile')}
-            onClick={openModal(ModalTypeEnum.AUTH, {
-              mode: AuthModalModeEnum.LOGIN,
-            })}
-          >
-            <img src={AccountImg} alt="" />
-            <span>Войти</span>
-          </div>
-          <div
-            className={clsx(classes.registration, 'noMobile')}
-            onClick={openModal(ModalTypeEnum.AUTH, {
-              mode: AuthModalModeEnum.REGISTRATION,
-            })}
-          >
-            <span>Регистрация</span>
-          </div>
+          {
+            !user && (
+              <>
+                <div
+                  className={clsx(classes.login, 'noMobile')}
+                  onClick={() => openModal(ModalTypeEnum.AUTH, {
+                    mode: AuthModalModeEnum.LOGIN,
+                  })()}
+                >
+                  <img src={AccountImg} alt="" />
+                  <span>Войти</span>
+                </div>
+                <div
+                  className={clsx(classes.registration, 'noMobile')}
+                  onClick={() => openModal(ModalTypeEnum.AUTH, {
+                    mode: AuthModalModeEnum.REGISTRATION,
+                  })()}
+                >
+                  <span>Регистрация</span>
+                </div>
+              </>
+            )
+          }
+          {
+            user && (
+              <>
+                <div
+                  className={clsx(classes.login, 'noMobile')}
+                  onClick={() => history.push(ROUTES.ACCOUNT)}
+                >
+                  <img src={AccountImg} alt="" />
+                  <span>{user?.username || 'N/A'}</span>
+                </div>
+                <img src={ExitImg} alt="" className={classes.exit} onClick={memoOnExit} />
+              </>
+            )
+          }
           {/* <div className={classes.lang}>
             <span>RU</span>
           </div> */}
@@ -70,6 +101,12 @@ const Header: FC<IProps> = ({
       </Container>
     </>
   );
+
+  function onExit() {
+    closeAllModal()();
+    setUser(null);
+    setToken('');
+  }
 
   function handleSetAsideMenuOpenState(value?: boolean) {
     return () => {

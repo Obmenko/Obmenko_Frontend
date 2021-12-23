@@ -1,22 +1,35 @@
 import React, {
-  FC, useContext,
+  FC, useContext, useEffect,
 } from 'react';
 import {
   Redirect,
   Route,
   RouteProps,
 } from 'react-router-dom';
+import AuthContext from '@/context/auth';
 import { ROUTES } from '../../../const/routes';
+import ModalContext, { ModalTypeEnum } from '@/context/modal';
+import { AuthModalModeEnum } from '@/components/AuthModal/AuthModal';
 
 const ProtectedRoute: FC<RouteProps> = ({ ...rest }) => {
-  // const [auth] = useContext(AuthContext);
-  const auth = false;
+  const { token } = useContext(AuthContext);
+  const { openModal } = useContext(ModalContext);
+
+  useEffect(() => {
+    if (!token) {
+      openModal(ModalTypeEnum.AUTH, {
+        mode: AuthModalModeEnum.LOGIN,
+      })({
+        isClosingDisabled: true,
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
+
   return (
-    auth ? (
-      <Route
-        {...rest}
-      />
-    ) : <Redirect to={ROUTES.HOME} />
+    <Route
+      {...rest}
+    />
   );
 };
 

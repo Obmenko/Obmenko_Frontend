@@ -1,34 +1,72 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 import { CurrencyDataItemWithWallet } from '@/const/currencies_list';
-import { CourseData } from '@/types/exchange';
+import { CourseData, CurrencyUnitEnum } from '@/types/exchange';
+import { getAuthHeaders } from './user';
 
-const API_BASE = process.env.REACT_APP_API_TG_BASE;
+const API_BASE = process.env.REACT_APP_API_BASE;
 
-type OCreateRequest = {
-  message: string
-  success: boolean
+export enum RequestStatusEnum {
+  NEW = 'new',
+  PAYED = 'payed',
+  CANCELLED = 'cancelled',
+  REJECTED = 'rejected'
 }
 
-export type ICreateRequest = {
-  coinFrom: CurrencyDataItemWithWallet,
-  coinTo: CurrencyDataItemWithWallet,
+export type RequestType = {
+  _id: string,
+  coinFrom: CurrencyUnitEnum,
+  coinTo: CurrencyUnitEnum,
   countTo: string | number,
   countFrom: string | number
-  card: number | null;
-  wallet: string;
-  phone: number | null;
-  email: string;
-  telegram: string;
-  fullname: string;
-  course: CourseData
-}
+  userId: string;
+  status: RequestStatusEnum,
+  wallet?: string,
+  card?: string,
+  createdAt?: number;
+};
 
-/* eslint-disable import/prefer-default-export */
+export interface ICreateRequest extends Omit<RequestType, '_id' | 'status' | 'createdAt' | 'coinFrom' | 'coinTo' | 'userId'> {
+  coinTo: CurrencyDataItemWithWallet,
+  coinFrom: CurrencyDataItemWithWallet
+}
+export type IUpdateRequest = Partial<Pick<RequestType, 'status'>>
+
 export const createRequest = (
+  token: string,
   data: ICreateRequest,
-): Promise<OCreateRequest> => axios({
+): Promise<RequestType> => axios({
   method: 'POST',
   url: `${API_BASE}/request`,
+  headers: getAuthHeaders(token),
   data,
+}).then((res) => res.data);
+
+export const deleteRequest = (
+  token: string,
+  data: ICreateRequest,
+): Promise<RequestType> => axios({
+  method: 'DELETE',
+  url: `${API_BASE}/request`,
+  headers: getAuthHeaders(token),
+  data,
+}).then((res) => res.data);
+
+export const getRequestList = (
+  token: string,
+  data: ICreateRequest,
+): Promise<RequestType> => axios({
+  method: 'GET',
+  url: `${API_BASE}/request`,
+  headers: getAuthHeaders(token),
+  data,
+}).then((res) => res.data);
+
+export const getRequestById = (
+  token: string,
+  id: string,
+): Promise<RequestType> => axios({
+  method: 'GET',
+  url: `${API_BASE}/request/${id}`,
+  headers: getAuthHeaders(token),
 }).then((res) => res.data);

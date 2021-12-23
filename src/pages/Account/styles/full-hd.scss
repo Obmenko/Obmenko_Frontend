@@ -1,6 +1,31 @@
 .root {
+  width: 100%;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  padding-top: 128px;
+  padding-bottom: 200px;
+  &-wrapper {
+    position: relative;
+  }
+}
+
+.bg {
+  top: 63px;
+  // max-width: 1280px;
+  right: 30px;
+  width: 120%;
+  position: absolute;
+}
+
+.form {
+  background: #FFFFFF;
+  box-shadow: 0px 10px 40px rgba(8, 41, 135, 0.1);
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow-y: hidden;
@@ -9,17 +34,7 @@
   background-color: white;
   padding: 50px 50px 60px 50px;
   position: relative;
-  min-width: 520px;
-  max-width: 520px;
-}
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  position: relative;
+  flex-basis: 50%;
   & > h4 {
     font-size: 32px;
     line-height: 1.2;
@@ -34,7 +49,8 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 40px;
+  position: relative;
   & > span {
     font-size: 17px;
     color: $color-black;
@@ -49,6 +65,12 @@
     width: 100%;
     max-width: initial;
     padding-left: 0;
+  }
+  & > p {
+    top: calc(100% + 4px);
+    position: absolute;
+    color: red;
+    font-size: 15px;
   }
 }
 
@@ -73,49 +95,4 @@
   margin-top: 41px;
   max-width: 252px;
   font-weight: bold;
-}
-
-.forgotPassword {
-  margin-top: 30px;
-  & > p {
-    font-size: 15px;
-    line-height: 1.2;
-    color: $color-blue;
-    cursor: pointer;
-  }
-}
-
-.changeMode {
-  display: flex;
-  flex-direction: row;
-  margin-top: 20px;
-  & > p {
-    font-size: 15px;
-    line-height: 1.2;
-    margin-right: 10px;
-  }
-  & > span {
-    font-size: 15px;
-    line-height: 1.2;
-    color: $color-blue;
-    cursor: pointer;
-  }
-}
-
-.form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.cross {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-}
-
-.paper {
-  background-color: transparent !important;
 }
