@@ -29,7 +29,11 @@ export type RequestType = {
 
 export interface ICreateRequest extends Omit<RequestType, '_id' | 'status' | 'createdAt' | 'coinFrom' | 'coinTo' | 'userId'> {
   coinTo: CurrencyDataItemWithWallet,
-  coinFrom: CurrencyDataItemWithWallet
+  coinFrom: CurrencyDataItemWithWallet,
+  email?: string,
+  phone?: string | number,
+  wallet?: string,
+  card?: string
 }
 export type IUpdateRequest = Partial<Pick<RequestType, 'status'>>
 

@@ -501,7 +501,10 @@ const Exchange: React.FC = () => {
         } else if (mode === ExchangeModeEnum.CHECK) {
           try {
             try {
-              const { _id: requestId } = await createRequest(token, exchangeFormik.values);
+              const { _id: requestId } = await createRequest(token, {
+                ...exchangeFormik.values,
+                ...userFormik.values,
+              });
               setRequestId(requestId);
               setMode(ExchangeModeEnum.HOW_TO_PAY);
             } catch (e) {
