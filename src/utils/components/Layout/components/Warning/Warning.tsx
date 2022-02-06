@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -9,7 +10,7 @@ import React, {
 import Container from '@/utils/components/Container';
 import classes from './Warning.module.scss';
 import CONTACTS from '@/const/contacts';
-// import BurgerImg from '@/assets/img/burger.svg';
+import WarningImg from '@/assets/img/warning.png';
 
 type IProps = {
   setWarningOpenState: { (state: boolean): void };
@@ -25,9 +26,9 @@ const Warning: FC<IProps> = ({
       className={classes.root}
       wrapperClassName={classes['root-wrapper']}
     >
-      <p>Cервис работает КРУГЛОСУТОЧНО в штатном режиме</p>
+      <img src={WarningImg} alt="" />
       <p>
-        По всем вопросам обращайтесь к оператору. ВНИМАНИЕ! Telegram только по ссылке
+        Внимание!!! Сервис работает КРУГЛОСУТОЧНО в штатном режиме. По всем вопросам обращайтесь к оператору. Telegram только по ссылке
         {' '}
         <a href={CONTACTS.telegramLink} target="_blank" rel="noreferrer">Telegram</a>
         , множество поддельных аккаунтов.

@@ -1,7 +1,7 @@
 * {
   box-sizing: border-box;
   color: $color-black;
-  font-family: "Lato", sans-serif;
+  font-family: "Montserrat", sans-serif;
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -39,7 +39,7 @@ p {
 }
 
 p, span, a, h1, h2, h3, h4, h5, h6 {
-  font-family: "Lato", sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: $color-black;
   font-size: 15px;
   line-height: 1.3;

@@ -5,6 +5,37 @@
   align-items: center;
   min-height: 100vh;
   position: relative;
+  & .bg  {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &-item {
+      width: 40vw;
+      height: 40vw;
+      min-width: 40vw;
+      min-height: 40vw;
+      min-width: 40vw;
+      min-height: 40vw;
+      filter: blur(300px);
+      opacity: 0.3;
+      &__red {
+        background: #C02F2A;
+      }
+      &__blue {
+        &-right {
+          background: #2A4BC0;
+        }
+        &-left {
+
+        }
+      }
+    }
+  }
 }
 
 .main {
@@ -15,15 +46,11 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  z-index: 1;
   & > img {
     position: absolute;
     bottom: 40px;
     left: 40px;
-  }
-  &-wrapper {
-    background-image: url('../../../assets/img/bg_main.jpg');
-    background-position: bottom;
-    background-size: cover;
   }
   & > .header {
     width: 100%;

@@ -441,7 +441,7 @@ const Exchange: React.FC = () => {
                 />
                 <div>
                   <p>Страница обновляется каждые 30 секунд.</p>
-                  <Button mode={ButtonModeEnum.TRANSPARENT_RECT}>Отключить обновление</Button>
+                  <Button mode={ButtonModeEnum.TRANSPARENT}>Отключить обновление</Button>
                 </div>
               </div>
             </div>

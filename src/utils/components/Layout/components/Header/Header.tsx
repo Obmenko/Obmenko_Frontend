@@ -19,8 +19,10 @@ import CONTACTS from '@/const/contacts';
 import ModalContext, { ModalTypeEnum } from '@/context/modal';
 import { AuthModalModeEnum } from '@/components/AuthModal/AuthModal';
 import UserContext from '@/context/user';
-import { ROUTES } from '@/const/routes';
+import { NAVS, ROUTES } from '@/const/routes';
 import AuthContext from '@/context/auth';
+import Button from '@/ui/Button';
+import { ButtonModeEnum } from '@/ui/Button/Button';
 // import BurgerImg from '@/assets/img/burger.svg';
 
 type IProps = {
@@ -40,10 +42,9 @@ const Header: FC<IProps> = ({
   const { user, setUser } = useContext(UserContext);
   const { setToken } = useContext(AuthContext);
   const history = useHistory();
-  const routeMatch = useRouteMatch('/');
 
+  const memoGoTo = useCallback(goTo, [history]);
   const memoOnExit = useCallback(onExit, [closeAllModal, history, setToken, setUser]);
-  const needLogo = useMemo(() => !routeMatch?.isExact, [routeMatch?.isExact]);
 
   return (
     <>
@@ -54,38 +55,33 @@ const Header: FC<IProps> = ({
         <div className={clsx(classes.burger, 'onlyMobile')} onClick={memoHandleSetAsideMenuOpenState()}>
           <img src={BurgerImg} alt="" />
         </div>
-        {
-          needLogo ? (
-            <img src={LogoImg} alt="" className="noMobile" onClick={() => history.push('/')} />
-          ) : (
-            <div className={clsx(classes.contacts, 'noMobile')}>
-              <a href={`mailto:${CONTACTS.email}`}>{CONTACTS.email}</a>
-              <div />
-              <p>Сервис работает круглосуточно.</p>
-            </div>
-          )
-        }
+        <img src={LogoImg} alt="" className="noMobile" onClick={() => history.push('/')} />
+        <nav className={clsx('noMobile')}>
+          {
+            NAVS.map((nav) => (
+              <span key={nav.title} onClick={memoGoTo(nav.path)}>{nav.title}</span>
+            ))
+          }
+        </nav>
         <div className={classes.account}>
           {
             !user && (
               <>
-                <div
-                  className={clsx(classes.login)}
+                <Button
                   onClick={() => openModal(ModalTypeEnum.AUTH, {
                     mode: AuthModalModeEnum.LOGIN,
                   })()}
                 >
-                  <img src={AccountImg} alt="" />
-                  <span>Войти</span>
-                </div>
-                <div
-                  className={clsx(classes.registration, 'noMobile')}
+                  Войти
+                </Button>
+                <Button
+                  mode={ButtonModeEnum.TRANSPARENT}
                   onClick={() => openModal(ModalTypeEnum.AUTH, {
                     mode: AuthModalModeEnum.REGISTRATION,
                   })()}
                 >
-                  <span>Регистрация</span>
-                </div>
+                  Регистрация
+                </Button>
               </>
             )
           }
@@ -121,6 +117,13 @@ const Header: FC<IProps> = ({
   function handleSetAsideMenuOpenState(value?: boolean) {
     return () => {
       setAsideMenuOpenState(value !== undefined ? value : !isAsideMenuOpen);
+    };
+  }
+
+  function goTo(path: string): { (): void } {
+    return () => {
+      console.log('object');
+      history.push(path);
     };
   }
 };
