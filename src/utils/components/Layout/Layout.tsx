@@ -75,6 +75,11 @@ const Layout: FC<PropsType> = ({ children }) => {
               )
             }
             <Header isAsideMenuOpen={isAsideMenuOpen} setAsideMenuOpenState={setAsideMenuOpenState} />
+            <div className={classes.bg}>
+              <div className={clsx(classes['bg-item'], classes['bg-item__red'])} />
+              <div className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-right'])} />
+              <div className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-left'])} />
+            </div>
             <div className={classes.content}>
               {children}
             </div>

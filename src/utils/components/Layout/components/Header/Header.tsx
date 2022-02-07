@@ -129,6 +129,3 @@ const Header: FC<IProps> = ({
 };
 
 export default Header;
-function useNavigate() {
-  throw new Error('Function not implemented.');
-}

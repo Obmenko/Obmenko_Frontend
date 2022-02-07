@@ -120,11 +120,6 @@ const Home: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.bg}>
-        <div className={clsx(classes['bg-item'], classes['bg-item__red'])} />
-        <div className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-right'])} />
-        <div className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-left'])} />
-      </div>
       <Container className={classes.main} wrapperClassName={classes['main-wrapper']}>
         <div className={classes.header}>
           <div className={classes.logo}>
