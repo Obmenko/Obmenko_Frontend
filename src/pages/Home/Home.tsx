@@ -222,7 +222,7 @@ const Home: React.FC = () => {
           <p>Профессиональный подход к курсообразованию делает наши курсы лучшими в рунете</p>
         </div>
       </Container>
-      <Container className={classes.reviews} wrapperClassName={classes['reviews-wrapper']}>
+      <Container className={classes.reviews} id="reviews" wrapperClassName={classes['reviews-wrapper']}>
         <div className={classes['reviews-content']}>
           <div className={classes['reviews-content__title']}>
             <h5>Отзывы</h5>

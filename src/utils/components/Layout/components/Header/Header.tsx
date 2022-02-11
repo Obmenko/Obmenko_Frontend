@@ -12,7 +12,7 @@ import { useHistory, useRouteMatch } from 'react-router';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
 import AccountImg from '@/assets/img/account.png';
-import LogoImg from '@/assets/img/logo.png';
+import LogoImg from '@/assets/img/logo.svg';
 import BurgerImg from '@/assets/img/burger.svg';
 import ExitImg from '@/assets/img/exit.svg';
 import CONTACTS from '@/const/contacts';
