@@ -28,6 +28,7 @@ import Slider from '@/ui/Slider';
 import {
   CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
+import ReviewArrowLeft from '@/assets/img/review_arrow_left.svg';
 import { CurrencyUnitEnum } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
@@ -35,6 +36,7 @@ import { goBlank } from '@/utils/functions/dom';
 import CONTACTS from '@/const/contacts';
 import InputWithCoin from '@/components/InputWithCoin';
 import { ButtonColorEnum, ButtonSizeEnum } from '@/ui/Button/Button';
+import StarLine from '@/components/StarLine';
 
 type CurrencyData = {
   coinFrom: CurrencyDataItemWithWallet,
@@ -77,7 +79,7 @@ const Home: React.FC = () => {
 
   const memoReviewChunkList = useMemo<ReviewItem[][]>(() => _.chunk(REVIEWS, width > 480 ? 4 : 1), [width]);
   const memoCurrencyChunkList = useMemo<CurrencyDataItemWithWallet[][]>(
-    () => _.chunk(CURRENCY_LIST, width > 480 ? 16 : 2), [width],
+    () => _.chunk(CURRENCY_LIST, width > 480 ? 5 : 2), [width],
   );
 
   const memoSetCurrencyActiveIndex = useCallback(handleSetCurrencyActiveIndex, [
@@ -99,6 +101,7 @@ const Home: React.FC = () => {
   );
 
   useEffect(() => {
+    console.log(memoCurrencyChunkList);
     setData({
       ...data,
       countTo: +data.countFrom * course.rate,
@@ -220,20 +223,10 @@ const Home: React.FC = () => {
         </div>
       </Container>
       <Container className={classes.reviews} wrapperClassName={classes['reviews-wrapper']}>
-        <img src={BgOverlayImg2} alt="" />
         <div className={classes['reviews-content']}>
           <div className={classes['reviews-content__title']}>
-            <h5>
-              Отзывы
-              {' '}
-              <span>—</span>
-            </h5>
+            <h5>Отзывы</h5>
             <h3>Что говорят клиенты</h3>
-            <div>
-              <img src={ArrowRightWhite} onClick={memoSetReviewActiveIndex('prev')} alt="" />
-              <img src={ArrowRightWhite} onClick={memoSetReviewActiveIndex('next')} alt="" />
-            </div>
-
             {/* <Button mode={ButtonModeEnum.TRANSPARENT} className="noMobile">Все отзывы</Button> */}
           </div>
           <Slider
@@ -246,44 +239,41 @@ const Home: React.FC = () => {
                 <>
                   <div className={classes['reviews-content__list-column']}>
                     <div className={clsx(classes['reviews-content__list-item'])} key={`${review[0].author}__${review[0].date}`}>
+                      <img src={review[0].quotesImg} alt="" />
                       <p>{review[0].text}</p>
-                      <div>
-                        <span>{review[0].author}</span>
-                        <p>{review[0].date}</p>
-                      </div>
+                      <h6>{review[0].author}</h6>
+                      <span>{review[0].date}</span>
+                      <StarLine maxValue={5} value={3.5} />
                     </div>
-                    <div className={clsx(classes['reviews-content__list-item'], classes['reviews-content__list-item__small'])} key={`${review[1].author}__${review[1].date}`}>
+                    <div className={clsx(classes['reviews-content__list-item'])} key={`${review[1].author}__${review[1].date}`}>
+                      <img src={review[1].quotesImg} alt="" />
                       <p>{review[1].text}</p>
-                      <div>
-                        <span>{review[1].author}</span>
-                        <p>{review[1].date}</p>
-                      </div>
+                      <h6>{review[1].author}</h6>
+                      <span>{review[1].date}</span>
+                      <StarLine maxValue={5} value={3} />
                     </div>
                   </div>
                   <div className={classes['reviews-content__list-column']}>
-                    <div className={classes['reviews-content__list-item']} key={`${review[2].author}__${review[2].date}`}>
+                    <div className={clsx(classes['reviews-content__list-item'])} key={`${review[2].author}__${review[2].date}`}>
+                      <img src={review[2].quotesImg} alt="" />
                       <p>{review[2].text}</p>
-                      <div>
-                        <span>{review[2].author}</span>
-                        <p>{review[2].date}</p>
-                      </div>
+                      <h6>{review[2].author}</h6>
+                      <span>{review[2].date}</span>
                     </div>
-                    <div className={classes['reviews-content__list-item']} key={`${review[3].author}__${review[3].date}`}>
+                    <div className={clsx(classes['reviews-content__list-item'])} key={`${review[3].author}__${review[3].date}`}>
+                      <img src={review[3].quotesImg} alt="" />
                       <p>{review[3].text}</p>
-                      <div>
-                        <span>{review[3].author}</span>
-                        <p>{review[3].date}</p>
-                      </div>
+                      <h6>{review[3].author}</h6>
+                      <span>{review[3].date}</span>
                     </div>
                   </div>
                 </>
               )) : memoReviewChunkList.map((review) => (
                 <div className={clsx(classes['reviews-content__list-item'])} key={`${review[0].author}__${review[0].date}`}>
+                  <img src={review[0].quotesImg} alt="" />
                   <p>{review[0].text}</p>
-                  <div>
-                    <span>{review[0].author}</span>
-                    <p>{review[0].date}</p>
-                  </div>
+                  <h6>{review[0].author}</h6>
+                  <span>{review[0].date}</span>
                 </div>
               ))
             }
@@ -293,7 +283,7 @@ const Home: React.FC = () => {
       </Container>
       <Container className={classes.reserve} wrapperClassName={classes['reserve-wrapper']}>
         <h4>Резерв валюты</h4>
-        <div className={clsx(classes['reserve-content'], 'noMobile')}>
+        {/* <div className={clsx(classes['reserve-content'], 'noMobile')}>
           {
             CURRENCY_LIST.map((currency) => (
               <div className={classes['reserve-content__item']} key={currency.title}>
@@ -303,33 +293,32 @@ const Home: React.FC = () => {
               </div>
             ))
           }
+        </div> */}
+        <div>
+          <img src={ReviewArrowLeft} onClick={memoSetCurrencyActiveIndex('prev')} alt="" />
+          <Slider
+            className={clsx(classes['reserve-content'])}
+            noControls
+            activeSlideIndex={currencyActiveIndex}
+            onChange={setCurrencyActiveIndex}
+            items={
+              memoCurrencyChunkList.map((currencyChunk) => (
+                <>
+                  {
+                    currencyChunk.map((currencyItem) => (
+                      <div className={classes['reserve-content__item']} key={currencyItem.title}>
+                        <img src={currencyItem.img} alt="" />
+                        <h6>{currencyItem.title}</h6>
+                        <p>{currencyItem.reserve}</p>
+                      </div>
+                    ))
+                  }
+                </>
+              ))
+            }
+          />
+          <img src={ReviewArrowLeft} onClick={memoSetCurrencyActiveIndex('next')} alt="" />
         </div>
-        <Slider
-          className={clsx(classes['reserve-content'], 'onlyMobile')}
-          noControls
-          activeSlideIndex={currencyActiveIndex}
-          onChange={setCurrencyActiveIndex}
-          items={
-            memoCurrencyChunkList.map((currencyChunk) => (
-              <>
-                <div className={classes['reserve-content__item']} key={currencyChunk[0].title}>
-                  <img src={currencyChunk[0].img} alt="" />
-                  <h6>{currencyChunk[0].title}</h6>
-                  <p>{currencyChunk[0].reserve}</p>
-                </div>
-                {
-                  currencyChunk[1] && (
-                    <div className={classes['reserve-content__item']} key={currencyChunk[1].title}>
-                      <img src={currencyChunk[1].img} alt="" />
-                      <h6>{currencyChunk[1].title}</h6>
-                      <p>{currencyChunk[1].reserve}</p>
-                    </div>
-                  )
-                }
-              </>
-            ))
-          }
-        />
         <div className={clsx(classes['reserve-content__controls'], 'onlyMobile')}>
           <img src={ArrowLeftGrey} onClick={memoSetCurrencyActiveIndex('prev')} alt="" />
           <img src={ArrowLeftGrey} onClick={memoSetCurrencyActiveIndex('next')} alt="" />
