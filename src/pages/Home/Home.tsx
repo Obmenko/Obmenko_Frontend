@@ -33,6 +33,8 @@ import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
 import { goBlank } from '@/utils/functions/dom';
 import CONTACTS from '@/const/contacts';
+import InputWithCoin from '@/components/InputWithCoin';
+import { ButtonColorEnum, ButtonSizeEnum } from '@/ui/Button/Button';
 
 type CurrencyData = {
   coinFrom: CurrencyDataItemWithWallet,
@@ -121,18 +123,6 @@ const Home: React.FC = () => {
   return (
     <div className={classes.root}>
       <Container className={classes.main} wrapperClassName={classes['main-wrapper']}>
-        <div className={classes.header}>
-          <div className={classes.logo}>
-            <img src={LogoImg} alt="" />
-          </div>
-          <div className={clsx(classes.nav, 'noMobile')}>
-            {
-              NAVS.map((nav) => (
-                <span key={nav.title} onClick={memoGoTo(nav.path)}>{nav.title}</span>
-              ))
-            }
-          </div>
-        </div>
         <div className={classes.content}>
           <div className={classes['content-title']}>
             <h1>Точный обмен криптовалют</h1>
@@ -140,53 +130,59 @@ const Home: React.FC = () => {
           </div>
           <div className={classes['content-calculator']}>
             <div className={classes['content-calculator__item']}>
-              <h3>Отдаёте</h3>
+              <div className={classes['content-calculator__item-title']}>
+                <h3>Отдаёте</h3>
+                <div>
+                  <span>Курс обмена:</span>
+                  <p>
+                    1
+                    {' '}
+                    {data.coinFrom.unit}
+                    {' '}
+                    =
+                    {' '}
+                    {+data.countFrom * course.rate}
+                    {' '}
+                    {data.coinTo.unit}
+                  </p>
+                </div>
+              </div>
+              <p className={classes['content-calculator__item-description']}>
+                Выберите валюту и введите сумму перевода:
+              </p>
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
                   data={memoFromList}
                   onChange={memoSetDataFromSelect('coinFrom')}
                   value={data.coinFrom}
                 />
-                <input type="number" className="reverse" value={data.countFrom} onChange={memoSetDataFromInput('countFrom')} />
+                <InputWithCoin coin={data.coinFrom.unit} type="number" value={data.countFrom} onChange={memoSetDataFromInput('countFrom')} />
               </div>
               <div className={classes['content-calculator__item-info']}>
                 <p>
-                  <span>Курс обмена:</span>
-                  1
+                  Минимальная сумма перевода
                   {' '}
-                  {data.coinFrom.unit}
-                  {' '}
-                  =
-                  {+data.countFrom * course.rate}
-                  {' '}
-                  {data.coinTo.unit}
-                </p>
-                <p>
-                  <span>Резерв:</span>
-                  {' '}
-                  {data.coinTo.reserve}
+                  {data.coinTo.minimalTransactionSum}
                   {' '}
                   {data.coinTo.unit}
                   {' '}
-                  <span
-                    className={classes['content-calculator__item-info__link']}
-                    onClick={goBlank(CONTACTS.telegramLink)}
-                  >
-                    Не хватает?
-                  </span>
                 </p>
               </div>
             </div>
-            <img src={ExchangeImg} alt="" />
             <div className={classes['content-calculator__item']}>
-              <h3>Получаете</h3>
+              <div className={classes['content-calculator__item-title']}>
+                <h3>Получаете</h3>
+              </div>
+              <p className={classes['content-calculator__item-description']}>
+                Выберите валюту и введите сумму перевода:
+              </p>
               <div className={classes['content-calculator__item-selectRow']}>
                 <Select
                   data={CURRENCY_LIST}
                   onChange={memoSetDataFromSelect('coinTo')}
                   value={data.coinTo}
                 />
-                <input type="number" value={data.countTo} readOnly className="reverse" />
+                <InputWithCoin coin={data.coinTo.unit} type="number" value={data.countTo} readOnly />
               </div>
               {/* <div className={classes['content-calculator__item-reserve']}>
                 <span>
@@ -202,7 +198,7 @@ const Home: React.FC = () => {
                 </p>
               </div> */}
             </div>
-            <Button onClick={memoGoToExchange}>Обменять</Button>
+            <Button onClick={memoGoToExchange} color={ButtonColorEnum.GREEN} size={ButtonSizeEnum.BIG}>Обменять</Button>
           </div>
         </div>
       </Container>

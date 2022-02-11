@@ -40,6 +40,7 @@ export interface CurrencyDataItemWithWallet {
   isBtc?: boolean,
   onlyTo?: boolean,
   reserve: number
+  minimalTransactionSum: number
 }
 
 export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
@@ -50,14 +51,16 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.BTC,
     reserve: 6,
+    minimalTransactionSum: 0.000003,
   },
   {
     img: EthereumImg,
-    title: 'Ethereum(ERC20)',
+    title: 'Ethereum',
     wallet: '0x5B4a943Ad1A9C59cB00DB5Eac15f2f1b684EfA29',
     isBtc: true,
     unit: CurrencyUnitEnum.ETH,
     reserve: 118,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: RippleImg,
@@ -66,6 +69,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.XRP,
     reserve: 120000,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: BinanceImg,
@@ -74,6 +78,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.BNB,
     reserve: 2521,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: LitecoinImg,
@@ -82,6 +87,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.LTC,
     reserve: 628,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: PolygonImg,
@@ -90,6 +96,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.MATIC,
     reserve: 10000000,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: StellarImg,
@@ -98,6 +105,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.XLM,
     reserve: 80000,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: TronImg,
@@ -106,6 +114,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.TRX,
     reserve: 7300000,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: CosmosImg,
@@ -114,6 +123,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.ATOM,
     reserve: 6452,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: DashImg,
@@ -122,6 +132,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.DASH,
     reserve: 1221,
+    minimalTransactionSum: 0.0003,
   },
 
   {
@@ -131,6 +142,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.DOGE,
     reserve: 8000000,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: WavesImg,
@@ -139,6 +151,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.WAVES,
     reserve: 7400,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: SolanaImg,
@@ -147,6 +160,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.SOL,
     reserve: 4500,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: TetherTRC20Img,
@@ -155,6 +169,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     isBtc: true,
     unit: CurrencyUnitEnum.USDT,
     reserve: 16200,
+    minimalTransactionSum: 0.0003,
   },
   {
     img: SberRubImg,
@@ -162,6 +177,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
     wallet: 'RUB',
     unit: CurrencyUnitEnum.RUB,
     reserve: 10000000,
+    minimalTransactionSum: 300,
     onlyTo: true,
   },
 ];

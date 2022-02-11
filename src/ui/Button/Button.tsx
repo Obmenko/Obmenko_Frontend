@@ -9,11 +9,21 @@ export enum ButtonModeEnum {
   DEFAULT = 'default'
 }
 
+export enum ButtonSizeEnum {
+  BIG = 'big'
+}
+
+export enum ButtonColorEnum {
+  GREEN = 'green'
+}
+
 interface PropsType extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
+  size?: ButtonSizeEnum;
   className?: string;
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
-  mode?: ButtonModeEnum
+  mode?: ButtonModeEnum,
+  color?: ButtonColorEnum,
 }
 
 const Button: FC<PropsType> = ({
@@ -21,13 +31,21 @@ const Button: FC<PropsType> = ({
   className,
   type = 'button',
   mode = ButtonModeEnum.DEFAULT,
+  color,
+  size,
   ...rest
 }) => (
   <button
     // eslint-disable-next-line react/button-has-type
     type={type}
-    className={clsx(classes.root, className, classes[mode])}
     {...rest}
+    className={clsx(
+      classes.root,
+      classes[mode],
+      color && classes[color],
+      size && classes[size],
+      className,
+    )}
   >
     {children}
   </button>

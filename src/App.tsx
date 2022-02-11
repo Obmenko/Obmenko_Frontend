@@ -38,10 +38,10 @@ const App: FC = () => (
           alignItems: 'center',
           height: '100vh',
           width: '100vw',
-          backgroundColor: '#1B1B1B',
+          backgroundColor: 'white',
         }}
         >
-          <Ripple color="#F9FF01" />
+          <Ripple color="#2A4BC0" />
         </div>
           )}
       >

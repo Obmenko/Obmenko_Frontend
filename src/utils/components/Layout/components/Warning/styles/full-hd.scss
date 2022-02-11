@@ -17,11 +17,13 @@
   & > p {
     margin-bottom: 8px;
     text-align: center;
-    font-size: 11px;
+    font-size: 13px;
     line-height: 1.3;
     color: $color-red;
+    font-family: "OKKO Sans";
     & > a {
-      font-size: 11px;
+      font-family: "OKKO Sans";
+      font-size: 13px;
       color: $color-blue;
     }
     &:last-child {

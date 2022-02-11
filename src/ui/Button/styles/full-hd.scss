@@ -10,6 +10,16 @@
   border-radius: 5px;
   text-transform: initial;
   font-weight: 500;
+  &.green {
+    border: 2px solid $color-green;
+    background-color: $color-green;
+    &:hover {
+    }
+  }
+  &.big {
+    width: 100%;
+    padding: 13px 24px;
+  }
 
   &.transparent {
     background-color: transparent;
@@ -21,6 +31,13 @@
     &:hover {
       background-color: $color-blue;
       color: white;
+    }
+    &.green {
+      color: $color-green;
+      border: 2px solid $color-green;
+      &:hover {
+        background-color: $color-green;
+      }
     }
   }
 }

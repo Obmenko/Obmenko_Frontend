@@ -96,7 +96,7 @@ const Select: FC<PropsType> = ({
           </div>
         ),
         Option: ({ innerProps, data }) => (
-          <div {...innerProps} className={classes.option}>
+          <div {...innerProps}>
             {OptionComponent ? OptionComponent(data) : <Option {...data} />}
           </div>
         ),

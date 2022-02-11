@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { CookiesProvider } from 'react-cookie';
-import '@fontsource/lato';
+import '@fontsource/montserrat';
 
 import App from './App';
 
