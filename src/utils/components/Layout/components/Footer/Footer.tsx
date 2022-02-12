@@ -1,6 +1,8 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-confusing-arrow */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import classes from './Footer.module.scss';
 import Container from '@/utils/components/Container';
@@ -12,27 +14,8 @@ import CONTACTS from '@/const/contacts';
 import { ROUTES } from '@/const/routes';
 import LogoImg from '@/assets/img/logo.svg';
 
-import CompanyLogo1 from '@/assets/img/logos/logo1.jpg';
-import CompanyLogo2 from '@/assets/img/logos/logo2.jpg';
-import CompanyLogo3 from '@/assets/img/logos/logo3.jpg';
-import CompanyLogo4 from '@/assets/img/logos/logo4.jpg';
-import CompanyLogo5 from '@/assets/img/logos/logo5.jpg';
-import CompanyLogo6 from '@/assets/img/logos/logo6.jpg';
-import CompanyLogo7 from '@/assets/img/logos/logo7.jpg';
-import CompanyLogo8 from '@/assets/img/logos/logo8.jpg';
-import CompanyLogo9 from '@/assets/img/logos/logo9.jpg';
-import CompanyLogo10 from '@/assets/img/logos/logo10.jpg';
-import CompanyLogo11 from '@/assets/img/logos/logo11.jpg';
-import CompanyLogo12 from '@/assets/img/logos/logo12.jpg';
-import CompanyLogo13 from '@/assets/img/logos/logo13.jpg';
-import CompanyLogo14 from '@/assets/img/logos/logo14.jpg';
-import CompanyLogo15 from '@/assets/img/logos/logo15.jpg';
-import CompanyLogo16 from '@/assets/img/logos/logo16.jpg';
-import CompanyLogo17 from '@/assets/img/logos/logo17.jpg';
-import CompanyLogo18 from '@/assets/img/logos/logo18.jpg';
-import CompanyLogo19 from '@/assets/img/logos/logo19.jpg';
-import CompanyLogo20 from '@/assets/img/logos/logo20.jpg';
-import CompanyLogo21 from '@/assets/img/logos/logo21.jpg';
+import useResize from '@/utils/hooks/useResize';
+import COMPANY_LOGOS from '@/const/company_logos';
 
 type IProps = {
 
@@ -41,7 +24,16 @@ type IProps = {
 const Footer: React.FC<IProps> = () => {
   const history = useHistory();
 
+  const { width } = useResize();
+
   const memoGoTo = useCallback(goTo, [history]);
+  const memoCompanyLogoList = useMemo(() => width > 480 ? [COMPANY_LOGOS.slice(0, 9), COMPANY_LOGOS.slice(9, -1)] : [
+    COMPANY_LOGOS.slice(0, 4),
+    COMPANY_LOGOS.slice(4, 8),
+    COMPANY_LOGOS.slice(8, 12),
+    COMPANY_LOGOS.slice(12, 16),
+    COMPANY_LOGOS.slice(16),
+  ], [width]);
 
   return (
     <div className={classes.root}>
@@ -75,33 +67,19 @@ const Footer: React.FC<IProps> = () => {
           <p />
         </div>
       </Container>
-      <div className={classes.logos}>
-        <div>
-          <img src={CompanyLogo1} alt="" />
-          <img src={CompanyLogo2} alt="" />
-          <img src={CompanyLogo3} alt="" />
-          <img src={CompanyLogo4} alt="" />
-          <img src={CompanyLogo5} alt="" />
-          <img src={CompanyLogo6} alt="" />
-          <img src={CompanyLogo7} alt="" />
-          <img src={CompanyLogo8} alt="" />
-          <img src={CompanyLogo9} alt="" />
-        </div>
-        <div>
-          <img src={CompanyLogo10} alt="" />
-          <img src={CompanyLogo11} alt="" />
-          <img src={CompanyLogo12} alt="" />
-          <img src={CompanyLogo13} alt="" />
-          <img src={CompanyLogo14} alt="" />
-          <img src={CompanyLogo15} alt="" />
-          <img src={CompanyLogo16} alt="" />
-          <img src={CompanyLogo17} alt="" />
-          <img src={CompanyLogo18} alt="" />
-          <img src={CompanyLogo19} alt="" />
-          <img src={CompanyLogo20} alt="" />
-          <img src={CompanyLogo21} alt="" />
-        </div>
-      </div>
+      <Container className={classes.logos}>
+        {
+          memoCompanyLogoList.map((logoChunk, logoChunkIndex) => (
+            <div key={`logo_chunk__${logoChunkIndex}`}>
+              {
+                logoChunk.map((logo, logoIndex) => (
+                  <img key={`logo_chunk_item__${logoIndex}`} src={logo} alt="" />
+                ))
+              }
+            </div>
+          ))
+        }
+      </Container>
       <div className={classes.copyright}>
         <span>
           ©
