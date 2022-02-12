@@ -1,11 +1,11 @@
 .root {
-  padding-bottom: 6px;
   height: auto;
-  min-height: initial;
+  min-height: 55px;
 }
 
 .option {
   align-items: center;
+  height: 100%;
   & > img {
     width: 18px;
     min-width: 18px;
@@ -15,6 +15,6 @@
     max-height: 18px;
   }
   & > span {
-    font-size: 12px;
+    font-size: 16px;
   }
 }

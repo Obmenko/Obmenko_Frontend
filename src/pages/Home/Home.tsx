@@ -168,7 +168,6 @@ const Home: React.FC = () => {
                   {data.coinTo.minimalTransactionSum}
                   {' '}
                   {data.coinTo.unit}
-                  {' '}
                 </p>
               </div>
             </div>
@@ -186,6 +185,15 @@ const Home: React.FC = () => {
                   value={data.coinTo}
                 />
                 <InputWithCoin coin={data.coinTo.unit} type="number" value={data.countTo} readOnly />
+              </div>
+              <div className={classes['content-calculator__item-info']}>
+                <p>
+                  Наш резерв:
+                  {' '}
+                  {data.coinTo.reserve}
+                  {' '}
+                  {data.coinTo.unit}
+                </p>
               </div>
               {/* <div className={classes['content-calculator__item-reserve']}>
                 <span>
@@ -231,7 +239,7 @@ const Home: React.FC = () => {
           </div>
           <Slider
             className={classes['reviews-content__list']}
-            noControls
+            noControls={width > 480}
             activeSlideIndex={reviewActiveIndex}
             onChange={setReviewActiveIndex}
             items={
@@ -243,14 +251,14 @@ const Home: React.FC = () => {
                       <p>{review[0].text}</p>
                       <h6>{review[0].author}</h6>
                       <span>{review[0].date}</span>
-                      <StarLine maxValue={5} value={3.5} />
+                      <StarLine maxValue={5} value={review[0].rating} />
                     </div>
                     <div className={clsx(classes['reviews-content__list-item'])} key={`${review[1].author}__${review[1].date}`}>
                       <img src={review[1].quotesImg} alt="" />
                       <p>{review[1].text}</p>
                       <h6>{review[1].author}</h6>
                       <span>{review[1].date}</span>
-                      <StarLine maxValue={5} value={3} />
+                      <StarLine maxValue={5} value={review[1].rating} />
                     </div>
                   </div>
                   <div className={classes['reviews-content__list-column']}>
@@ -259,12 +267,14 @@ const Home: React.FC = () => {
                       <p>{review[2].text}</p>
                       <h6>{review[2].author}</h6>
                       <span>{review[2].date}</span>
+                      <StarLine maxValue={5} value={review[2].rating} />
                     </div>
                     <div className={clsx(classes['reviews-content__list-item'])} key={`${review[3].author}__${review[3].date}`}>
                       <img src={review[3].quotesImg} alt="" />
                       <p>{review[3].text}</p>
                       <h6>{review[3].author}</h6>
                       <span>{review[3].date}</span>
+                      <StarLine maxValue={5} value={review[3].rating} />
                     </div>
                   </div>
                 </>
@@ -274,6 +284,7 @@ const Home: React.FC = () => {
                   <p>{review[0].text}</p>
                   <h6>{review[0].author}</h6>
                   <span>{review[0].date}</span>
+                  <StarLine maxValue={5} value={review[0].rating} />
                 </div>
               ))
             }
@@ -283,19 +294,8 @@ const Home: React.FC = () => {
       </Container>
       <Container className={classes.reserve} wrapperClassName={classes['reserve-wrapper']}>
         <h4>Резерв валюты</h4>
-        {/* <div className={clsx(classes['reserve-content'], 'noMobile')}>
-          {
-            CURRENCY_LIST.map((currency) => (
-              <div className={classes['reserve-content__item']} key={currency.title}>
-                <img src={currency.img} alt="" />
-                <h6>{currency.title}</h6>
-                <p>{currency.reserve}</p>
-              </div>
-            ))
-          }
-        </div> */}
         <div>
-          <img src={ReviewArrowLeft} onClick={memoSetCurrencyActiveIndex('prev')} alt="" />
+          <img src={ReviewArrowLeft} className="noMobile" onClick={memoSetCurrencyActiveIndex('prev')} alt="" />
           <Slider
             className={clsx(classes['reserve-content'])}
             noControls
@@ -317,11 +317,11 @@ const Home: React.FC = () => {
               ))
             }
           />
-          <img src={ReviewArrowLeft} onClick={memoSetCurrencyActiveIndex('next')} alt="" />
+          <img src={ReviewArrowLeft} className="noMobile" onClick={memoSetCurrencyActiveIndex('next')} alt="" />
         </div>
         <div className={clsx(classes['reserve-content__controls'], 'onlyMobile')}>
-          <img src={ArrowLeftGrey} onClick={memoSetCurrencyActiveIndex('prev')} alt="" />
-          <img src={ArrowLeftGrey} onClick={memoSetCurrencyActiveIndex('next')} alt="" />
+          <img src={ReviewArrowLeft} onClick={memoSetCurrencyActiveIndex('prev')} alt="" />
+          <img src={ReviewArrowLeft} onClick={memoSetCurrencyActiveIndex('next')} alt="" />
         </div>
       </Container>
     </div>
