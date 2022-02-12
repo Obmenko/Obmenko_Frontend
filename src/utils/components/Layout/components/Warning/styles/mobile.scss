@@ -1,0 +1,12 @@
+.root {
+  & > img {
+    display: none;
+  }
+  & > p {
+    text-align: left;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}

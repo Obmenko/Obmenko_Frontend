@@ -1,14 +1,10 @@
 .root {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-.burger {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
+  justify-content: space-between;
+  padding-top: 21px;
+  padding-bottom: 21px;
   & > img {
-    width: 100%;
+    &:first-child {
+      height: 18px;
+    }
   }
 }

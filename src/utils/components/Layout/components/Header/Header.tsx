@@ -23,7 +23,6 @@ import { NAVS, ROUTES } from '@/const/routes';
 import AuthContext from '@/context/auth';
 import Button from '@/ui/Button';
 import { ButtonModeEnum } from '@/ui/Button/Button';
-// import BurgerImg from '@/assets/img/burger.svg';
 
 type IProps = {
   setAsideMenuOpenState: { (state: boolean): void };
@@ -52,10 +51,10 @@ const Header: FC<IProps> = ({
         className={classes.root}
         wrapperClassName={classes['root-wrapper']}
       >
+        <img src={LogoImg} alt="" onClick={() => history.push('/')} />
         <div className={clsx(classes.burger, 'onlyMobile')} onClick={memoHandleSetAsideMenuOpenState()}>
           <img src={BurgerImg} alt="" />
         </div>
-        <img src={LogoImg} alt="" className="noMobile" onClick={() => history.push('/')} />
         <nav className={clsx('noMobile')}>
           {
             NAVS.map((nav) => (
@@ -63,7 +62,7 @@ const Header: FC<IProps> = ({
             ))
           }
         </nav>
-        <div className={classes.account}>
+        <div className={clsx(classes.account, 'noMobile')}>
           {
             !user && (
               <>
