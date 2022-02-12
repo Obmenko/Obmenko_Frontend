@@ -27,7 +27,7 @@ import CopyImg from '@/assets/img/copy.svg';
 import Container from '@/utils/components/Container';
 import Select from '@/ui/Select';
 import Button from '@/ui/Button';
-import { ButtonModeEnum } from '@/ui/Button/Button';
+import { ButtonColorEnum, ButtonModeEnum } from '@/ui/Button/Button';
 import {
   CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
@@ -142,7 +142,7 @@ const Exchange: React.FC = () => {
     feePercent: 0,
   });
 
-  const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.FORM : ExchangeModeEnum.HOW_TO_PAY);
+  const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.HOW_TO_PAY : ExchangeModeEnum.HOW_TO_PAY);
   const [requestStatus, setRequestStatus] = useState<RequestStatusEnum>(RequestStatusEnum.WAITING_FOR_CLIENT);
   const { token } = useContext(AuthContext);
 
@@ -189,16 +189,12 @@ const Exchange: React.FC = () => {
     [requestStatus],
   );
 
-  // useEffect(() => {
-  //   user
-  // }, [])
-
   return (
     <div className={classes.root}>
       <Container className={classes.start} wrapperClassName={classes['start-wrapper']}>
         <div className={classes.head}>
           {
-            mode !== ExchangeModeEnum.CHECK && (
+            mode !== ExchangeModeEnum.HOW_TO_PAY && (
               <img src={ArrowLeftGreyShortImg} alt="" onClick={memoGoToMode('prev')} />
             )
           }
@@ -213,7 +209,6 @@ const Exchange: React.FC = () => {
         <div className={classes.warning}>
           <div className={classes['warning-title']}>
             <h4>Внимание!</h4>
-            <img src={ArrowRightWhiteShortImg} alt="" />
           </div>
           <div className={classes['warning-text']}>
             <p className={classes.white}>
@@ -225,12 +220,30 @@ const Exchange: React.FC = () => {
         </div>
       </Container>
       <Container className={classes.calculator} wrapperClassName={classes['calculator-wrapper']}>
-        <img src={BgOverlayImg3} alt="" />
         {
           mode === ExchangeModeEnum.FORM && (
             <div className={classes['calculator-form']}>
               <div className={classes['calculator-form__item']}>
-                <h5>Отдаете</h5>
+                <div className={classes['calculator-form__item-title']}>
+                  <h5>Отдаете</h5>
+                  <div>
+                    <span>Курс обмена:</span>
+                    <p>
+                      1
+                      {' '}
+                      {exchangeFormik.values.coinFrom.unit}
+                      {' '}
+                      =
+                      {' '}
+                      {+exchangeFormik.values.countFrom * course.rate}
+                      {' '}
+                      {exchangeFormik.values.coinTo.unit}
+                    </p>
+                  </div>
+                </div>
+                <p className={classes['calculator-form__item-description']}>
+                  Выберите валюту и введите сумму перевода:
+                </p>
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
                     data={memoFromList}
@@ -239,17 +252,15 @@ const Exchange: React.FC = () => {
                   />
                   <input type="number" className="reverse" value={exchangeFormik.values.countFrom} onChange={memoSetExchangeDataFromInput('countFrom')} />
                 </div>
-                <span>
-                  Курс обмена: 1
-                  {' '}
-                  {exchangeFormik.values.coinFrom.unit}
-                  {' '}
-                  =
-                  {' '}
-                  {+exchangeFormik.values.countFrom * course.rate}
-                  {' '}
-                  {exchangeFormik.values.coinTo.unit}
-                </span>
+                <div className={classes['calculator-form__item-info']}>
+                  <p>
+                    Минимальная сумма перевода
+                    {' '}
+                    {exchangeFormik.values.coinTo.minimalTransactionSum}
+                    {' '}
+                    {exchangeFormik.values.coinTo.unit}
+                  </p>
+                </div>
                 <input className={clsx(userFormik.errors.email && 'invalid')} value={userFormik.values.email} onChange={memoSetUserDataFromInput('email')} type="text" placeholder="E-mail*" />
                 <input className={clsx(userFormik.errors.phone && 'invalid')} value={userFormik.values.phone} onChange={memoSetUserDataFromInput('phone')} type="text" placeholder="Телефон*" />
                 {/* <input onChange={memoSetUserDataFromInput('telegram')} type="text" placeholder="Telegram" /> */}
@@ -263,9 +274,13 @@ const Exchange: React.FC = () => {
                   <input type="text" />
                 </div> */}
               </div>
-              <img src={ExchangeImg} alt="" />
               <div className={classes['calculator-form__item']}>
-                <h5>Получаете</h5>
+                <div className={classes['calculator-form__item-title']}>
+                  <h5>Получаете</h5>
+                </div>
+                <p className={classes['calculator-form__item-description']}>
+                  Выберите валюту и введите сумму перевода:
+                </p>
                 <div className={classes['calculator-form__item-selectRow']}>
                   <Select
                     data={CURRENCY_LIST}
@@ -274,16 +289,15 @@ const Exchange: React.FC = () => {
                   />
                   <input type="number" value={exchangeFormik.values.countTo} readOnly className="reverse" />
                 </div>
-                <span>
-
-                  &nbsp;
-                  {/* min.: 30000
-                  {' '}
-                  {formik.values.coinTo.unit}
-                  , max.: 4000000
-                  {' '}
-                  {formik.values.coinTo.unit} */}
-                </span>
+                <div className={classes['calculator-form__item-info']}>
+                  <p>
+                    Наш резерв:
+                    {' '}
+                    {exchangeFormik.values.coinTo.reserve}
+                    {' '}
+                    {exchangeFormik.values.coinTo.unit}
+                  </p>
+                </div>
                 {
                   exchangeFormik.values.coinTo.isBtc ? (
                     <input className={clsx(exchangeFormik.errors.wallet && 'invalid')} onChange={memoSetExchangeDataFromInput('wallet')} type="text" placeholder="Кошелёк получателя" value={exchangeFormik.values.wallet} />
@@ -350,16 +364,16 @@ const Exchange: React.FC = () => {
               </div>
               <div className={classes['calculator-check__row']}>
                 <div className={classes['calculator-check__row-column']}>
-                  <h3>Личные данные</h3>
-                  <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
+                  <h4>Личные данные</h4>
+                  <div className={clsx(classes['calculator-check__row-column__item'])}>
                     <span>Номер моб. телефона:</span>
                     <p>{userFormik.values.phone || 'N/A'}</p>
                   </div>
-                  <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
+                  <div className={clsx(classes['calculator-check__row-column__item'])}>
                     <span>E-mail:</span>
                     <p>{userFormik.values.email || user?.email || 'N/A'}</p>
                   </div>
-                  <div className={clsx(classes['calculator-check__row-column__item'], classes.bold)}>
+                  <div className={clsx(classes['calculator-check__row-column__item'])}>
                     <span>Telegram:</span>
                     <p>{userFormik.values.telegram || user?.telegram || 'N/A'}</p>
                   </div>
@@ -398,11 +412,11 @@ const Exchange: React.FC = () => {
                 </div>
               </div>
               {/* <img src={QrCodeImg} alt="" /> */}
-              <div className={classes['calculator-howToPay__afterPay']}>
-                <h6>После оплаты:</h6>
-                <p>Нажмите на кнопку «Я оплатил заявку»</p>
-                <p>И ожидайте обработку заявки</p>
-              </div>
+              <p className={classes['calculator-howToPay__afterPay']}>
+                <span>После оплаты:</span>
+                {' '}
+                Нажмите на кнопку «Я оплатил заявку». И ожидайте обработку заявки
+              </p>
               <div className={classes['calculator-howToPay__sum']}>
                 <div>
                   <span>Сумма платежа:</span>
@@ -414,11 +428,8 @@ const Exchange: React.FC = () => {
                 </div>
               </div>
               <div className={classes['calculator-howToPay__warning']}>
-                <p>
-                  <span>Пожалуйста, будьте внимательны!</span>
-                  {' '}
-                  Все поля должны быть заполнены в точном соответствии с инструкцией. В противном случае, платеж может не пройти.
-                </p>
+                <span>Пожалуйста, будьте внимательны!</span>
+                <p>Все поля должны быть заполнены в точном соответствии с инструкцией. В противном случае, платеж может не пройти.</p>
               </div>
               <div className={classes['calculator-howToPay__info']}>
                 <div>
@@ -430,24 +441,10 @@ const Exchange: React.FC = () => {
                   <p>{requestStatus}</p>
                 </div>
               </div>
-              <div className={classes['calculator-howToPay__update']}>
-                <LinearProgress
-                  variant="determinate"
-                  value={memoRequestStatusValue}
-                  classes={{
-                    bar: classes['progressBar-bar'],
-                    colorPrimary: classes['progressBar-colorPrimary'],
-                  }}
-                />
-                <div>
-                  <p>Страница обновляется каждые 30 секунд.</p>
-                  <Button mode={ButtonModeEnum.TRANSPARENT}>Отключить обновление</Button>
-                </div>
-              </div>
             </div>
           )
         }
-        <Button onClick={memoGoToMode('next')}>
+        <Button onClick={memoGoToMode('next')} color={ButtonColorEnum.GREEN}>
           {
             mode === ExchangeModeEnum.FORM ? 'Обменять'
               : mode === ExchangeModeEnum.CHECK ? 'Создать заявку'
@@ -460,24 +457,28 @@ const Exchange: React.FC = () => {
           )
         }
       </Container>
-      <Container className={classes.end} wrapperClassName={classes['end-wrapper']}>
-        <h4>
-          Обмен
-          {' '}
-          {exchangeFormik.values.coinFrom.title}
-          {' '}
-          на
-          {' '}
-          {exchangeFormik.values.coinTo.title}
-        </h4>
-        <p>Для обмена Вам необходимо выполнить несколько шагов:</p>
-        <ul>
-          <li>1. Заполните все поля представленной формы. Нажмите кнопку «ОБМЕНЯТЬ».</li>
-          <li>2. Ознакомьтесь с условиями договора на оказание услуг обмена, если вы принимаете их, поставьте галочку в соответствующем поле/нажмите кнопку «Принимаю» («Согласен»). Еще раз проверьте данные заявки.</li>
-          <li>3. Оплатите заявку. Для этого следует совершить перевод необходимой суммы, следуя инструкциям на нашем сайте.</li>
-          <li>4. После выполнения указанных действий, система переместит Вас на страницу «Состояние заявки», где будет указан статус вашего перевода.</li>
-        </ul>
-      </Container>
+      {
+        mode === ExchangeModeEnum.FORM && (
+          <Container className={classes.end} wrapperClassName={classes['end-wrapper']}>
+            <h4>
+              Обмен
+              {' '}
+              {exchangeFormik.values.coinFrom.title}
+              {' '}
+              на
+              {' '}
+              {exchangeFormik.values.coinTo.title}
+            </h4>
+            <p>Для обмена Вам необходимо выполнить несколько шагов:</p>
+            <ul>
+              <li>1. Заполните все поля представленной формы. Нажмите кнопку «ОБМЕНЯТЬ».</li>
+              <li>2. Ознакомьтесь с условиями договора на оказание услуг обмена, если вы принимаете их, поставьте галочку в соответствующем поле/нажмите кнопку «Принимаю» («Согласен»). Еще раз проверьте данные заявки.</li>
+              <li>3. Оплатите заявку. Для этого следует совершить перевод необходимой суммы, следуя инструкциям на нашем сайте.</li>
+              <li>4. После выполнения указанных действий, система переместит Вас на страницу «Состояние заявки», где будет указан статус вашего перевода.</li>
+            </ul>
+          </Container>
+        )
+      }
     </div>
   );
 

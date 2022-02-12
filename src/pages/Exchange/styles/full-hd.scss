@@ -5,6 +5,7 @@
   align-items: center;
   min-height: 100vh;
   position: relative;
+  margin-bottom: 40px;
 }
 
 .start {
@@ -15,49 +16,45 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
     width: 100%;
-    margin-bottom: 70px;
     padding-top: 100px;
     & > h3 {
       color: $color-black;
+      font-weight: 700;
       font-size: 42px;
       line-height: 1.3;
-      font-weight: 700;
-
     }
     & > img {
       cursor: pointer;
       position: absolute;
-      left: 0;
+      right: calc(100% + 40px);
     }
   }
   & .warning {
-    background-color: $color-blue;
     border-radius: 30px;
     border-bottom-right-radius: 0;
-    padding: 50px 80px;
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    margin-top: 40px;
     &-title {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      padding-right: 32px;
+      margin-bottom: 20px;
       flex-basis: 18%;
       width: 100%;
       & > h4 {
         width: 100%;
-        color: white;
-        font-weight: 700;
-        font-size: 32px;
+        color: $color-red;
+        font-weight: 600;
+        font-size: 22px;
         line-height: 1.3;
-        margin-bottom: 16px;
       }
     }
     &-text {
@@ -71,11 +68,9 @@
         margin-bottom: 16px;
         font-size: 17px;
         line-height: 1.5;
+        font-family: "OKKO Sans";
         &:last-child {
           margin-bottom: 0;
-        }
-        &.white {
-          color: white;
         }
         &.black {
           color: $color-black;
@@ -90,14 +85,14 @@
 
 .calculator {
   background: #FFFFFF;
-  box-shadow: 0px 10px 40px rgba(8, 41, 135, 0.1);
-  border-radius: 30px;
-  margin-top: 100px;
+  box-shadow: 0px 1px 12px rgba(8, 41, 135, 0.1);
+  border-radius: 8px;
+  margin-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 70px 90px 80px;
-  margin-bottom: 100px;
+  padding: 60px 60px 50px;
+  margin-bottom: 60px;
   &-wrapper {
     position: relative;
     overflow: hidden;
@@ -131,7 +126,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      flex-basis: 43%;
+      flex-basis: 47%;
       width: 100%;
       &:last-child {
         & > span {
@@ -144,12 +139,30 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-top: 32px;
+        align-content: stretch;
         & > div {
-          width: 50%;
+          height: 100%;
+          width: 46%;
         }
         & > input {
-          width: 40%;
+          width: 46%;
+        }
+      }
+      &-info {
+        margin-top: 10px;
+        align-self: flex-end;
+        text-align: right;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-bottom: 30px;
+        & > p {
+          font-size: 12px;
+          line-height: 1.3;
+          text-align: center;
+          color: #888888;
+          margin-bottom: 8px;
+          font-family: "OKKO Sans";
         }
       }
       & > span {
@@ -162,13 +175,45 @@
       }
       & > input {
         width: 100%;
-        padding-top: 16px;
-        padding-left: 0;
+        margin-bottom: 30px;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
-      & > h5 {
-        font-size: 32px;
+      &-title {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+        & > h5 {
+          font-size: 24px;
+          line-height: 1.3;
+          color: $color-black;
+          font-weight: 500;
+        }
+        & > div {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          & > span {
+            font-size: 12px;
+            line-height: 1.3;
+          }
+          & > p {
+            font-size: 12px;
+            line-height: 1.3;
+            font-weight: 500;
+            font-family: 'OKKO Sans';
+          }
+        }
+      }
+      &-description {
+        margin-bottom: 10px;
+        font-size: 14px;
         line-height: 1.3;
-        font-weight: 700;
+        font-family: "OKKO Sans";
       }
       &-captcha {
         width: 100%;
@@ -188,7 +233,6 @@
         }
       }
       & > .checkBox {
-        margin-top: 16px;
       }
     }
   }
@@ -210,18 +254,11 @@
       &-column {
         flex-basis: 43%;
         & > h4 {
-          font-size: 20px;
-          line-height: 1.3;
-          color: $color-black;
-          font-weight: bold;
-          margin-bottom: 10px;
-        }
-        & > h3 {
           font-size: 24px;
           line-height: 1.3;
+          font-weight: 500;
           color: $color-black;
-          font-weight: 700;
-          margin-bottom: 4px;
+          margin-bottom: 10px;
         }
         &__item {
           margin-top: 14px;
@@ -231,7 +268,7 @@
           justify-content: flex-start;
           & > img {
             margin-right: 8px;
-            width: 50px;
+            width: 25px;
           }
           & > span {
             margin-right: 8px;
@@ -241,7 +278,8 @@
           & > p {
             font-size: 17px;
             line-height: 1.5;
-            color: $color-grey-text-light;
+            font-family: "OKKO Sans";
+            font-weight: 500;
           }
           &.bold {
             & > span {
@@ -259,23 +297,24 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     & > h3 {
-      font-size: 32px;
+      font-size: 24px;
       line-height: 1.3;
-      margin-bottom: 30px;
-      text-align: center;
-      font-weight: bold;
+      margin-bottom: 22px;
+      text-align: left;
+      font-weight: 500;
     }
     &__title {
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 30px;
       & > p {
         margin-bottom: 18px;
-        font-size: 18px;
+        font-size: 17px;
+        font-family: "OKKO Sans";
         line-height: 1.3;
       }
       & > div {
@@ -296,6 +335,8 @@
         & > span {
           font-size: 16px;
           line-height: 1.3;
+          font-weight: 700;
+          font-family: "OKKO Sans";
         }
       }
     }
@@ -305,96 +346,101 @@
     }
     &__afterPay {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      margin-bottom: 51px;
-      & > h6 {
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 1.5;
-      }
-      & > p {
-        font-size: 18px;
-        line-height: 1.5;
+      margin-bottom: 30px;
+      font-size: 17px;
+      line-height: 1.3;
+      font-family: "OKKO Sans";
+      & > span {
+        font-size: 17px;
+        font-weight: 600;
+        margin-right: 6px;
       }
     }
     &__sum {
       width: 100%;
-      background-color: $color-green;
-      border-radius: 30px;
+      background-color: rgba($color: $color-blue, $alpha: 0.1);
+      border-radius: 4px;
       border-bottom-right-radius: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 40px;
-      margin-bottom: 50px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 30px;
+      margin-bottom: 30px;
       & > div {
         margin-bottom: 6px;
         display: flex;
         flex-direction: row;
+        &:last-child {
+          margin-bottom: 0;
+        }
         & > p {
-          color: white;
-          font-size: 18px;
+          color: black;
+          font-size: 17px;
           line-height: 1.5;
           text-align: center;
+          font-family: "OKKO Sans";
         }
         & > span {
-          color: white;
-          font-size: 18px;
+          color: black;
+          font-size: 17px;
           line-height: 1.5;
           text-align: center;
+          font-weight: 600;
           margin-right: 4px;
-          font-weight: bold;
+          font-family: "OKKO Sans";
         }
       }
     }
     &__warning {
       width: 100%;
-      background-color: $color-grey-text-light;
-      border-radius: 30px;
-      border-bottom-right-radius: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      padding: 40px 70px;
-      margin-bottom: 40px;
-      & > p {
-        font-size: 18px;
-        line-height: 1.5;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      & > span {
+        font-size: 17px;
+        font-family: "OKKO Sans";
+        line-height: 1.3;
         color: $color-black;
-        & > span {
-          font-size: 18px;
-          line-height: 1.5;
-          color: $color-black;
-          margin-right: 4px;
-          font-weight: bold;
-        }
+        font-weight: 600;
+        color: $color-red;
+        margin-bottom: 8px;
+      }
+      & > p {
+        font-size: 17px;
+        font-family: "OKKO Sans";
+        line-height: 1.3;
+        color: $color-black;
       }
     }
     &__info {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      margin-bottom: 40px;
+      align-items: flex-start;
+      margin-bottom: 30px;
       & > div {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        margin-bottom: 6px;
+        margin-bottom: 20px;
         & > p {
-          font-size: 18px;
+          font-size: 17px;
+          font-family: "OKKO Sans";
           line-height: 1.5;
           color: $color-black;
         }
         & > span {
-          font-size: 18px;
+          font-size: 17px;
+          font-family: "OKKO Sans";
           line-height: 1.5;
           color: $color-black;
           margin-right: 4px;
-          font-weight: bold;
+          font-weight: 600;
         }
       }
     }
@@ -456,42 +502,39 @@
 }
 
 .end {
-  background-color: $color-blue;
   border-radius: 30px;
   border-bottom-right-radius: 0;
-  padding: 80px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-bottom: 100px;
+  margin-bottom: 60px;
   & > h4 {
-    font-size: 32px;
+    font-size: 22px;
     line-height: 1.3;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 18px;
+    color: black;
+    font-weight: 600;
+    margin-bottom: 20px;
   }
   & > ul {
-    margin-top: 12px;
-    margin-bottom: 12px;
     & > li {
       margin-top: 8px;
       font-size: 20px;
       line-height: 1.3;
-      color: white;
-      font-family: 'Lato', sans-serif;
+      color: black;
+      font-family: "OKKO Sans";
       &:last-child {
         margin-bottom: 0;
       }
     }
   }
   & > p {
-    margin-top: 12px;
     font-size: 20px;
     line-height: 1.3;
-    color: white;
+    color: black;
+    margin-bottom: 16px;
+    font-family: "OKKO Sans";
     & > span {
       color: inherit;
       font-weight: bold;

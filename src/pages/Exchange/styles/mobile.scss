@@ -5,16 +5,18 @@
   & > .head {
     flex-direction: column;
     align-items: flex-start;
+    padding-top: 40px;
     & > h3 {
-      font-size: 32px;
+      font-size: 22px;
     }
     & > img {
+      height: 20px;
+      margin-bottom: 16px;
       position: static;
     }
   }
   & .warning {
     flex-direction: column;
-    padding: 30px;
     &-title {
       margin-bottom: 24px;
       flex-direction: row;
@@ -39,8 +41,8 @@
 }
 
 .calculator {
-  padding: 16px;
-  border-radius: 20px;
+  padding: 20px;
+  border-radius: 8px;
   margin-top: 48px;
   padding-bottom: 32px;
   &-wrapper {
@@ -51,6 +53,7 @@
     display: none;
   }
   & > button {
+    margin-top: 30px;
   }
   &-form {
     flex-direction: column;
@@ -145,7 +148,6 @@
     }
     &__title {
       & > p {
-        text-align: center;
         font-size: 16px;
       }
       & > div {
@@ -161,63 +163,56 @@
     & > img {
     }
     &__afterPay {
-      & > h6 {
+      font-size: 16px;
+      text-align: center;
+      display: inline;
+      text-align: left;
+      line-height: 1.5;
+      margin-bottom: 30px;
+      & > span {
         text-align: center;
         margin-bottom: 8px;
-      }
-      & > p {
-        margin-bottom: 6px;
-        text-align: center;
+        font-size: 14px;
+        margin-right: 4px;
+        font-weight: 600;
       }
     }
     &__sum {
       border-radius: 20px;
-      padding: 16px;
+      padding: 12px 16px;
+
       & > div {
         width: 100%;
-        justify-content: space-between;
-        flex-direction: column;
+        justify-content: flex-start;
         & > p {
+          font-size: 16px;
         }
         & > span {
+          font-size: 16px;
         }
       }
     }
     &__warning {
-      padding: 32px;
-      border-radius: 20px;
       & > p {
+        font-size: 16px;
         & > span {
+          font-size: 18px;
         }
       }
     }
     &__info {
       & > div {
         flex-direction: column;
+        align-items: flex-start;
         & > p {
+          font-size: 18px;
+          margin-right: 0px;
         }
         & > span {
+          font-size: 16px;
         }
       }
     }
-    &__update {
-      & > div {
-        flex-direction: column;
-        & > p {
-          margin-bottom: 32px;
-        }
-        & > button {
-          position: static;
-        }
-      }
-    }
-  }
-}
-
-.progressBar {
-  &-bar {
-  }
-  &-colorPrimary {
   }
 }
 
