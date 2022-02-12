@@ -24,12 +24,8 @@ const StarLine: FC<IProps> = ({
   const memoArray = useMemo(() => {
     let data = generateNumArrayBySize(5);
     const part = maxValue / amount;
-    // console.log((value - 2 * part) / part);
     data = data.map(
-      (element) => {
-        console.log((value - element * part) / part);
-        return ((value - element * part) / part <= 0 ? 0 : ((value - element * part) / part >= 1 ? 1 : 0.5));
-      },
+      (element) => ((value - element * part) / part <= 0 ? 0 : ((value - element * part) / part >= 1 ? 1 : 0.5)),
     );
     return data;
   }, [amount, maxValue, value]);

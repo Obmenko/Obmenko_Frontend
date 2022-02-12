@@ -101,7 +101,6 @@ const Home: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log(memoCurrencyChunkList);
     setData({
       ...data,
       countTo: +data.countFrom * course.rate,

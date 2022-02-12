@@ -121,7 +121,6 @@ const Header: FC<IProps> = ({
 
   function goTo(path: string): { (): void } {
     return () => {
-      console.log('object');
       history.push(path);
     };
   }
