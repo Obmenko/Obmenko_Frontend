@@ -14,16 +14,16 @@ const AccountLayout: FC = ({ children }) => {
   return (
     <div className={classes.root}>
       <Container className={classes.nav} wrapperClassName={classes['nav-wrapper']}>
+        <div className={classes.bg} />
         {
           ACCOUNT_NAVS.map((nav) => (
             <span key={nav.title} onClick={memoGoTo(nav.path)}>{nav.title}</span>
           ))
         }
-        <div className={classes.bg} />
       </Container>
-      <Container className={classes.content}>
+      <div className={classes.content}>
         {children}
-      </Container>
+      </div>
     </div>
   );
 

@@ -5,8 +5,8 @@
   align-items: flex-start;
   justify-content: space-between;
   position: relative;
-  padding-top: 128px;
-  padding-bottom: 200px;
+  padding-top: 100px;
+  padding-bottom: 140px;
   &-wrapper {
     position: relative;
   }
@@ -26,8 +26,9 @@
   align-items: center;
   width: 100%;
   & > h3 {
-    text-align: center;
-    font-size: 42px;
+    width: 100%;
+    text-align: left;
+    font-size: 36px;
     line-height: 1.2;
     font-weight: bold;
     margin-bottom: 60px;
@@ -37,7 +38,7 @@
 .block {
   background: #FFFFFF;
   box-shadow: 0px 10px 40px rgba(8, 41, 135, 0.1);
-  border-radius: 30px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,9 +47,8 @@
   width: 100%;
   overflow: hidden;
   background-color: white;
-  padding: 50px 50px 60px 50px;
+  padding: 40px;
   position: relative;
-  flex-basis: 60%;
   & > h4 {
     font-size: 32px;
     line-height: 1.2;
@@ -63,9 +63,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  &-head {
-
-  }
   &-item {
     width: 100%;
     display: flex;
@@ -75,10 +72,20 @@
 }
 
 .cell {
-  padding: 5px;
-  border: 1px solid $color-blue;
+  padding: 12px 12px;
+  border: 1px solid #C4C4C4;
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  font-family: "OKKO Sans";
+  width: 100%;
+  font-size: 14px;
+  &-header {
+    font-weight: bold;
+    font-family: "Montserrat";
+  }
   &.id {
-    flex-basis: 28%;
+    flex-basis: 20%;
     width: 100%;
   }
   &.date {
@@ -86,15 +93,15 @@
     width: 100%;
   }
   &.course {
-    flex-basis: 19%;
+    flex-basis: 21%;
     width: 100%;
   }
   &.give {
-    flex-basis: 10%;
+    flex-basis: 14%;
     width: 100%;
   }
   &.get {
-    flex-basis: 10%;
+    flex-basis: 14%;
     width: 100%;
   }
   &.status {

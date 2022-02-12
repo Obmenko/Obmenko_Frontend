@@ -142,7 +142,7 @@ const Exchange: React.FC = () => {
     feePercent: 0,
   });
 
-  const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.HOW_TO_PAY : ExchangeModeEnum.HOW_TO_PAY);
+  const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.FORM : ExchangeModeEnum.HOW_TO_PAY);
   const [requestStatus, setRequestStatus] = useState<RequestStatusEnum>(RequestStatusEnum.WAITING_FOR_CLIENT);
   const { token } = useContext(AuthContext);
 

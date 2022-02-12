@@ -13,7 +13,6 @@ import { useHistory } from 'react-router';
 import { DateTime } from 'luxon';
 import classes from './AccountRequests.module.scss';
 import Container from '@/utils/components/Container';
-import AccountRequestsAsideMenu from '@/components/AccountAsideMenu';
 import SaleImg from '@/assets/img/sale.svg';
 import BgOverlayImg4 from '@/assets/img/bg_overlay_4.svg';
 import { ROUTES } from '@/const/routes';
@@ -50,14 +49,29 @@ const AccountRequests: React.FC<IProps> = () => {
     <Container className={clsx(classes.root)} wrapperClassName={classes['root-wrapper']}>
       <div className={classes.content}>
         <h3>Ваши операции</h3>
-        <div className={classes.block}>
+        <div className={clsx(classes.block, 'noMobile')}>
+          <div className={classes['list-item']}>
+            <div className={clsx(classes.cell, classes['cell-header'], classes.id)}>
+              ID
+            </div>
+            <div className={clsx(classes.cell, classes['cell-header'], classes.date)}>
+              Дата
+            </div>
+            <div className={clsx(classes.cell, classes['cell-header'], classes.course)}>
+              Курс
+            </div>
+            <div className={clsx(classes.cell, classes['cell-header'], classes.give)}>
+              Отдаете
+            </div>
+            <div className={clsx(classes.cell, classes['cell-header'], classes.get)}>
+              Получаете
+            </div>
+            <div className={clsx(classes.cell, classes['cell-header'], classes.status)}>
+              Статус
+            </div>
+          </div>
           {
-            !requestList.length && (
-              <h5>Нет заявок</h5>
-            )
-          }
-          {
-            requestList.length && (
+            !!requestList.length && (
               <div className={classes.list}>
                 {
                   requestList.map((request) => {
@@ -104,6 +118,62 @@ const AccountRequests: React.FC<IProps> = () => {
               </div>
             )
           }
+        </div>
+        <div className={clsx(classes['block-list'], 'onlyMobile')}>
+          {
+              requestList.map((request) => {
+                const date = DateTime
+                  .fromMillis(request.createdAt || 0)
+                  .setLocale('ru')
+                  .toLocaleString(DateTime.DATETIME_SHORT);
+                return (
+                  <div className={classes.block} key={request._id} onClick={memoOnClick(request._id)}>
+                    <div>
+                      <div>ID</div>
+                      <div>{request._id}</div>
+                    </div>
+                    <div>
+                      <div>Дата</div>
+                      <div>{date}</div>
+                    </div>
+                    <div>
+                      <div>Курс</div>
+                      <div>
+                        1
+                        {' '}
+                        {request.coinFrom}
+                        {' '}
+                        =
+                        {' '}
+                        {+request.countTo / +request.countFrom}
+                        {' '}
+                        {request.coinTo}
+                      </div>
+                    </div>
+                    <div>
+                      <div>Отдаете</div>
+                      <div>
+                        {request.countFrom}
+                        {' '}
+                        {request.coinFrom}
+                      </div>
+                    </div>
+                    <div>
+                      <div>Получаете</div>
+                      <div>
+                        {request.countTo}
+                        {' '}
+                        {request.coinTo}
+                      </div>
+                    </div>
+                    <div>
+                      <div>Статус</div>
+                      <div>{request.status}</div>
+                    </div>
+                  </div>
+                );
+              })
+            }
         </div>
       </div>
     </Container>

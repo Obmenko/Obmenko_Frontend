@@ -9,7 +9,6 @@ import _ from 'lodash';
 import { useHistory } from 'react-router';
 import classes from './AccountPrivacySettings.module.scss';
 import Container from '@/utils/components/Container';
-import AccountPrivacySettingsAsideMenu from '@/components/AccountAsideMenu';
 import SaleImg from '@/assets/img/sale.svg';
 import BgOverlayImg4 from '@/assets/img/bg_overlay_4.svg';
 import { ROUTES } from '@/const/routes';
