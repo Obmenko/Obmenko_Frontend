@@ -7,25 +7,25 @@
   width: 100%;
   overflow: hidden;
   background-color: white;
-  padding: 50px 50px 60px 50px;
+  padding: 60px;
   position: relative;
-  min-width: 520px;
-  max-width: 520px;
+  min-width: 600px;
+  max-width: 600px;
 }
 .content {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   width: 100%;
   height: auto;
   position: relative;
   & > h4 {
-    font-size: 32px;
+    font-size: 28px;
     line-height: 1.2;
-    font-weight: bold;
+    font-weight: 500;
     color: $color-black;
-    margin-bottom: 24px;
+    margin-bottom: 30px;
   }
 }
 
@@ -34,11 +34,11 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   & > span {
     font-size: 17px;
     color: $color-black;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
     & > span {
       font-size: 17px;
       margin-left: 2px;
@@ -48,7 +48,6 @@
   & > input {
     width: 100%;
     max-width: initial;
-    padding-left: 0;
   }
 }
 
@@ -70,18 +69,19 @@
 }
 
 .button {
-  margin-top: 41px;
-  max-width: 252px;
+  margin-top: 10px;
   font-weight: bold;
 }
 
 .forgotPassword {
   margin-top: 30px;
+  width: 100%;
   & > p {
     font-size: 15px;
     line-height: 1.2;
     color: $color-blue;
     cursor: pointer;
+    font-family: "OKKO Sans";
   }
 }
 
@@ -89,12 +89,15 @@
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  width: 100%;
   & > p {
+    font-family: "OKKO Sans";
     font-size: 15px;
     line-height: 1.2;
     margin-right: 10px;
   }
   & > span {
+    font-family: "OKKO Sans";
     font-size: 15px;
     line-height: 1.2;
     color: $color-blue;
@@ -111,8 +114,8 @@
 
 .cross {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 50px;
+  right: 50px;
   cursor: pointer;
 }
 

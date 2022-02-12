@@ -16,6 +16,7 @@ import Button from '@/ui/Button';
 import { authUser, createUser } from '@/api/user';
 import UserContext from '@/context/user';
 import AuthContext from '@/context/auth';
+import { ButtonColorEnum, ButtonSizeEnum } from '@/ui/Button/Button';
 
 export enum AuthModalModeEnum {
   LOGIN = 'login',
@@ -167,7 +168,7 @@ const AuthModal: React.FC<AuthModalData> = ({
               </div>
             )
           }
-          <Button className={classes.button} type="submit">{mode === AuthModalModeEnum.REGISTRATION ? 'Зарегистрироваться' : 'Войти'}</Button>
+          <Button className={classes.button} size={ButtonSizeEnum.BIG} color={ButtonColorEnum.GREEN} type="submit">{mode === AuthModalModeEnum.REGISTRATION ? 'Зарегистрироваться' : 'Войти'}</Button>
           {
             mode === AuthModalModeEnum.LOGIN && (
               <>
