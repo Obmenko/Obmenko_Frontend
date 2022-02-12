@@ -49,6 +49,8 @@
   &-column {
     display: flex;
     flex-direction: column;
+    z-index: 10;
+    position: relative;
     & > span {
       font-size: 20px;
       line-height: 1.4;

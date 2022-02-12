@@ -10,6 +10,7 @@ import { Ripple } from 'react-spinners-css';
 import Layout from '@/utils/components/Layout';
 import { ROUTES } from '@/const/routes';
 import { ProtectedRoute } from './utils/components/ProtectedRoute';
+import AccountLayout from './utils/components/AccountLayout';
 
 const HomePage = lazy(() => import('@/pages/Home'));
 const ExchangePage = lazy(() => import('@/pages/Exchange'));
@@ -47,9 +48,16 @@ const App: FC = () => (
       >
         <Switch>
           <Route path={ROUTES.EXCHANGE} component={ExchangePage} />
-          <ProtectedRoute path={ROUTES.ACCOUNT} exact component={AccountPage} />
-          <ProtectedRoute path={ROUTES.ACCOUNT_PRIVACY_SETTINGS} exact component={AccountPrivacySettingsPage} />
-          <ProtectedRoute path={ROUTES.ACCOUNT_REQUESTS} exact component={AccountRequestsPage} />
+          <ProtectedRoute
+            path={ROUTES.ACCOUNT}
+            render={() => (
+              <AccountLayout>
+                <ProtectedRoute path={ROUTES.ACCOUNT} exact component={AccountPage} />
+                <ProtectedRoute path={ROUTES.ACCOUNT_PRIVACY_SETTINGS} exact component={AccountPrivacySettingsPage} />
+                <ProtectedRoute path={ROUTES.ACCOUNT_REQUESTS} exact component={AccountRequestsPage} />
+              </AccountLayout>
+            )}
+          />
           <Route path={ROUTES.HOME} exact component={HomePage} />
           <Route path={ROUTES.FAQ} exact component={FAQPage} />
           <Route path={ROUTES.RULES} exact component={RulesPage} />

@@ -1,0 +1,47 @@
+.root {
+  & .bg  {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 0;
+    &-item {
+      position: absolute;
+      top: 0;
+      width: 60vw;
+      height: 60vw;
+      min-width: 60vw;
+      min-height: 60vw;
+      min-width: 60vw;
+      min-height: 60vw;
+      filter: blur(300px);
+      opacity: 0.4;
+      &__red {
+        top: 5vw;
+        background: #C02F2A;
+      }
+      &__blue {
+        background: #2A4BC0;
+        &-right {
+          top: 120vh;
+          left: 80vw;
+        }
+        &-left {
+          top: 260vh;
+          right: 80vw;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  &-content {
+  }
+  &-paper {
+    margin: 16px !important;
+  }
+}

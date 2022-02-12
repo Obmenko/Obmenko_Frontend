@@ -71,9 +71,6 @@ const Account: React.FC<IProps> = () => {
 
   return (
     <Container className={clsx(classes.root)} wrapperClassName={classes['root-wrapper']}>
-      <img src={BgOverlayImg4} alt="" className={classes.bg} />
-      <AccountAsideMenu activePath={ROUTES.ACCOUNT} />
-      <img src={SaleImg} alt="" className={classes.sale} />
       <form action="" className={classes.form} onSubmit={formik.handleSubmit}>
         <h4>Личные данные</h4>
         <div className={classes.input}>

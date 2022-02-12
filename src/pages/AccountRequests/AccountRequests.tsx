@@ -48,8 +48,6 @@ const AccountRequests: React.FC<IProps> = () => {
 
   return (
     <Container className={clsx(classes.root)} wrapperClassName={classes['root-wrapper']}>
-      <img src={BgOverlayImg4} alt="" className={classes.bg} />
-      <AccountRequestsAsideMenu activePath={ROUTES.ACCOUNT_REQUESTS} isSaleImg />
       <div className={classes.content}>
         <h3>Ваши операции</h3>
         <div className={classes.block}>

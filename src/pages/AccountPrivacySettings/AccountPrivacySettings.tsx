@@ -87,8 +87,6 @@ const AccountPrivacySettings: React.FC<IProps> = () => {
 
   return (
     <Container className={clsx(classes.root)} wrapperClassName={classes['root-wrapper']}>
-      <img src={BgOverlayImg4} alt="" className={classes.bg} />
-      <AccountPrivacySettingsAsideMenu activePath={ROUTES.ACCOUNT_PRIVACY_SETTINGS} isSaleImg />
       <form action="" className={classes.form} onSubmit={formik.handleSubmit}>
         <h4>Настройки безопасности</h4>
         <div className={classes.input}>

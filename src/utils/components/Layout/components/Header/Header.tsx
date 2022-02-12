@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { useHistory, useRouteMatch } from 'react-router';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
-import AccountImg from '@/assets/img/account.png';
+import AccountImg from '@/assets/img/account.svg';
 import LogoImg from '@/assets/img/logo.svg';
 import BurgerImg from '@/assets/img/burger.svg';
 import ExitImg from '@/assets/img/exit.svg';
@@ -91,8 +91,8 @@ const Header: FC<IProps> = ({
                   className={clsx(classes.login, 'noMobile')}
                   onClick={() => history.push(ROUTES.ACCOUNT_REQUESTS)}
                 >
-                  <img src={AccountImg} alt="" />
                   <span>{user?.username || 'N/A'}</span>
+                  <img src={AccountImg} alt="" />
                 </div>
                 <img src={ExitImg} alt="" className={classes.exit} onClick={memoOnExit} />
               </>
