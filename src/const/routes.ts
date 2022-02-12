@@ -6,7 +6,7 @@ export const ROUTES = {
   REVIEWS: '/reviews',
   CONTACTS: '/contacts',
   ACCOUNT: '/account',
-  ACCOUNT_PRIVACY_SETTINGS: '/account/settings',
+  // ACCOUNT_PRIVACY_SETTINGS: '/account/settings',
   ACCOUNT_REQUESTS: '/account/requests',
 };
 
@@ -34,10 +34,10 @@ export const ACCOUNT_NAVS = [
     path: ROUTES.ACCOUNT_REQUESTS,
     title: 'Ваши операции',
   },
-  {
-    path: ROUTES.ACCOUNT_PRIVACY_SETTINGS,
-    title: 'Настройки безопасности',
-  },
+  // {
+  //   path: ROUTES.ACCOUNT_PRIVACY_SETTINGS,
+  //   title: 'Настройки безопасности',
+  // },
   {
     path: ROUTES.RULES,
     title: 'Правила сайта',

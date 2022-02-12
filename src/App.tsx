@@ -53,7 +53,7 @@ const App: FC = () => (
             render={() => (
               <AccountLayout>
                 <ProtectedRoute path={ROUTES.ACCOUNT} exact component={AccountPage} />
-                <ProtectedRoute path={ROUTES.ACCOUNT_PRIVACY_SETTINGS} exact component={AccountPrivacySettingsPage} />
+                {/* <ProtectedRoute path={ROUTES.ACCOUNT_PRIVACY_SETTINGS} exact component={AccountPrivacySettingsPage} /> */}
                 <ProtectedRoute path={ROUTES.ACCOUNT_REQUESTS} exact component={AccountRequestsPage} />
               </AccountLayout>
             )}
