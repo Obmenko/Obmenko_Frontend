@@ -15,6 +15,7 @@ import { updateUser } from '@/api/user';
 import AuthContext from '@/context/auth';
 import UserContext from '@/context/user';
 import Button from '@/ui/Button';
+import { ButtonColorEnum, ButtonSizeEnum } from '@/ui/Button/Button';
 
 type IProps = {
   id?: string
@@ -72,52 +73,54 @@ const Account: React.FC<IProps> = () => {
     <Container className={clsx(classes.root)} wrapperClassName={classes['root-wrapper']}>
       <form action="" className={classes.form} onSubmit={formik.handleSubmit}>
         <h4>Личные данные</h4>
-        <div className={classes.input}>
-          <span>
-            Логин
-            <span>*</span>
-            :
-          </span>
-          <input type="text" value={formik.values.username} onChange={memoOnChange('username')} placeholder={user?.username || 'Не заполнено'} />
-          {
+        <div className={classes['input-list']}>
+          <div className={classes.input}>
+            <span>
+              Логин
+              <span>*</span>
+              :
+            </span>
+            <input type="text" value={formik.values.username} onChange={memoOnChange('username')} placeholder={user?.username || 'Не заполнено'} />
+            {
             formik.errors.username && (
               <p>{formik.errors.username}</p>
             )
           }
-        </div>
-        <div className={classes.input}>
-          <span>
-            Email
-            <span>*</span>
-            :
-          </span>
-          <input type="text" value={formik.values.email} onChange={memoOnChange('email')} placeholder={user?.email || 'Не заполнено'} />
-          {
+          </div>
+          <div className={classes.input}>
+            <span>
+              Email
+              <span>*</span>
+              :
+            </span>
+            <input type="text" value={formik.values.email} onChange={memoOnChange('email')} placeholder={user?.email || 'Не заполнено'} />
+            {
             formik.errors.email && (
               <p>{formik.errors.email}</p>
             )
           }
-        </div>
-        <div className={classes.input}>
-          <span>
-            ФИО:
-          </span>
-          <input type="text" value={formik.values.fullname} onChange={memoOnChange('fullname')} placeholder={user?.fullname || 'Не заполнено'} />
-        </div>
-        <div className={classes.input}>
-          <span>
-            Телефон:
-          </span>
-          <input type="number" value={formik.values.phone} onChange={memoOnChange('phone')} placeholder={user?.phone || 'Не заполнено'} />
-        </div>
+          </div>
+          <div className={classes.input}>
+            <span>
+              ФИО:
+            </span>
+            <input type="text" value={formik.values.fullname} onChange={memoOnChange('fullname')} placeholder={user?.fullname || 'Не заполнено'} />
+          </div>
+          <div className={classes.input}>
+            <span>
+              Телефон:
+            </span>
+            <input type="number" value={formik.values.phone} onChange={memoOnChange('phone')} placeholder={user?.phone || 'Не заполнено'} />
+          </div>
 
-        <div className={classes.input}>
-          <span>
-            Telegram:
-          </span>
-          <input type="text" value={formik.values.telegram} onChange={memoOnChange('telegram')} placeholder={user?.telegram || 'Не заполнено'} />
+          <div className={classes.input}>
+            <span>
+              Telegram:
+            </span>
+            <input type="text" value={formik.values.telegram} onChange={memoOnChange('telegram')} placeholder={user?.telegram || 'Не заполнено'} />
+          </div>
         </div>
-        <Button className={classes.button} type="submit">Сохранить</Button>
+        <Button className={classes.button} size={ButtonSizeEnum.BIG} color={ButtonColorEnum.GREEN} type="submit">Сохранить</Button>
       </form>
     </Container>
   );

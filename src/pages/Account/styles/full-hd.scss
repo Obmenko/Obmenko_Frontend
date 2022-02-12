@@ -25,7 +25,8 @@
   box-shadow: 0px 10px 40px rgba(8, 41, 135, 0.1);
   border-radius: 30px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   overflow-y: hidden;
@@ -35,11 +36,13 @@
   padding: 50px 50px 60px 50px;
   position: relative;
   & > h4 {
+    width: 100%;
     font-size: 32px;
     line-height: 1.2;
-    font-weight: bold;
     color: $color-black;
-    margin-bottom: 24px;
+    margin-bottom: 40px;
+    font-size: 36px;
+    font-weight: 600;
   }
 }
 
@@ -50,10 +53,18 @@
   width: 100%;
   margin-bottom: 40px;
   position: relative;
+  flex-basis: 48%;
+  &-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
   & > span {
     font-size: 17px;
     color: $color-black;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
     & > span {
       font-size: 17px;
       margin-left: 2px;
@@ -63,7 +74,6 @@
   & > input {
     width: 100%;
     max-width: initial;
-    padding-left: 0;
   }
   & > p {
     top: calc(100% + 4px);
@@ -91,7 +101,8 @@
 }
 
 .button {
-  margin-top: 41px;
-  max-width: 252px;
+  margin-top: 20px;
   font-weight: bold;
+  flex-basis: 100%;
+  max-width: 352px;
 }
