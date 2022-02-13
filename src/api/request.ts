@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 import { CurrencyDataItemWithWallet } from '@/const/currencies_list';
-import { CourseData, CurrencyUnitEnum } from '@/types/exchange';
+import { CurrencyUnitEnum } from '@/types/exchange';
 import { getAuthHeaders } from './user';
 
 const API_BASE = process.env.REACT_APP_API_BASE;

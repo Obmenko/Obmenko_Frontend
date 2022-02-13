@@ -5,12 +5,8 @@ import React, { useContext, useCallback } from 'react';
 import clsx from 'clsx';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import { useHistory } from 'react-router';
 import classes from './Account.module.scss';
 import Container from '@/utils/components/Container';
-import SaleImg from '@/assets/img/sale.svg';
-import BgOverlayImg4 from '@/assets/img/bg_overlay_4.svg';
-import { ROUTES } from '@/const/routes';
 import { updateUser } from '@/api/user';
 import AuthContext from '@/context/auth';
 import UserContext from '@/context/user';
@@ -127,7 +123,7 @@ const Account: React.FC<IProps> = () => {
 
   async function handleOnSubmit(values: FormData) {
     if (!_.isEmpty(formik.errors)) return;
-    const data = await updateUser(token, values);
+    await updateUser(token, values);
   }
 
   // function handleSetDataFromSelect(key: keyof FormData): { (value: number | null): void } {

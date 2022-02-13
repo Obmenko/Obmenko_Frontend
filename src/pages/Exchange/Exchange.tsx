@@ -9,25 +9,20 @@ import React, {
 } from 'react';
 import clsx from 'clsx';
 import Checkbox from '@mui/material/Checkbox';
-import { LinearProgress } from '@mui/material';
 import { useHistory, useParams } from 'react-router';
-import { v4 as uuidv4 } from 'uuid';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
 import classes from './Exchange.module.scss';
-import BgOverlayImg3 from '@/assets/img/bg_overlay_3.png';
-import ArrowRightWhiteShortImg from '@/assets/img/arrow_right_white_short.svg';
 import ArrowLeftGreyShortImg from '@/assets/img/arrow_left_grey_short.svg';
 // import CaptchaImg1 from '@/assets/img/captcha/captcha_1.jpg';
 // import CaptchaImg6 from '@/assets/img/captcha/captcha_6.jpg';
-import ExchangeImg from '@/assets/img/currency/exchange.svg';
 import CopyImg from '@/assets/img/copy.svg';
 // import QrCodeImg from '@/assets/img/qr_code.svg';
 import Container from '@/utils/components/Container';
 import Select from '@/ui/Select';
 import Button from '@/ui/Button';
-import { ButtonColorEnum, ButtonModeEnum } from '@/ui/Button/Button';
+import { ButtonColorEnum } from '@/ui/Button/Button';
 import {
   CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
@@ -183,11 +178,6 @@ const Exchange: React.FC = () => {
   useEffect(() => {
     if (requestId) getRequestById(token, requestId).then((data) => setRequest(data));
   }, [requestId, token]);
-
-  const memoRequestStatusValue = useMemo(
-    () => (requestStatus === RequestStatusEnum.WAITING_FOR_CLIENT ? 33 : requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM ? 66 : 100),
-    [requestStatus],
-  );
 
   return (
     <div className={classes.root}>

@@ -2,12 +2,10 @@ import React, {
   FC, useContext, useEffect,
 } from 'react';
 import {
-  Redirect,
   Route,
   RouteProps,
 } from 'react-router-dom';
 import AuthContext from '@/context/auth';
-import { ROUTES } from '../../../const/routes';
 import ModalContext, { ModalTypeEnum } from '@/context/modal';
 import { AuthModalModeEnum } from '@/components/AuthModal/AuthModal';
 

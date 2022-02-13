@@ -2,27 +2,15 @@
 /* eslint-disable camelcase */
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
-import _ from 'lodash';
 import Home from './Home';
-import IMAGE_DICT, { ImageItem } from '@/const/assets/image';
 
-const HomePage: FC = () => {
-  return (
-    <>
-      <Helmet title="Coins Shop">
-        dada
-      </Helmet>
-      <Home />
-    </>
-  );
-
-  function imageListToPreloadComponentList(fieldPath: string) {
-    const data: ImageItem[] = _.get(IMAGE_DICT, fieldPath);
-
-    return data.map((item, itemIndex) => (
-      <link key={`${fieldPath}__${itemIndex}`} rel="preload" as="image" href={item.src} />
-    ));
-  }
-};
+const HomePage: FC = () => (
+  <>
+    <Helmet title="Coins Shop">
+      dada
+    </Helmet>
+    <Home />
+  </>
+);
 
 export default HomePage;

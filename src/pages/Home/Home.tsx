@@ -7,18 +7,11 @@ import React, {
 import _ from 'lodash';
 import clsx from 'clsx';
 import { useHistory } from 'react-router';
-import { NAVS } from '@/const/routes';
 import classes from './Home.module.scss';
-import LogoImg from '@/assets/img/logo.png';
-import BgOverlayImg from '@/assets/img/bg_overlay.png';
-import BgOverlayImg2 from '@/assets/img/bg_overlay_2.png';
-import ExchangeImg from '@/assets/img/currency/exchange.svg';
 
 import AdvantageImg1 from '@/assets/img/advantage_1.svg';
 import AdvantageImg2 from '@/assets/img/advantage_2.svg';
 import AdvantageImg3 from '@/assets/img/advantage_3.svg';
-import ArrowLeftGrey from '@/assets/img/arrow_left_grey.svg';
-import ArrowRightWhite from '@/assets/img/arrow_right_white.svg';
 import Container from '@/utils/components/Container';
 import Select from '@/ui/Select';
 import Button from '@/ui/Button';
@@ -32,8 +25,6 @@ import ReviewArrowLeft from '@/assets/img/review_arrow_left.svg';
 import { CurrencyUnitEnum } from '@/types/exchange';
 import { getExchangePair } from '@/api/coin_api';
 import { countFeePercent } from '@/utils/functions/rates';
-import { goBlank } from '@/utils/functions/dom';
-import CONTACTS from '@/const/contacts';
 import InputWithCoin from '@/components/InputWithCoin';
 import { ButtonColorEnum, ButtonSizeEnum } from '@/ui/Button/Button';
 import StarLine from '@/components/StarLine';
@@ -75,7 +66,6 @@ const Home: React.FC = () => {
 
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [data]);
   const memoSetDataFromSelect = useCallback(handleSetDataFromSelect, [data]);
-  const memoGoTo = useCallback(goTo, [history]);
 
   const memoReviewChunkList = useMemo<ReviewItem[][]>(() => _.chunk(REVIEWS, width > 480 ? 4 : 1), [width]);
   const memoCurrencyChunkList = useMemo<CurrencyDataItemWithWallet[][]>(
@@ -85,10 +75,6 @@ const Home: React.FC = () => {
   const memoSetCurrencyActiveIndex = useCallback(handleSetCurrencyActiveIndex, [
     currencyActiveIndex,
     memoCurrencyChunkList.length,
-  ]);
-  const memoSetReviewActiveIndex = useCallback(handleSetReviewActiveIndex, [
-    memoReviewChunkList.length,
-    reviewActiveIndex,
   ]);
 
   const memoGoToExchange = useCallback(goToExchange, [
@@ -348,13 +334,6 @@ const Home: React.FC = () => {
     };
   }
 
-  function handleSetReviewActiveIndex(direction: 'next' | 'prev'): { (): void } {
-    return () => {
-      if (reviewActiveIndex === memoReviewChunkList.length - 1 && direction === 'next') setReviewActiveIndex(0);
-      else if (reviewActiveIndex === 0 && direction === 'prev') setReviewActiveIndex(memoReviewChunkList.length - 1);
-      else setReviewActiveIndex(reviewActiveIndex + (direction === 'prev' ? -1 : 1));
-    };
-  }
   function handleSetDataFromSelect(key: keyof CurrencyData): {
     (value: CurrencyDataItemWithWallet | number | null): void
   } {
@@ -372,11 +351,6 @@ const Home: React.FC = () => {
         ...data,
         [key]: value,
       });
-    };
-  }
-  function goTo(path: string): { (): void } {
-    return () => {
-      history.push(path);
     };
   }
 };

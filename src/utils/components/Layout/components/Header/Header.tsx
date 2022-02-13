@@ -4,18 +4,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {
-  FC, useCallback, useContext, useEffect, useMemo,
+  FC, useCallback, useContext,
 } from 'react';
 
 import clsx from 'clsx';
-import { useHistory, useRouteMatch } from 'react-router';
+import { useHistory } from 'react-router';
 import Container from '@/utils/components/Container';
 import classes from './Header.module.scss';
 import AccountImg from '@/assets/img/account.svg';
 import LogoImg from '@/assets/img/logo.svg';
 import BurgerImg from '@/assets/img/burger.svg';
 import ExitImg from '@/assets/img/exit.svg';
-import CONTACTS from '@/const/contacts';
 import ModalContext, { ModalTypeEnum } from '@/context/modal';
 import { AuthModalModeEnum } from '@/components/AuthModal/AuthModal';
 import UserContext from '@/context/user';

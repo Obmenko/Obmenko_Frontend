@@ -13,7 +13,7 @@ export type UserType = {
   phone?: string,
 }
 
-export const getAuthHeaders = (token: string) => ({
+export const getAuthHeaders = (token: string): { [key: string]: string} => ({
   [HeadersMapEnum.AUTH_TOKEN]: token,
 });
 

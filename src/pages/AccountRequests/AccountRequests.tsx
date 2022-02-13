@@ -4,23 +4,14 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {
-  useContext, useCallback, FC, useEffect, useState,
+  useContext, useCallback, useEffect, useState,
 } from 'react';
 import clsx from 'clsx';
-import { useFormik } from 'formik';
-import _ from 'lodash';
 import { useHistory } from 'react-router';
 import { DateTime } from 'luxon';
 import classes from './AccountRequests.module.scss';
 import Container from '@/utils/components/Container';
-import SaleImg from '@/assets/img/sale.svg';
-import BgOverlayImg4 from '@/assets/img/bg_overlay_4.svg';
-import { ROUTES } from '@/const/routes';
-import { updateUser } from '@/api/user';
 import AuthContext from '@/context/auth';
-import UserContext from '@/context/user';
-import Button from '@/ui/Button';
-import Select from '@/ui/Select';
 import { getRequestList, RequestType } from '@/api/request';
 
 type IProps = {
@@ -31,7 +22,6 @@ const AccountRequests: React.FC<IProps> = () => {
   const [requestList, setRequestList] = useState<RequestType[]>([]);
 
   const { token } = useContext(AuthContext);
-  const { user } = useContext(UserContext);
   const history = useHistory();
 
   const memoOnClick = useCallback(

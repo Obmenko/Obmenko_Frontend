@@ -2,19 +2,12 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useContext, useCallback, FC } from 'react';
+import React, { useCallback } from 'react';
 import clsx from 'clsx';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import { useHistory } from 'react-router';
 import classes from './AccountPrivacySettings.module.scss';
 import Container from '@/utils/components/Container';
-import SaleImg from '@/assets/img/sale.svg';
-import BgOverlayImg4 from '@/assets/img/bg_overlay_4.svg';
-import { ROUTES } from '@/const/routes';
-import { updateUser } from '@/api/user';
-import AuthContext from '@/context/auth';
-import UserContext from '@/context/user';
 import Button from '@/ui/Button';
 import Select from '@/ui/Select';
 
@@ -55,9 +48,6 @@ const BOOLEAN_SELECT_LIST: OptionType[] = [
 ];
 
 const AccountPrivacySettings: React.FC<IProps> = () => {
-  const { token } = useContext(AuthContext);
-  const { user } = useContext(UserContext);
-
   const formik = useFormik<FormData>({
     initialValues: {
       passwordRecovery: BOOLEAN_SELECT_LIST[0],
@@ -76,11 +66,6 @@ const AccountPrivacySettings: React.FC<IProps> = () => {
 
   const memoSetDataFromSelect = useCallback(
     handleSetDataFromSelect,
-    [formik],
-  );
-
-  const memoOnChange = useCallback(
-    handleSetDataFromInput,
     [formik],
   );
 
@@ -189,12 +174,6 @@ const AccountPrivacySettings: React.FC<IProps> = () => {
 
   function handleSetDataFromSelect(key: keyof FormData): { (value: number | null): void } {
     return (value) => {
-      formik.setFieldValue(key, value);
-    };
-  }
-  function handleSetDataFromInput(key: keyof FormData): { (event: React.ChangeEvent<HTMLInputElement>): void } {
-    return (event) => {
-      const { value } = event.target;
       formik.setFieldValue(key, value);
     };
   }

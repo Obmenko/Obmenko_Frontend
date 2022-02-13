@@ -14,7 +14,6 @@ import { goBlank } from '@/utils/functions/dom';
 import { ROUTES } from '@/const/routes';
 import Button from '@/ui/Button';
 import { authUser, createUser } from '@/api/user';
-import UserContext from '@/context/user';
 import AuthContext from '@/context/auth';
 import { ButtonColorEnum, ButtonSizeEnum } from '@/ui/Button/Button';
 
@@ -91,7 +90,6 @@ const AuthModal: React.FC<AuthModalData> = ({
 
   const { closeModal } = useContext(ModalContext);
   const { setToken } = useContext(AuthContext);
-  const { setUser } = useContext(UserContext);
   const history = useHistory();
 
   const memoSwitchMode = useCallback(switchMode, [mode]);

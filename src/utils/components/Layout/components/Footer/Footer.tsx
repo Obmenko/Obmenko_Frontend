@@ -9,7 +9,7 @@ import Container from '@/utils/components/Container';
 import TelegramIcon from '@/assets/img/telegram.svg';
 import ClockIcon from '@/assets/img/clock.svg';
 import MailIcon from '@/assets/img/mail.svg';
-import { goBlank, goWithScroll } from '@/utils/functions/dom';
+import { goWithScroll } from '@/utils/functions/dom';
 import CONTACTS from '@/const/contacts';
 import { ROUTES } from '@/const/routes';
 import LogoImg from '@/assets/img/logo.svg';

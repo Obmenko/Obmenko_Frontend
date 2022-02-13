@@ -10,7 +10,6 @@ import ArrowDownBlue from '@/assets/img/arrow_down_blue.svg';
 
 import classes from './Select.module.scss';
 import useResize from '@/utils/hooks/useResize';
-import { CurrencyDataItemWithWallet } from '@/const/currencies_list';
 
 interface PropsType {
   OptionComponent?: (data: OptionType) => JSX.Element;

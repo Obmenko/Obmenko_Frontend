@@ -17,7 +17,6 @@ const ExchangePage = lazy(() => import('@/pages/Exchange'));
 const FAQPage = lazy(() => import('@/pages/FAQ'));
 const RulesPage = lazy(() => import('@/pages/Rules'));
 const AccountPage = lazy(() => import('@/pages/Account'));
-const AccountPrivacySettingsPage = lazy(() => import('@/pages/AccountPrivacySettings'));
 const AccountRequestsPage = lazy(() => import('@/pages/AccountRequests'));
 
 const App: FC = () => (
