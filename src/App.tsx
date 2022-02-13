@@ -11,6 +11,8 @@ import Layout from '@/utils/components/Layout';
 import { ROUTES } from '@/const/routes';
 import { ProtectedRoute } from './utils/components/ProtectedRoute';
 import AccountLayout from './utils/components/AccountLayout';
+import BgBlurRedImg from '@/assets/img/bg_blur_red.svg';
+import BgBlurBlueImg from '@/assets/img/bg_blur_blue.svg';
 
 const HomePage = lazy(() => import('@/pages/Home'));
 const ExchangePage = lazy(() => import('@/pages/Exchange'));
@@ -28,6 +30,8 @@ const App: FC = () => (
         name="viewport"
         content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
       />
+      <link rel="preload" as="image" href={BgBlurRedImg} />
+      <link rel="preload" as="image" href={BgBlurBlueImg} />
     </Helmet>
     <Layout>
       <Suspense fallback={(
@@ -43,7 +47,7 @@ const App: FC = () => (
         >
           <Ripple color="#2A4BC0" />
         </div>
-          )}
+      )}
       >
         <Switch>
           <Route path={ROUTES.EXCHANGE} component={ExchangePage} />

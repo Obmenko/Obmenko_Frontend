@@ -18,6 +18,7 @@
     top: 0;
     &-item {
       position: absolute;
+      display: none;
       top: 0;
       width: 40vw;
       height: 40vw;
@@ -25,14 +26,10 @@
       min-height: 40vw;
       min-width: 40vw;
       min-height: 40vw;
-      filter: blur(300px);
-      opacity: 0.3;
       &__red {
         top: -25vw;
-        background: #C02F2A;
       }
       &__blue {
-        background: #2A4BC0;
         &-right {
           top: 110vh;
           left: 80vw;

@@ -54,16 +54,18 @@
   & > div {
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
     width: auto;
     width: 100%;
+    gap: initial;
     // max-width: 25%;
     & > img {
-      display: flex;
-      flex-basis: auto;
+      width: 24%;
     }
     &:last-child {
       & > img {
-        width: 18%;
+        width: 19%;
       }
     }
   }

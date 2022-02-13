@@ -22,9 +22,9 @@
   min-height: 1220px;
   max-width: 1220px;
   max-height: 1220px;
-  filter: blur(300px);
   position: absolute;
   z-index: 1;
+  display: none;
 }
 
 .content {

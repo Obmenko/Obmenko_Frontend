@@ -19,6 +19,8 @@ import { CookiesMapEnum } from '@/types/config';
 import AuthContext from '@/context/auth';
 import UserContext from '@/context/user';
 import { getUser, UserType } from '@/api/user';
+import BgBlurRedImg from '@/assets/img/bg_blur_red.svg';
+import BgBlurBlueImg from '@/assets/img/bg_blur_blue.svg';
 
 type PropsType = {
   children: React.ReactNode
@@ -50,6 +52,8 @@ const Layout: FC<PropsType> = ({ children }) => {
     }
   }, [token, setCookie, removeCookie]);
 
+  console.log(clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-right']));
+
   return (
     <UserContext.Provider value={{
       user,
@@ -76,9 +80,9 @@ const Layout: FC<PropsType> = ({ children }) => {
             }
             <Header isAsideMenuOpen={isAsideMenuOpen} setAsideMenuOpenState={setAsideMenuOpenState} />
             <div className={classes.bg}>
-              <div className={clsx(classes['bg-item'], classes['bg-item__red'])} />
-              <div className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-right'])} />
-              <div className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-left'])} />
+              <img src={BgBlurRedImg} alt="" className={clsx(classes['bg-item'], classes['bg-item__red'])} />
+              <img src={BgBlurBlueImg} alt="" className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-right'])} />
+              <img src={BgBlurBlueImg} alt="" className={clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-left'])} />
             </div>
             <div className={classes.content}>
               {children}

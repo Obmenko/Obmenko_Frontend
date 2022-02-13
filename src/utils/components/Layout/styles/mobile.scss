@@ -17,14 +17,10 @@
       min-height: 60vw;
       min-width: 60vw;
       min-height: 60vw;
-      filter: blur(300px);
-      opacity: 0.4;
       &__red {
         top: 5vw;
-        background: #C02F2A;
       }
       &__blue {
-        background: #2A4BC0;
         &-right {
           top: 120vh;
           left: 80vw;
