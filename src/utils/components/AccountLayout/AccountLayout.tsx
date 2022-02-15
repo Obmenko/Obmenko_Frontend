@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { ACCOUNT_NAVS } from '@/const/routes';
 import classes from './AccountLayout.module.scss';
 import Container from '../Container';
+import BgBlurGreenImg from '@/assets/img/bg_blur_green.svg';
 
 const AccountLayout: FC = ({ children }) => {
   const history = useHistory();
@@ -13,7 +14,13 @@ const AccountLayout: FC = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      <Container className={classes.nav} wrapperClassName={classes['nav-wrapper']}>
+      <Container
+        className={classes.nav}
+        wrapperClassName={classes['nav-wrapper']}
+        BeforeComponent={
+          () => (<img src={BgBlurGreenImg} alt="" className={classes.bg} />)
+        }
+      >
         <div className={classes.bg} />
         {
           ACCOUNT_NAVS.map((nav) => (

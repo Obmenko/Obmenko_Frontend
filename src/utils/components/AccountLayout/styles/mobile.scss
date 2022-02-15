@@ -4,15 +4,12 @@
   }
 }
 .bg  {
-  top: 0;
-  width: 100vh;
-  height: 100vh;
-  min-width: 100vh;
-  min-height: 100vh;
-  min-width: 100vh;
-  min-height: 100vh;
-  left: 0;
-  right: 0;
+  width: 150vw;
+  height: 150vw;
+  min-width: 150vw;
+  min-height: 150vw;
+  min-width: 150vw;
+  min-height: 150vw;
 }
 
 .nav {
@@ -33,6 +30,10 @@
       margin-bottom: 0;
     }
   }
+}
+
+.content {
+  min-height: 70vh;
 }
 
 .modal {
