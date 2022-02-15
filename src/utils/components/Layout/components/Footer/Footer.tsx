@@ -16,6 +16,7 @@ import LogoImg from '@/assets/img/logo.svg';
 
 import useResize from '@/utils/hooks/useResize';
 import COMPANY_LOGOS from '@/const/company_logos';
+import BgBlurGreenImg from '@/assets/img/bg_blur_green.svg';
 
 type IProps = {
 
@@ -37,8 +38,13 @@ const Footer: React.FC<IProps> = () => {
 
   return (
     <div className={classes.root}>
-      <Container className={classes.content} wrapperClassName={classes['content-wrapper']}>
-        <div className={classes.bg} />
+      <Container
+        className={classes.content}
+        wrapperClassName={classes['content-wrapper']}
+        BeforeComponent={
+          () => (<img src={BgBlurGreenImg} alt="" className={classes.bg} />)
+        }
+      >
         <img src={LogoImg} alt="" />
         <div className={classes['content-column']}>
           <span onClick={memoGoTo(ROUTES.RULES)}>Правила сайта</span>

@@ -14,17 +14,14 @@
 }
 
 .bg {
-  background-color: #2EC23A;
-  opacity: 0.1;
-  width: 1220px;
-  height: 1220px;
-  min-width: 1220px;
-  min-height: 1220px;
-  max-width: 1220px;
-  max-height: 1220px;
+  width: 1520px;
+  height: 1520px;
+  min-width: 1520px;
+  min-height: 1520px;
+  max-width: 1520px;
+  max-height: 1520px;
   position: absolute;
   z-index: 1;
-  display: none;
 }
 
 .content {
@@ -32,7 +29,6 @@
   padding-bottom: 60px;
   display: flex;
   z-index: 10;
-  position: relative;
   flex-direction: row;
   justify-content: space-between !important;
   width: 100%;
@@ -41,8 +37,8 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
     position: relative;
     overflow: hidden;
   }

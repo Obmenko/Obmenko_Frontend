@@ -10,10 +10,11 @@ type PropsType = {
     className?: string,
     id?: string
     setRef?: { (ref: React.RefObject<HTMLDivElement>): void };
+    BeforeComponent?: () => JSX.Element
 }
 
 const Container: FC<PropsType> = ({
-  children, wrapperClassName, className, id, setRef,
+  children, wrapperClassName, className, id, setRef, BeforeComponent,
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -23,6 +24,9 @@ const Container: FC<PropsType> = ({
 
   return (
     <div {...(id ? { id } : {})} ref={ref} className={clsx(classes.root, wrapperClassName)}>
+      {
+        !!BeforeComponent && BeforeComponent()
+      }
       <div className={clsx(classes.content, className)}>
         {children}
       </div>

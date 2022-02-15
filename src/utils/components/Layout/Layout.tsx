@@ -52,8 +52,6 @@ const Layout: FC<PropsType> = ({ children }) => {
     }
   }, [token, setCookie, removeCookie]);
 
-  console.log(clsx(classes['bg-item'], classes['bg-item__blue'], classes['bg-item__blue-right']));
-
   return (
     <UserContext.Provider value={{
       user,

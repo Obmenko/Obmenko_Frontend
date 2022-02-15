@@ -10,24 +10,23 @@
     top: 0;
     &-item {
       position: absolute;
-      top: 0;
-      width: 60vw;
-      height: 60vw;
-      min-width: 60vw;
-      min-height: 60vw;
-      min-width: 60vw;
-      min-height: 60vw;
+      width: 200vw;
+      height: 200vw;
+      min-width: 200vw;
+      min-height: 200vw;
+      min-width: 200vw;
+      min-height: 200vw;
       &__red {
-        top: 5vw;
+        top: -80vw;
       }
       &__blue {
         &-right {
-          top: 120vh;
-          left: 80vw;
+          top: 100vh;
+          left: 0vw;
         }
         &-left {
-          top: 260vh;
-          right: 80vw;
+          top: 215vh;
+          right: 0vw;
         }
       }
     }

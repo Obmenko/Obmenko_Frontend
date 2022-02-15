@@ -18,25 +18,24 @@
     top: 0;
     &-item {
       position: absolute;
-      display: none;
       top: 0;
-      width: 40vw;
-      height: 40vw;
-      min-width: 40vw;
-      min-height: 40vw;
-      min-width: 40vw;
-      min-height: 40vw;
+      width: 50vw;
+      height: 50vw;
+      min-width: 50vw;
+      min-height: 50vw;
+      min-width: 50vw;
+      min-height: 50vw;
       &__red {
-        top: -25vw;
+        top: -15vw;
       }
       &__blue {
         &-right {
-          top: 110vh;
-          left: 80vw;
+          top: 100vh;
+          left: 70vw;
         }
         &-left {
-          top: 175vh;
-          right: 80vw;
+          top: 160vh;
+          right: 70vw;
         }
       }
     }
