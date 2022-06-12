@@ -1247,20 +1247,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fontsource/lato@^4.5.0":
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/@fontsource/lato/-/lato-4.5.1.tgz#606f0908607f96bd2e442bce6c9e6403c5e25ec2"
-  integrity sha512-46uDN51qCaNccDnpIZX8vzPF5Vzvfz2BYi9SrlATqp2x//oHvpBhszD4ApNo+1jiUpFeDiyG1ITS0rN4T571Lg==
-
 "@fontsource/montserrat@^4.5.4":
   version "4.5.4"
   resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-4.5.4.tgz#6b7eab9e97d0169ed571af12a6527bf4ecd3a119"
   integrity sha512-oqNthItCJ4cB66rShKzrnyF624Gj+kcuKx1Xz5IdF5XQQpkiIYUbPx4L92vmxwgOkC+5G9vhg/bJnba5nWvKnw==
-
-"@fontsource/press-start-2p@^4.5.0":
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/@fontsource/press-start-2p/-/press-start-2p-4.5.1.tgz#5e6b9380dbb0ae26116310c57f73a511f1da76bb"
-  integrity sha512-VUhCH3hUv/zXdEEaTUk51h+7OoU0e7usSWyM49/NSKsnA01Jz9MF4y/aoUo4NMjsPUJ5eAISBFhb1RdoIZCsGA==
 
 "@gar/promisify@^1.0.1":
   version "1.1.2"
