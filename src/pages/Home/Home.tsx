@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { useHistory } from 'react-router';
 import { NAVS } from '@/const/routes';
 import classes from './Home.module.scss';
-import LogoImg from '@/assets/img/logo.png';
+import LogoImg from '@/assets/img/logo.svg';
 import BgOverlayImg from '@/assets/img/bg_overlay.png';
 import BgOverlayImg2 from '@/assets/img/bg_overlay_2.png';
 import ExchangeImg from '@/assets/img/currency/exchange.svg';
