@@ -197,7 +197,6 @@ const Exchange: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log(request);
     if (request) {
       exchangeFormik.setFieldValue('wallet', request.wallet);
       exchangeFormik.setFieldValue('coinTo', CURRENCY_LIST[CURRENCY_LIST.findIndex((el) => el.unit === request.coinTo)]);
