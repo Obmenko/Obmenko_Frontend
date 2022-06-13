@@ -167,21 +167,28 @@ const Exchange: React.FC = () => {
   }, [exchangeFormik.values.countFrom, course.rate]);
 
   useEffect(() => {
-    getExchangePair(exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit).then((coinApiData) => {
-      const from = exchangeFormik.values.coinFrom.unit;
-      const to = exchangeFormik.values.coinTo.unit;
-      const feePercent = countFeePercent(from, to);
-      setCourse({
-        from,
-        to,
-        rate: coinApiData.rate * (1 - feePercent / 100),
-        feePercent,
+    if (!requestId) {
+      getExchangePair(exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit).then((coinApiData) => {
+        const from = exchangeFormik.values.coinFrom.unit;
+        const to = exchangeFormik.values.coinTo.unit;
+        const feePercent = countFeePercent(from, to);
+        setCourse({
+          from,
+          to,
+          rate: coinApiData.rate * (1 - feePercent / 100),
+          feePercent,
+        });
       });
-    });
-  }, [exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit]);
+    }
+  }, [exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit, requestId]);
 
   useEffect(() => {
-    if (requestId) getRequestById(token, requestId).then((data) => setRequest(data));
+    if (requestId) {
+      getRequestById(token, requestId).then((data) => {
+        console.log(data);
+        setRequest(data);
+      });
+    }
   }, [requestId, token]);
 
   const memoRequestStatusValue = useMemo(
@@ -189,9 +196,16 @@ const Exchange: React.FC = () => {
     [requestStatus],
   );
 
-  // useEffect(() => {
-  //   user
-  // }, [])
+  useEffect(() => {
+    console.log(request);
+    if (request) {
+      exchangeFormik.setFieldValue('wallet', request.wallet);
+      exchangeFormik.setFieldValue('coinTo', CURRENCY_LIST[CURRENCY_LIST.findIndex((el) => el.unit === request.coinTo)]);
+      exchangeFormik.setFieldValue('countTo', request.countTo);
+      exchangeFormik.setFieldValue('coinFrom', CURRENCY_LIST[CURRENCY_LIST.findIndex((el) => el.unit === request.coinFrom)]);
+      exchangeFormik.setFieldValue('countFrom', request.countFrom);
+    }
+  }, [request]);
 
   return (
     <div className={classes.root}>
