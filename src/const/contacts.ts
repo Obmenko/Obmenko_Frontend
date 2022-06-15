@@ -1,7 +1,7 @@
 const CONTACTS = {
-  email: 'info@coinsshop.ru',
-  telegram: '@coinsshop_support',
-  telegramLink: 'https://t.me/coinsshop_support',
+  email: 'info@coinsswap.ru',
+  telegram: '@Coinsswap_ru',
+  telegramLink: 'https://t.me/Coinsswap_ru',
   siteUrl: 'https://coinsshop.ru',
   name: 'CoinsShop',
 };
