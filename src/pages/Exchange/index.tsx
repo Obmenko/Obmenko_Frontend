@@ -6,7 +6,7 @@ import Home from './Exchange';
 
 const HomePage: FC = () => (
   <>
-    <Helmet title="Coins Shop">
+    <Helmet title="Coins Swap">
       dada
     </Helmet>
     <Home />

@@ -6,7 +6,7 @@ import AccountRequests from './AccountRequests';
 
 const AccountRequestsPage: FC = () => (
   <>
-    <Helmet title="Coins Shop">
+    <Helmet title="Coins Swap">
       dada
     </Helmet>
     <AccountRequests />
