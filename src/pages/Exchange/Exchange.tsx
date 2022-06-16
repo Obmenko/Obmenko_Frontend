@@ -139,7 +139,6 @@ const Exchange: React.FC = () => {
   });
 
   const [mode, setMode] = useState(!requestId ? ExchangeModeEnum.FORM : ExchangeModeEnum.HOW_TO_PAY);
-  const [requestStatus, setRequestStatus] = useState<RequestStatusEnum>(RequestStatusEnum.WAITING_FOR_CLIENT);
   const { token } = useContext(AuthContext);
 
   const memoSetExchangeDataFromInput = useCallback(handleSetExchangeDataFromInput, [exchangeFormik]);
@@ -196,6 +195,15 @@ const Exchange: React.FC = () => {
       exchangeFormik.setFieldValue('countFrom', request.countFrom);
     }
   }, [request]);
+
+  const memoRequestStatusText = useMemo(() => {
+    const dict = {
+      [RemoteRequestStatusEnum.NEW]: 'Принята, ожидает оплаты клиентом',
+      [RemoteRequestStatusEnum.PROCESSING]: 'Ожидаем поступления средств',
+      [RemoteRequestStatusEnum.PAYED]: 'Платёж подтверждён, производим выплату',
+    };
+    return request?.status ? dict[request?.status] : dict[RemoteRequestStatusEnum.NEW];
+  }, [request?.status]);
 
   return (
     <div className={classes.root}>
@@ -449,13 +457,13 @@ const Exchange: React.FC = () => {
                 </div>
                 <div>
                   <span>Статус заявки:</span>
-                  <p>{requestStatus}</p>
+                  <p>{memoRequestStatusText}</p>
                 </div>
               </div>
             </div>
           )
         }
-        <Button onClick={memoGoToMode('next')} color={ButtonColorEnum.GREEN}>
+        <Button onClick={memoGoToMode('next')} color={!request?.status || request?.status === RemoteRequestStatusEnum.NEW ? ButtonColorEnum.GREEN : ButtonColorEnum.RED}>
           {
             mode === ExchangeModeEnum.FORM ? 'Обменять'
               : mode === ExchangeModeEnum.CHECK ? 'Создать заявку'
@@ -520,7 +528,6 @@ const Exchange: React.FC = () => {
             setSubmitError('Произошла ошибка при создании заявки');
           }
         } else if (mode === ExchangeModeEnum.HOW_TO_PAY && request?.status === RemoteRequestStatusEnum.NEW) {
-          setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
           await updateRequest(token, requestId || '', {
             status: RemoteRequestStatusEnum.PROCESSING,
           });

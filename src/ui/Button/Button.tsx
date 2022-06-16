@@ -14,7 +14,8 @@ export enum ButtonSizeEnum {
 }
 
 export enum ButtonColorEnum {
-  GREEN = 'green'
+  GREEN = 'green',
+  RED = 'red'
 }
 
 interface PropsType extends React.ButtonHTMLAttributes<HTMLButtonElement> {
