@@ -1,4 +1,4 @@
 User-agent: *
 Crawl-delay: 1
-Host: coinsshop.ru
+Host: coinsshop.su
 Disallow: /account*
