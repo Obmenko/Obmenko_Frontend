@@ -455,7 +455,7 @@ const Exchange: React.FC = () => {
           {
             mode === ExchangeModeEnum.FORM ? 'Обменять'
               : mode === ExchangeModeEnum.CHECK ? 'Создать заявку'
-                : 'Я оплатил заявку'
+                : request?.status === RemoteRequestStatusEnum.NEW ? 'Я оплатил заявку' : 'Заявка оплачена'
           }
         </Button>
         {
@@ -515,9 +515,13 @@ const Exchange: React.FC = () => {
           } catch (e) {
             setSubmitError('Произошла ошибка при создании заявки');
           }
-        } else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
+        } else if (mode === ExchangeModeEnum.HOW_TO_PAY && request?.status === RemoteRequestStatusEnum.NEW) {
           setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
           await updateRequest(token, requestId || '', {
+            status: RemoteRequestStatusEnum.PROCESSING,
+          });
+          setRequest({
+            ...request,
             status: RemoteRequestStatusEnum.PROCESSING,
           });
         }

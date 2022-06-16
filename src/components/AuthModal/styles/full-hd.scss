@@ -11,6 +11,9 @@
   position: relative;
   min-width: 600px;
   max-width: 600px;
+  & > img {
+    z-index: 10000;
+  }
 }
 .content {
   display: flex;

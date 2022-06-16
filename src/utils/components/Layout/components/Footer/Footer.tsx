@@ -9,7 +9,7 @@ import Container from '@/utils/components/Container';
 import TelegramIcon from '@/assets/img/telegram.svg';
 import ClockIcon from '@/assets/img/clock.svg';
 import MailIcon from '@/assets/img/mail.svg';
-import { goWithScroll } from '@/utils/functions/dom';
+import { goBlank, goWithScroll } from '@/utils/functions/dom';
 import CONTACTS from '@/const/contacts';
 import { ROUTES } from '@/const/routes';
 import LogoImg from '@/assets/img/logo.svg';
@@ -50,7 +50,7 @@ const Footer: React.FC<IProps> = () => {
           <span onClick={memoGoTo(ROUTES.RULES)}>Правила сайта</span>
           <span onClick={memoGoTo(ROUTES.FAQ)}>FAQ</span>
           <span onClick={goWithScroll(ROUTES.HOME, 'reviews')}>Отзывы</span>
-          <span onClick={goWithScroll(ROUTES.HOME, 'footer')}>Поддержка</span>
+          <span onClick={goBlank(CONTACTS.telegramLink)}>Поддержка</span>
         </div>
         <div className={classes['content-column']}>
           <h4>Контакты</h4>
@@ -89,7 +89,8 @@ const Footer: React.FC<IProps> = () => {
       <div className={classes.copyright}>
         <span>
           ©
-          {new Date(Date.now()).getFullYear()}
+          2020
+          {/* {new Date(Date.now()).getFullYear()} */}
         </span>
         <p>
           logo.exchange
