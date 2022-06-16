@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -413,7 +414,10 @@ const Exchange: React.FC = () => {
                   {' '}
                   на этот кошелек:
                 </p>
-                <div>
+                <div onClick={() => {
+                  navigator.clipboard.writeText(exchangeFormik.values.coinFrom.wallet);
+                }}
+                >
                   <img src={CopyImg} alt="" />
                   <span>{exchangeFormik.values.coinFrom.wallet}</span>
                 </div>
