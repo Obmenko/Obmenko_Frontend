@@ -27,7 +27,7 @@ import CopyImg from '@/assets/img/copy.svg';
 import Container from '@/utils/components/Container';
 import Select from '@/ui/Select';
 import Button from '@/ui/Button';
-import { ButtonModeEnum } from '@/ui/Button/Button';
+import { ButtonColorEnum, ButtonModeEnum } from '@/ui/Button/Button';
 import {
   CurrencyDataItemWithWallet, CURRENCY_LIST,
 } from '@/const/currencies_list';
@@ -150,7 +150,7 @@ const Exchange: React.FC = () => {
   const memoSetExchangeDataFromSelect = useCallback(handleSetExchangeDataFromSelect, [exchangeFormik]);
   const memoSetUserDataFromInput = useCallback(handleSetUserDataFromInput, [userFormik]);
 
-  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, requestId, token, user, userFormik]);
+  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, request?.status, requestId, token, user, userFormik]);
 
   const memoFromList = useMemo(
     () => CURRENCY_LIST.filter((el) => el.unit !== exchangeFormik.values.coinFrom.unit && !el.onlyTo),
@@ -185,15 +185,14 @@ const Exchange: React.FC = () => {
   useEffect(() => {
     if (requestId) {
       getRequestById(token, requestId).then((data) => {
-        console.log(data);
         setRequest(data);
       });
     }
   }, [requestId, token]);
 
   const memoRequestStatusValue = useMemo(
-    () => (requestStatus === RequestStatusEnum.WAITING_FOR_CLIENT ? 33 : requestStatus === RequestStatusEnum.WAITING_FOR_CONFIRM ? 66 : 100),
-    [requestStatus],
+    () => (request?.status === RemoteRequestStatusEnum.NEW ? 33 : request?.status === RemoteRequestStatusEnum.PROCESSING ? 66 : request?.status === RemoteRequestStatusEnum.PAYED ? 100 : 0),
+    [request?.status],
   );
 
   useEffect(() => {
@@ -460,11 +459,11 @@ const Exchange: React.FC = () => {
             </div>
           )
         }
-        <Button onClick={memoGoToMode('next')}>
+        <Button onClick={memoGoToMode('next')} color={!request?.status || request?.status === RemoteRequestStatusEnum.NEW ? ButtonColorEnum.GREEN : ButtonColorEnum.RED}>
           {
             mode === ExchangeModeEnum.FORM ? 'Обменять'
               : mode === ExchangeModeEnum.CHECK ? 'Создать заявку'
-                : 'Я оплатил заявку'
+                : request?.status === RemoteRequestStatusEnum.NEW ? 'Я оплатил заявку' : 'Заявка оплачена'
           }
         </Button>
         {
@@ -522,9 +521,15 @@ const Exchange: React.FC = () => {
           }
         } else if (mode === ExchangeModeEnum.HOW_TO_PAY) {
           setRequestStatus(RequestStatusEnum.WAITING_FOR_CONFIRM);
-          await updateRequest(token, requestId || '', {
-            status: RemoteRequestStatusEnum.PROCESSING,
-          });
+          if (request?.status === RemoteRequestStatusEnum.NEW) {
+            await updateRequest(token, requestId || '', {
+              status: RemoteRequestStatusEnum.PROCESSING,
+            });
+            setRequest({
+              ...request,
+              status: RemoteRequestStatusEnum.PROCESSING,
+            });
+          }
         }
       } else if (mode === ExchangeModeEnum.CHECK) setMode(ExchangeModeEnum.FORM);
       else try { history.replace('/'); } catch (e) { console.log(e); }
