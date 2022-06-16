@@ -146,7 +146,7 @@ const Exchange: React.FC = () => {
   const memoSetExchangeDataFromSelect = useCallback(handleSetExchangeDataFromSelect, [exchangeFormik]);
   const memoSetUserDataFromInput = useCallback(handleSetUserDataFromInput, [userFormik]);
 
-  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, requestId, token, user, userFormik]);
+  const memoGoToMode = useCallback(goToMode, [exchangeFormik, history, mode, request, requestId, token, user, userFormik]);
 
   const memoFromList = useMemo(
     () => CURRENCY_LIST.filter((el) => el.unit !== exchangeFormik.values.coinFrom.unit && !el.onlyTo),
@@ -164,7 +164,7 @@ const Exchange: React.FC = () => {
 
   useEffect(() => {
     if (!requestId) {
-      getExchangePair(exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit).then((coinApiData) => {
+      getExchangePair(token, exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit).then((coinApiData) => {
         const from = exchangeFormik.values.coinFrom.unit;
         const to = exchangeFormik.values.coinTo.unit;
         const feePercent = countFeePercent(from, to);
@@ -176,7 +176,7 @@ const Exchange: React.FC = () => {
         });
       });
     }
-  }, [exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit, requestId]);
+  }, [exchangeFormik.values.coinFrom.unit, exchangeFormik.values.coinTo.unit, requestId, token]);
 
   useEffect(() => {
     if (requestId) {
@@ -264,9 +264,9 @@ const Exchange: React.FC = () => {
                   <p>
                     Минимальная сумма перевода
                     {' '}
-                    {exchangeFormik.values.coinTo.minimalTransactionSum}
+                    {exchangeFormik.values.coinFrom.minimalTransactionSum}
                     {' '}
-                    {exchangeFormik.values.coinTo.unit}
+                    {exchangeFormik.values.coinFrom.unit}
                   </p>
                 </div>
                 <input className={clsx(userFormik.errors.email && 'invalid')} value={userFormik.values.email} onChange={memoSetUserDataFromInput('email')} type="text" placeholder="E-mail*" />

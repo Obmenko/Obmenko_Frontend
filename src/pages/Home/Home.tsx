@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useContext, useEffect, useMemo, useState,
 } from 'react';
 import _ from 'lodash';
 import clsx from 'clsx';
@@ -28,6 +28,7 @@ import { countFeePercent } from '@/utils/functions/rates';
 import InputWithCoin from '@/components/InputWithCoin';
 import { ButtonColorEnum, ButtonSizeEnum } from '@/ui/Button/Button';
 import StarLine from '@/components/StarLine';
+import AuthContext from '@/context/auth';
 
 type CurrencyData = {
   coinFrom: CurrencyDataItemWithWallet,
@@ -62,6 +63,7 @@ const Home: React.FC = () => {
   const [currencyActiveIndex, setCurrencyActiveIndex] = useState<number>(0);
 
   const { width } = useResize();
+  const { token } = useContext(AuthContext);
   const history = useHistory();
 
   const memoSetDataFromInput = useCallback(handleSetDataFromInput, [data]);
@@ -95,7 +97,7 @@ const Home: React.FC = () => {
   }, [course.rate, data.countFrom]);
 
   useEffect(() => {
-    getExchangePair(data.coinFrom.unit, data.coinTo.unit).then((coinApiData) => {
+    getExchangePair(token, data.coinFrom.unit, data.coinTo.unit).then((coinApiData) => {
       const from = data.coinFrom.unit;
       const to = data.coinTo.unit;
       const feePercent = countFeePercent(from, to);
@@ -106,7 +108,7 @@ const Home: React.FC = () => {
         feePercent,
       });
     });
-  }, [data.coinFrom.unit, data.coinTo.unit]);
+  }, [data.coinFrom.unit, data.coinTo.unit, token]);
 
   return (
     <div className={classes.root}>
@@ -150,9 +152,9 @@ const Home: React.FC = () => {
                 <p>
                   Минимальная сумма перевода
                   {' '}
-                  {data.coinTo.minimalTransactionSum}
+                  {data.coinFrom.minimalTransactionSum}
                   {' '}
-                  {data.coinTo.unit}
+                  {data.coinFrom.unit}
                 </p>
               </div>
             </div>

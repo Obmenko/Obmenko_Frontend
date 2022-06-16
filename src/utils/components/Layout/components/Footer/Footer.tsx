@@ -93,7 +93,7 @@ const Footer: React.FC<IProps> = () => {
           {/* {new Date(Date.now()).getFullYear()} */}
         </span>
         <p>
-          logo.exchange
+          {CONTACTS.name}
         </p>
       </div>
     </div>
