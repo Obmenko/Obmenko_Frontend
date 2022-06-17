@@ -78,7 +78,7 @@ export const CURRENCY_LIST: CurrencyDataItemWithWallet[] = [
   {
     img: LitecoinImg,
     title: 'Litecoin',
-    wallet: 'ltc1ql4me2skxlgn82tmy0v2gn6gt80dphw8hk57q4a',
+    wallet: 'ltc1qzttw9xrx37j0lzshkjz2vcwk8p7p6gj0xeftsf',
     isBtc: true,
     unit: CurrencyUnitEnum.LTC,
     reserve: 628,
