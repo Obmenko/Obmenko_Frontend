@@ -39,6 +39,7 @@
     }
   ],
   "rules": {
+    "linebreak-style": "off",
     "no-underscore-dangle": "off",
     "@typescript-eslint/explicit-function-return-type": [
       "off",

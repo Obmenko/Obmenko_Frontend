@@ -104,7 +104,7 @@ const Home: React.FC = () => {
       setCourse({
         from,
         to,
-        rate: coinApiData.rate * (1 - feePercent / 100),
+        rate: coinApiData.rate * (1 + feePercent / 100),
         feePercent,
       });
     });
